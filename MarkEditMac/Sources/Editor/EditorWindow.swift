@@ -53,6 +53,14 @@ final class EditorWindow: NSWindow {
     toolbarMode = AppPreferences.Window.toolbarMode
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
+
+    NSWorkspace.shared.notificationCenter.addObserver(
+      forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] _ in
+      self?.updateTitleBarAppearance()
+    }
   }
 
   override func layoutIfNeeded() {
@@ -85,7 +93,7 @@ final class EditorWindow: NSWindow {
     if let view = cachedTitlebarBackgroundView {
       let needsOverlay = styleMask.contains(.fullScreen) && toolbarMode == .hidden
       view.alphaValue = needsOverlay ? 1 : (prefersTintedToolbar ? 0.3 : 0.7)
-      view.isHidden = !needsOverlay && (reduceTransparency == true || AppDesign.modernTitleBar)
+      view.isHidden = !needsOverlay && (AppDesign.reduceTransparency || AppDesign.modernTitleBar)
 
       // Blend the color of contents behind the window
       (view as? NSVisualEffectView)?.blendingMode = .behindWindow
