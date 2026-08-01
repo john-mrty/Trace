@@ -135,6 +135,8 @@ extension EditorViewController {
 
     // Keep the window background clear when translucent, otherwise it overwrites the backdrop.
     view.window?.backgroundColor = AppDesign.reduceTransparency ? backgroundColor : .clear
+    view.window?.isOpaque = AppDesign.reduceTransparency
+    backdropView.isHidden = AppDesign.reduceTransparency
     titlebarView?.layerBackgroundColor = backgroundColor
 
     let prefersTintedToolbar = theme.prefersTintedToolbar || backgroundColor.isTintedColor

@@ -60,6 +60,7 @@ final class EditorWindow: NSWindow {
       queue: .main
     ) { [weak self] _ in
       self?.updateTitleBarAppearance()
+      (self?.contentViewController as? EditorViewController)?.updateWindowColors(.current)
     }
   }
 
@@ -76,11 +77,6 @@ final class EditorWindow: NSWindow {
       cachedTitlebarBackgroundView = nil
       cachedTitlebarDecorationView = nil
     }
-
-    // Same translucency rule as construction, kept in sync as the preference changes.
-    let translucent = !AppDesign.reduceTransparency
-    isOpaque = !translucent
-    backgroundColor = translucent ? .clear : backgroundColor
 
     // The titlebar background view also backs the auto-hiding titlebar overlay in
     // fullscreen. When the toolbar is hidden, nothing else backs it, so keep

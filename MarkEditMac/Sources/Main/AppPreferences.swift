@@ -232,13 +232,9 @@ enum AppPreferences {
       didSet {
         performUpdates { editor in
           Task { @MainActor in
-            // Modern title bar is implemented in the view controller layer
-            if AppDesign.modernTitleBar {
-              editor.updateWindowColors(AppTheme.current)
-            }
+            editor.updateWindowColors(AppTheme.current)
           }
 
-          editor.backdropView.isHidden = reduceTransparency
           (editor.view.window as? EditorWindow)?.reduceTransparency = reduceTransparency
         }
       }
