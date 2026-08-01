@@ -9,14 +9,14 @@ html, body {
   margin: 0;
   padding: 0;
   overflow: auto;
+  background: transparent;
 }
 
 /* CodeMirror */
 
 .cm-editor {
   height: 100vh;
-
-  /* selectionMatch doesn't work well with some fonts, such as system-ui, ui-rounded */
+  background: transparent;
   font-kerning: none;
 }
 

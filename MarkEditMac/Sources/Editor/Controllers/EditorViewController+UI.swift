@@ -26,6 +26,9 @@ extension EditorViewController {
       wrapper.addSubview(modernBackgroundView)
     }
 
+    backdropView.isHidden = AppDesign.reduceTransparency
+    wrapper.addSubview(backdropView, positioned: .below, relativeTo: nil)
+
     wrapper.addSubview(findPanel)
     wrapper.addSubview(replacePanel)
     wrapper.addSubview(webView)
@@ -39,6 +42,13 @@ extension EditorViewController {
     // The divider must be on very top
     panelDivider.alphaValue = AppDesign.dividerAlpha
     wrapper.addSubview(panelDivider)
+
+    NSLayoutConstraint.activate([
+      backdropView.topAnchor.constraint(equalTo: wrapper.topAnchor),
+      backdropView.bottomAnchor.constraint(equalTo: wrapper.bottomAnchor),
+      backdropView.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor),
+      backdropView.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor),
+    ])
 
     layoutPanels()
     layoutWebView()

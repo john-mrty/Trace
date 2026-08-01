@@ -90,6 +90,16 @@ final class EditorViewController: NSViewController {
   let modernEffectView = MaterialView()
   let modernDividerView = DividerView()
 
+  // Full-bleed translucent backdrop so the desktop blurs through the editor.
+  let backdropView: MaterialView = {
+    let view = MaterialView()
+    view.effectView.blendingMode = .behindWindow
+    view.material = .underWindowBackground
+    view.effectView.state = .followsWindowActiveState
+    view.translatesAutoresizingMaskIntoConstraints = false
+    return view
+  }()
+
   // Height constraint of the effect view, depending on the panel state
   private(set) lazy var modernEffectHeight: NSLayoutConstraint = {
     let anchor = modernEffectView.heightAnchor
@@ -181,6 +191,7 @@ final class EditorViewController: NSViewController {
     webView.uiDelegate = self
     webView.actionDelegate = self
     webView.disableWindowOcclusionDetection()
+    webView.setValue(false, forKey: "drawsBackground") // let the backdrop show through
 
     let theme = AppTheme.current.editorTheme
     DispatchQueue.global(qos: .userInitiated).async {

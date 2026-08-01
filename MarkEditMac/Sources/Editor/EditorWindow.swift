@@ -53,6 +53,10 @@ final class EditorWindow: NSWindow {
     toolbarMode = AppPreferences.Window.toolbarMode
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
+
+    let translucent = !AppDesign.reduceTransparency
+    isOpaque = !translucent
+    backgroundColor = translucent ? .clear : backgroundColor
   }
 
   override func layoutIfNeeded() {
