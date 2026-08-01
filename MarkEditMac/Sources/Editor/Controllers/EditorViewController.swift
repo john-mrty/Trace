@@ -91,11 +91,11 @@ final class EditorViewController: NSViewController {
   let modernDividerView = DividerView()
 
   // Full-bleed translucent backdrop so the desktop blurs through the editor.
+  // NSVisualEffectView already defaults to behindWindow blending and
+  // followsWindowActiveState, so only the material needs to be set.
   let backdropView: MaterialView = {
     let view = MaterialView()
-    view.effectView.blendingMode = .behindWindow
     view.material = .underWindowBackground
-    view.effectView.state = .followsWindowActiveState
     view.translatesAutoresizingMaskIntoConstraints = false
     return view
   }()

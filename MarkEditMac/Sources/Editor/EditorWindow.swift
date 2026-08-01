@@ -53,10 +53,6 @@ final class EditorWindow: NSWindow {
     toolbarMode = AppPreferences.Window.toolbarMode
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
-
-    let translucent = !AppDesign.reduceTransparency
-    isOpaque = !translucent
-    backgroundColor = translucent ? .clear : backgroundColor
   }
 
   override func layoutIfNeeded() {
@@ -72,6 +68,11 @@ final class EditorWindow: NSWindow {
       cachedTitlebarBackgroundView = nil
       cachedTitlebarDecorationView = nil
     }
+
+    // Same translucency rule as construction, kept in sync as the preference changes.
+    let translucent = !AppDesign.reduceTransparency
+    isOpaque = !translucent
+    backgroundColor = translucent ? .clear : backgroundColor
 
     // The titlebar background view also backs the auto-hiding titlebar overlay in
     // fullscreen. When the toolbar is hidden, nothing else backs it, so keep

@@ -133,7 +133,8 @@ extension EditorViewController {
     let titlebarView = view.window?.titlebarView
     let backgroundColor = webBackgroundColor ?? theme.windowBackground
 
-    view.window?.backgroundColor = backgroundColor
+    // Keep the window background clear when translucent, otherwise it overwrites the backdrop.
+    view.window?.backgroundColor = AppDesign.reduceTransparency ? backgroundColor : .clear
     titlebarView?.layerBackgroundColor = backgroundColor
 
     let prefersTintedToolbar = theme.prefersTintedToolbar || backgroundColor.isTintedColor

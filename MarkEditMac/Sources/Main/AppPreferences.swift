@@ -238,6 +238,7 @@ enum AppPreferences {
             }
           }
 
+          editor.backdropView.isHidden = reduceTransparency
           (editor.view.window as? EditorWindow)?.reduceTransparency = reduceTransparency
         }
       }
