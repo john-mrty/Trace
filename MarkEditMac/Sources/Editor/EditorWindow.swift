@@ -6,9 +6,18 @@
 //
 
 import AppKit
+import AppKitExtensions
 import MarkEditKit
 
 final class EditorWindow: NSWindow {
+  /// True while summoned as the right-edge overlay (Option+`).
+  private(set) var overlayMode = false
+  private var savedFrame: NSRect?
+  private var savedLevel: NSWindow.Level?
+  private var savedCollectionBehavior: NSWindow.CollectionBehavior?
+  private var isExitingOverlay = false
+  private let overlayWidthFraction: CGFloat = 1.0 / 3.0
+
   /// Forces `.preferred` tabbing for an on-demand window (e.g. "New Tab"),
   /// without mutating the persisted `AppPreferences.Window.tabbingMode`.
   @MainActor static var forcedTabbing = false
@@ -122,5 +131,102 @@ final class EditorWindow: NSWindow {
 
     // Deliberately dim the icon to get on well with tinted style
     titlebarDocumentButton?.alphaValue = prefersTintedToolbar ? 0.8 : 1.0
+  }
+
+  /// Summons this window as a right-edge overlay: floating above other apps, full height.
+  /// Full-screen windows are out of scope for v1; falls back to a plain key/front.
+  func enterOverlayMode(animated: Bool) {
+    guard !overlayMode else {
+      return
+    }
+
+    guard !styleMask.contains(.fullScreen), let visible = (screen ?? NSScreen.main)?.visibleFrame else {
+      makeKeyAndOrderFront(nil)
+      return
+    }
+
+    overlayMode = true
+    isExitingOverlay = false
+    savedFrame = frame
+    savedLevel = level
+    savedCollectionBehavior = collectionBehavior
+
+    level = .floating
+    collectionBehavior.insert(.canJoinAllSpaces)
+    collectionBehavior.insert(.fullScreenAuxiliary)
+
+    let target = EditorOverlayGeometry.frame(in: visible, widthFraction: overlayWidthFraction)
+    if animated && !AppDesign.reduceMotion {
+      setFrame(EditorOverlayGeometry.offscreenFrame(in: visible, widthFraction: overlayWidthFraction), display: false)
+      makeKeyAndOrderFront(nil)
+      NSAnimationContext.runAnimationGroup { context in
+        context.duration = 0.18
+        animator().setFrame(target, display: true)
+      }
+    } else {
+      setFrame(target, display: true)
+      makeKeyAndOrderFront(nil)
+    }
+  }
+
+  /// Dismisses the overlay, restoring the window's pre-overlay frame/level/behavior.
+  /// `completion` runs once the window has finished ordering out, so callers (e.g. hiding
+  /// the app) don't cut the slide-out animation short.
+  func exitOverlayMode(animated: Bool, completion: (() -> Void)? = nil) {
+    guard overlayMode, !isExitingOverlay else {
+      completion?()
+      return
+    }
+
+    isExitingOverlay = true
+    overlayMode = false
+
+    if let savedLevel {
+      level = savedLevel
+    }
+
+    if let savedCollectionBehavior {
+      collectionBehavior = savedCollectionBehavior
+    }
+
+    let restore = { [weak self] in
+      guard let self else {
+        return
+      }
+
+      if let savedFrame = self.savedFrame {
+        self.setFrame(savedFrame, display: true)
+      }
+
+      self.orderOut(nil)
+      self.isExitingOverlay = false
+      completion?()
+    }
+
+    if animated && !AppDesign.reduceMotion, let visible = (screen ?? NSScreen.main)?.visibleFrame {
+      let off = EditorOverlayGeometry.offscreenFrame(in: visible, widthFraction: overlayWidthFraction)
+      NSAnimationContext.runAnimationGroup({ context in
+        context.duration = 0.16
+        animator().setFrame(off, display: true)
+      }, completionHandler: restore)
+    } else {
+      restore()
+    }
+  }
+
+  override func resignKey() {
+    super.resignKey()
+
+    if overlayMode {
+      exitOverlayMode(animated: true)
+    }
+  }
+
+  override func cancelOperation(_ sender: Any?) {
+    if overlayMode {
+      exitOverlayMode(animated: true)
+    } else {
+      super.cancelOperation(sender)
+    }
   }
 }

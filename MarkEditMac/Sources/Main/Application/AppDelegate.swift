@@ -100,6 +100,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       }
     }
 
+    // Personal fork: Option+` summons the editor as a right-edge overlay (Ghostty-style).
+    AppHotKeys.register(keyEquivalent: "~", modifiers: ["Option"]) {
+      self.toggleOverlay()
+    }
+
     DispatchQueue.global(qos: .utility).async {
       EditorIndexHtml.copyToSharedContainer()
     }

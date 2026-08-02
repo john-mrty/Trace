@@ -103,6 +103,33 @@ extension AppDelegate {
 
     NSApp.activate(ignoringOtherApps: true)
   }
+
+  /// Summons/dismisses the editor as a right-edge overlay (Option+`, Ghostty-style).
+  func toggleOverlay() {
+    let editors = NSApp.windows.compactMap { $0 as? EditorWindow }
+
+    // Already overlaying and focused → dismiss, then hide once the slide-out finishes
+    // so the animation isn't cut short by the app disappearing mid-flight.
+    if let overlaying = editors.first(where: { $0.overlayMode && $0.isKeyWindow }) {
+      overlaying.exitOverlayMode(animated: true) {
+        NSApp.hide(nil)
+      }
+      return
+    }
+
+    // No editor window → create one, then overlay once it exists.
+    guard let target = editors.first(where: { $0.isKeyWindow }) ?? editors.first else {
+      openOrCreateDocument(sender: NSApp)
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+        NSApp.activate(ignoringOtherApps: true)
+        (NSApp.windows.compactMap { $0 as? EditorWindow }.first)?.enterOverlayMode(animated: true)
+      }
+      return
+    }
+
+    NSApp.activate(ignoringOtherApps: true)
+    target.enterOverlayMode(animated: true)
+  }
 }
 
 // MARK: - Private
