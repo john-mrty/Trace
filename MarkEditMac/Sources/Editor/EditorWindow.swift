@@ -56,6 +56,13 @@ final class EditorWindow: NSWindow {
   private var cachedToolbar: NSToolbar?
   private weak var cachedTitlebarBackgroundView: NSView?
   private weak var cachedTitlebarDecorationView: NSView?
+  private var accessibilityDisplayOptionsObserver: NSObjectProtocol?
+
+  deinit {
+    if let accessibilityDisplayOptionsObserver {
+      NSWorkspace.shared.notificationCenter.removeObserver(accessibilityDisplayOptionsObserver)
+    }
+  }
 
   override func awakeFromNib() {
     super.awakeFromNib()
@@ -64,7 +71,7 @@ final class EditorWindow: NSWindow {
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
 
-    NSWorkspace.shared.notificationCenter.addObserver(
+    accessibilityDisplayOptionsObserver = NSWorkspace.shared.notificationCenter.addObserver(
       forName: NSWorkspace.accessibilityDisplayOptionsDidChangeNotification,
       object: nil,
       queue: .main

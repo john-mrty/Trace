@@ -69,13 +69,9 @@ final class EditorViewController: NSViewController {
     webView: webView
   )
 
-  var document: EditorDocument? {
-    representedObject as? EditorDocument
-  }
+  var document: EditorDocument? { representedObject as? EditorDocument }
 
-  var spellChecker: NSSpellChecker {
-    NSSpellChecker.shared
-  }
+  var spellChecker: NSSpellChecker { NSSpellChecker.shared }
 
   var isFindPanelFirstResponder: Bool {
     guard findPanel.mode != .hidden else {
@@ -91,20 +87,11 @@ final class EditorViewController: NSViewController {
   let modernDividerView = DividerView()
 
   // Full-bleed translucent backdrop so the desktop blurs through the editor.
-  // NSVisualEffectView already defaults to behindWindow blending and
-  // followsWindowActiveState, so only the material needs to be set.
-  let backdropView: MaterialView = {
-    let view = MaterialView()
-    view.material = .underWindowBackground
-    view.translatesAutoresizingMaskIntoConstraints = false
-    return view
-  }()
+  // Configured in `setUp()`, see EditorViewController+UI.swift.
+  let backdropView = MaterialView()
 
   // Height constraint of the effect view, depending on the panel state
-  private(set) lazy var modernEffectHeight: NSLayoutConstraint = {
-    let anchor = modernEffectView.heightAnchor
-    return anchor.constraint(equalToConstant: 0)
-  }()
+  private(set) lazy var modernEffectHeight = modernEffectView.heightAnchor.constraint(equalToConstant: 0)
 
   private(set) lazy var findPanel = {
     let panel = EditorFindPanel()
@@ -118,9 +105,7 @@ final class EditorViewController: NSViewController {
     return panel
   }()
 
-  private(set) lazy var panelDivider = {
-    DividerView()
-  }()
+  private(set) lazy var panelDivider = DividerView()
 
   private(set) lazy var statusView = {
     let view = EditorStatusView { [weak self] in
@@ -131,9 +116,7 @@ final class EditorViewController: NSViewController {
     return view
   }()
 
-  private(set) lazy var focusTrackingView = {
-    FocusTrackingView()
-  }()
+  private(set) lazy var focusTrackingView = FocusTrackingView()
 
   private(set) lazy var webView: WKWebView = {
     let modules = NativeModules(modules: [
@@ -277,7 +260,11 @@ final class EditorViewController: NSViewController {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+}
 
+// MARK: - NSViewController Overrides
+
+extension EditorViewController {
   override func loadView() {
     setUp()
   }

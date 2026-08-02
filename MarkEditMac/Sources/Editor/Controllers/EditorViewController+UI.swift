@@ -26,6 +26,10 @@ extension EditorViewController {
       wrapper.addSubview(modernBackgroundView)
     }
 
+    // NSVisualEffectView already defaults to behindWindow blending and
+    // followsWindowActiveState, so only the material needs to be set.
+    backdropView.material = .underWindowBackground
+    backdropView.translatesAutoresizingMaskIntoConstraints = false
     backdropView.isHidden = AppDesign.reduceTransparency
     wrapper.addSubview(backdropView, positioned: .below, relativeTo: nil)
 
