@@ -15,9 +15,11 @@ final class EditorWindow: NSWindow {
   private var savedFrame: NSRect?
   private var savedLevel: NSWindow.Level?
   private var savedCollectionBehavior: NSWindow.CollectionBehavior?
+  private var savedToolbarMode: ToolbarMode?
   private var isExitingOverlay = false
   private var overlayGeneration = 0
   private let overlayWidthFraction: CGFloat = 1.0 / 3.0
+  private let overlayCornerRadius: CGFloat = 12
 
   /// Forces `.preferred` tabbing for an on-demand window (e.g. "New Tab"),
   /// without mutating the persisted `AppPreferences.Window.tabbingMode`.
@@ -159,10 +161,13 @@ final class EditorWindow: NSWindow {
     savedFrame = frame
     savedLevel = level
     savedCollectionBehavior = collectionBehavior
+    savedToolbarMode = toolbarMode
 
     level = .floating
     collectionBehavior.insert(.canJoinAllSpaces)
     collectionBehavior.insert(.fullScreenAuxiliary)
+    toolbarMode = .hidden
+    applyOverlayChrome()
 
     let target = EditorOverlayGeometry.frame(in: visible, widthFraction: overlayWidthFraction)
     if animated && !AppDesign.reduceMotion {
@@ -210,6 +215,11 @@ final class EditorWindow: NSWindow {
         self.setFrame(savedFrame, display: true)
       }
 
+      if let savedToolbarMode = self.savedToolbarMode {
+        self.toolbarMode = savedToolbarMode
+      }
+
+      self.resetOverlayChrome()
       self.orderOut(nil)
       self.isExitingOverlay = false
       completion?()
@@ -238,6 +248,11 @@ final class EditorWindow: NSWindow {
       setFrame(savedFrame, display: false)
     }
 
+    if let savedToolbarMode {
+      toolbarMode = savedToolbarMode
+    }
+
+    resetOverlayChrome()
     isExitingOverlay = false
     overlayGeneration += 1
   }
@@ -262,9 +277,44 @@ final class EditorWindow: NSWindow {
       setFrame(savedFrame, display: false)
     }
 
+    if let savedToolbarMode {
+      toolbarMode = savedToolbarMode
+    }
+
+    resetOverlayChrome()
     overlayMode = false
     isExitingOverlay = false
     overlayGeneration += 1
+  }
+
+  /// Gives the overlay a floating-panel look: rounded corners + a hairline border.
+  /// Paired with `resetOverlayChrome()`, called from every exit path.
+  private func applyOverlayChrome() {
+    guard let view = contentView else {
+      return
+    }
+
+    view.wantsLayer = true
+
+    guard let layer = view.layer else {
+      return
+    }
+
+    layer.cornerRadius = overlayCornerRadius
+    layer.masksToBounds = true
+    layer.borderWidth = 1
+    layer.borderColor = NSColor.separatorColor.cgColor
+  }
+
+  private func resetOverlayChrome() {
+    guard let layer = contentView?.layer else {
+      return
+    }
+
+    layer.cornerRadius = 0
+    layer.masksToBounds = false
+    layer.borderWidth = 0
+    layer.borderColor = nil
   }
 
   override func close() {

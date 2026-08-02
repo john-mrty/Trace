@@ -32,6 +32,7 @@ export const classHighlighters = [
     { tag: tags.quote, class: 'cm-md-quote' },
     { tag: tags.quoteMark, class: 'cm-md-quoteMark' },
     { tag: tags.contentSeparator, class: 'cm-md-horizontalRule' },
+    { tag: tags.headerMark, class: 'cm-md-headerMark' },
   ])),
 ];
 
@@ -49,6 +50,7 @@ export const markdownExtensions: MarkdownConfig[] = [
         LinkDefinition: tags.linkDefinition,
         LinkDefinitionID: tags.link,
         LinkDefinitionMark: tags.linkMark,
+        HeaderMark: tags.headerMark,
         'SetextHeading1/...': tags.setextHeading1,
         'SetextHeading2/...': tags.setextHeading2,
       }),

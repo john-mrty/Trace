@@ -329,10 +329,13 @@ function observeContentHeightChanges(scrollDOM: HTMLElement) {
 
 function observeBackgroundColorChanges(element: HTMLElement) {
   const observer = new MutationObserver(() => {
+    // Used only to detect that *something* changed (e.g. a theme swap); the computed
+    // style can be translucent (see `translucentBackground`), so the actual opaque
+    // color reported to native is resolved inside `notifyBackgroundColor` itself.
     const currentColor = getComputedStyle(element).backgroundColor;
     if (currentColor !== storage.backgroundColor) {
       storage.backgroundColor = currentColor;
-      notifyBackgroundColor(currentColor);
+      notifyBackgroundColor();
     }
   });
 

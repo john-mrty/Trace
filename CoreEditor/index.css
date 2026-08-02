@@ -59,10 +59,16 @@ html, body {
 /* Reading rhythm */
 .cm-content {
   line-height: 1.65;
-  padding-block: 12px;
+  padding-block: 28px 12px;
   max-width: 78ch;
   margin-inline: auto;
   padding-inline: 24px;
+}
+
+/* Dim structural marks (not content) so the markup recedes behind the text */
+.cm-md-linkMark, .cm-md-listMark, .cm-md-quoteMark,
+.cm-md-codeMark, .cm-md-codeInfo, .cm-md-headerMark {
+  opacity: 0.45;
 }
 
 /* Heading scale + vertical rhythm */

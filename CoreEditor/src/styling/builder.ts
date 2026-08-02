@@ -3,7 +3,7 @@ import { HighlightStyle, TagStyle, syntaxHighlighting } from '@codemirror/langua
 import { Tag, tags as defaultTags } from '@lezer/highlight';
 import { StyleSpec } from 'style-mod';
 import { ColorScheme, EditorColors } from './types';
-import { shadowableTextColor } from './helper';
+import { shadowableTextColor, translucentBackground } from './helper';
 import { isChrome } from '../common/utils';
 
 // Extend tags by adding Markdown-specific ones
@@ -16,6 +16,7 @@ const tags = {
   quoteMark: Tag.define(),
   linkMark: Tag.define(),
   linkDefinition: Tag.define(),
+  headerMark: Tag.define(),
   setextHeading1: Tag.define(),
   setextHeading2: Tag.define(),
 };
@@ -133,7 +134,7 @@ function buildTheme(colors: EditorColors, scheme?: ColorScheme) {
     // Root
     '&': {
       color: colors.text,
-      backgroundColor: colors.background,
+      backgroundColor: translucentBackground(colors.background, 0.88),
     },
     '.cm-cursor, .cm-dropCursor': {
       borderLeftColor: colors.caret,
@@ -150,7 +151,7 @@ function buildTheme(colors: EditorColors, scheme?: ColorScheme) {
     // Gutters
     '.cm-gutters': {
       color: colors.lineNumber,
-      backgroundColor: colors.background,
+      backgroundColor: translucentBackground(colors.background, 0.94),
     },
     '.cm-lineNumbers > .cm-activeLineGutter': {
       color: colors.text,

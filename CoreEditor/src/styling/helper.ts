@@ -1,5 +1,6 @@
 import { BlockWrapper, Decoration, DOMEventHandlers, EditorView, ViewPlugin } from '@codemirror/view';
 import { Range, RangeSet } from '@codemirror/state';
+import { globalState } from '../common/store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createBlockPlugin(builder: () => RangeSet<BlockWrapper>, eventHandlers?: DOMEventHandlers<any>) {
@@ -83,8 +84,34 @@ export function shadowableTextColor(input: string) {
   }, style);
 }
 
+/**
+ * Blend a hex color with a translucent alpha so the native backdrop shows through.
+ *
+ * WebKit supports color-mix(); percentage is the opacity of the original color.
+ */
+export function translucentBackground(hexColor: string, opacity: number) {
+  return `color-mix(in srgb, ${hexColor} ${Math.round(opacity * 100)}%, transparent)`;
+}
+
+/**
+ * Notify native of the current theme background color.
+ *
+ * The web side may paint a translucent version of this color (see `translucentBackground`)
+ * so the native backdrop blur shows through, but native must keep receiving the opaque
+ * theme color, since it uses this to draw the real window/backdrop base. So we prefer
+ * the source-of-truth `globalState.colors.background` over reading the (possibly
+ * translucent) computed style off the DOM.
+ */
 export function notifyBackgroundColor(inputColor?: string) {
-  const color = inputColor ?? getComputedStyle(window.editor.dom).backgroundColor;
+  const color = inputColor ?? globalState.colors?.background ?? getComputedStyle(window.editor.dom).backgroundColor;
+  const hexMatch = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
+
+  if (hexMatch !== null) {
+    const code = parseInt(`${hexMatch[1]}${hexMatch[2]}${hexMatch[3]}`, 16) as CodeGen_Int;
+    window.nativeModules.core.notifyBackgroundColorDidChange({ color: code, alpha: 1.0 });
+    return;
+  }
+
   const match = color.match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d*\.?\d+))?\s*\)/);
   if (match === null) {
     return console.error(`Invalid background color: ${color}`);
