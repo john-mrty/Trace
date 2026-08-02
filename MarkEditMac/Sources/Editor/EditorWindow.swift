@@ -16,6 +16,7 @@ final class EditorWindow: NSWindow {
   private var savedLevel: NSWindow.Level?
   private var savedCollectionBehavior: NSWindow.CollectionBehavior?
   private var isExitingOverlay = false
+  private var overlayGeneration = 0
   private let overlayWidthFraction: CGFloat = 1.0 / 3.0
 
   /// Forces `.preferred` tabbing for an on-demand window (e.g. "New Tab"),
@@ -145,6 +146,11 @@ final class EditorWindow: NSWindow {
       return
     }
 
+    // A fast re-summon can land mid slide-out; finalize that exit synchronously
+    // first so `frame` below reflects the real pre-overlay geometry, not a
+    // mid-animation one, and so the stale animation completion is neutralized.
+    finalizeExitingOverlayIfNeeded()
+
     overlayMode = true
     isExitingOverlay = false
     savedFrame = frame
@@ -180,6 +186,8 @@ final class EditorWindow: NSWindow {
 
     isExitingOverlay = true
     overlayMode = false
+    overlayGeneration += 1
+    let generation = overlayGeneration
 
     if let savedLevel {
       level = savedLevel
@@ -190,7 +198,8 @@ final class EditorWindow: NSWindow {
     }
 
     let restore = { [weak self] in
-      guard let self else {
+      guard let self, self.overlayGeneration == generation else {
+        // A newer enter/exit cycle already finalized or superseded this one.
         return
       }
 
@@ -214,6 +223,52 @@ final class EditorWindow: NSWindow {
     }
   }
 
+  /// Synchronously finishes an in-flight `exitOverlayMode` animation, restoring the
+  /// pre-overlay frame without animating and without ordering the window out.
+  /// Bumps `overlayGeneration` so the original animation's completion becomes a no-op.
+  private func finalizeExitingOverlayIfNeeded() {
+    guard isExitingOverlay else {
+      return
+    }
+
+    if let savedFrame {
+      setFrame(savedFrame, display: false)
+    }
+
+    isExitingOverlay = false
+    overlayGeneration += 1
+  }
+
+  /// Restores overlay-related window state (level, collection behavior, frame) without
+  /// animation and clears overlay flags. Used when the window is about to close, so
+  /// none of the floating-overlay state persists into a restored window next launch.
+  private func resetOverlayStateBeforeClosing() {
+    guard overlayMode || isExitingOverlay else {
+      return
+    }
+
+    if let savedLevel {
+      level = savedLevel
+    }
+
+    if let savedCollectionBehavior {
+      collectionBehavior = savedCollectionBehavior
+    }
+
+    if let savedFrame {
+      setFrame(savedFrame, display: false)
+    }
+
+    overlayMode = false
+    isExitingOverlay = false
+    overlayGeneration += 1
+  }
+
+  override func close() {
+    resetOverlayStateBeforeClosing()
+    super.close()
+  }
+
   override func resignKey() {
     super.resignKey()
 
@@ -222,11 +277,21 @@ final class EditorWindow: NSWindow {
     }
   }
 
-  override func cancelOperation(_ sender: Any?) {
+  /// Exits overlay mode if currently active; no-op otherwise. Shared entry point for
+  /// both this window's own `cancelOperation` and `EditorViewController`'s Esc handling,
+  /// since the view controller is earlier in the responder chain and doesn't forward.
+  func dismissOverlayIfNeeded() {
     if overlayMode {
       exitOverlayMode(animated: true)
-    } else {
-      super.cancelOperation(sender)
     }
+  }
+
+  override func cancelOperation(_ sender: Any?) {
+    guard overlayMode else {
+      super.cancelOperation(sender)
+      return
+    }
+
+    dismissOverlayIfNeeded()
   }
 }

@@ -312,15 +312,26 @@ final class EditorViewController: NSViewController {
   }
 
   override func cancelOperation(_ sender: Any?) {
+    var handled = false
+
     if isFindPanelFirstResponder {
       updateTextFinderMode(.hidden)
+      handled = true
     }
 
     if webView.isFirstResponder {
       removeFloatingUIElements()
     }
 
-    removePresentedPopovers(contentClass: StatisticsController.self)
+    if removePresentedPopovers(contentClass: StatisticsController.self) {
+      handled = true
+    }
+
+    // Esc reaches here before it reaches EditorWindow in the responder chain,
+    // so hand off explicitly rather than relying on forwarding to super.
+    if !handled {
+      (view.window as? EditorWindow)?.dismissOverlayIfNeeded()
+    }
   }
 
   override var representedObject: Any? {
