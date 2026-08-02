@@ -76,6 +76,8 @@
 		8790ABD42A98F5F40083825C /* EditorViewController+Statistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790ABD32A98F5F40083825C /* EditorViewController+Statistics.swift */; };
 		8790ABDB2A98FF610083825C /* Statistics in Frameworks */ = {isa = PBXBuildFile; productRef = 8790ABDA2A98FF610083825C /* Statistics */; };
 		8790B6EC297036B2000DFC1A /* EditorWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790B6EB297036B2000DFC1A /* EditorWindow.swift */; };
+		AA10000000000000000000B2 /* EditorWindow+Overlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10000000000000000000A2 /* EditorWindow+Overlay.swift */; };
+		AA10000000000000000000B1 /* EditorOverlayToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA10000000000000000000A1 /* EditorOverlayToolbar.swift */; };
 		8794A0632FC52551005CCC73 /* QuickLookWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8794A0612FC5254E005CCC73 /* QuickLookWebView.swift */; };
 		8794A06C2FC525E2005CCC73 /* QuickLookConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8794A06A2FC525DF005CCC73 /* QuickLookConfig.swift */; };
 		8794A0832FC53BCC005CCC73 /* QuickLookViewController+UI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8794A0822FC53BCB005CCC73 /* QuickLookViewController+UI.swift */; };
@@ -217,6 +219,8 @@
 		878B7B992CE0DA7D00220F39 /* EditorViewController+FileVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+FileVersion.swift"; sourceTree = "<group>"; };
 		8790ABD32A98F5F40083825C /* EditorViewController+Statistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Statistics.swift"; sourceTree = "<group>"; };
 		8790B6EB297036B2000DFC1A /* EditorWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorWindow.swift; sourceTree = "<group>"; };
+		AA10000000000000000000A2 /* EditorWindow+Overlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorWindow+Overlay.swift"; sourceTree = "<group>"; };
+		AA10000000000000000000A1 /* EditorOverlayToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorOverlayToolbar.swift"; sourceTree = "<group>"; };
 		8794A0612FC5254E005CCC73 /* QuickLookWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookWebView.swift; sourceTree = "<group>"; };
 		8794A06A2FC525DF005CCC73 /* QuickLookConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLookConfig.swift; sourceTree = "<group>"; };
 		8794A0822FC53BCB005CCC73 /* QuickLookViewController+UI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QuickLookViewController+UI.swift"; sourceTree = "<group>"; };
@@ -360,6 +364,8 @@
 				87A73AB1294C4B0A006A710E /* Views */,
 				8767BBAC295A893200BFACAE /* Controllers */,
 				8790B6EB297036B2000DFC1A /* EditorWindow.swift */,
+				AA10000000000000000000A2 /* EditorWindow+Overlay.swift */,
+				AA10000000000000000000A1 /* EditorOverlayToolbar.swift */,
 				870A51B5294702AF0095C7EB /* EditorWindowController.swift */,
 				8763C31E2F92574900A3841D /* EditorHistoryStorage.swift */,
 				CC000006300000000000001B /* EditorClosedTabHistory.swift */,
@@ -825,6 +831,8 @@
 				8769BABE2C65F9D400EDA0A6 /* AppRuntimeConfig.swift in Sources */,
 				870F17662984D2C000003DA7 /* EditorViewController+LineEndings.swift in Sources */,
 				8790B6EC297036B2000DFC1A /* EditorWindow.swift in Sources */,
+				AA10000000000000000000B2 /* EditorWindow+Overlay.swift in Sources */,
+				AA10000000000000000000B1 /* EditorOverlayToolbar.swift in Sources */,
 				8765FD252AF28F1000C645A8 /* AppUpdater.swift in Sources */,
 				EE100014EEEE000000000014 /* ExtensionsOverlays.swift in Sources */,
 				87DCB6202B284AAD00A3056F /* AppHacks.swift in Sources */,
