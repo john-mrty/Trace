@@ -212,7 +212,7 @@ extension EditorWindow {
 
     NSLayoutConstraint.activate([
       fab.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      fab.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Constants.fabTopOffset),
+      fab.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: Constants.fabTopOffset),
     ])
 
     overlayFab = fab
