@@ -212,7 +212,7 @@ extension EditorWindow {
 
     NSLayoutConstraint.activate([
       fab.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-      fab.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: Constants.fabTopOffset),
+      fab.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.fabEdgeOffset),
     ])
 
     overlayFab = fab
@@ -228,7 +228,7 @@ extension EditorWindow {
 
 private extension EditorWindow {
   enum Constants {
-    static let fabTopOffset: CGFloat = 12
+    static let fabEdgeOffset: CGFloat = 16
   }
 
   /// The 5 most useful writing actions, matching `NSToolbarItem.Identifier.defaultItems`'s
