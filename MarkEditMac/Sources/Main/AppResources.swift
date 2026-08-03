@@ -191,10 +191,6 @@ enum Localized {
 
     // Window
     static let window = String(localized: "Window", comment: "Window title for window settings")
-    static let toolbarMode = String(localized: "Toolbar Mode:", comment: "Label for window toolbar mode")
-    static let normalMode = String(localized: "Normal", comment: "Normal mode for window toolbar")
-    static let compactMode = String(localized: "Compact", comment: "Compact mode for window toolbar")
-    static let hiddenMode = String(localized: "Hidden", comment: "Hidden mode for window toolbar")
     static let tabbingMode = String(localized: "Tabbing Mode:", comment: "Label for window tabbing mode settings")
     static let automatic = String(localized: "Automatic", comment: "Automatic window tabbing mode")
     static let preferred = String(localized: "Preferred", comment: "Preferred window tabbing mode")
