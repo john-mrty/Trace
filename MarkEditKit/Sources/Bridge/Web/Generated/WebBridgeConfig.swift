@@ -82,6 +82,14 @@ public final class WebBridgeConfig {
     webView?.invoke(path: "webModules.config.setTypewriterMode", message: message, completion: completion)
   }
 
+  public func setHideSyntaxMarks(enabled: Bool, completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    let message = BridgeMessage(
+      ("enabled", enabled)
+    )
+
+    webView?.invoke(path: "webModules.config.setHideSyntaxMarks", message: message, completion: completion)
+  }
+
   public func setFocusMode(enabled: Bool, completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     let message = BridgeMessage(
       ("enabled", enabled)

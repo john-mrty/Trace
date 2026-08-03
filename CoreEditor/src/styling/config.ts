@@ -6,6 +6,7 @@ import { observeGuttersWidth, adjustGutterPositions } from '../modules/lines';
 import { refreshEditFocus } from '../modules/selection';
 import { gutterExtensions } from './nodes/gutter';
 import { invisiblesExtension } from './nodes/invisible';
+import { concealExtension } from './nodes/conceal';
 import { lineIndicatorLayer } from './nodes/line';
 import { selectedLinesDecoration } from './nodes/selection';
 import { calculateFontSize } from './nodes/heading';
@@ -143,6 +144,12 @@ export function setTypewriterMode(enabled: boolean) {
   }
 
   styleSheets.typewriterMode.disabled = !enabled;
+}
+
+export function setHideSyntaxMarks(enabled: boolean) {
+  window.editor.dispatch({
+    effects: window.dynamics.conceal?.reconfigure(enabled ? concealExtension : []),
+  });
 }
 
 export function setFocusMode(enabled: boolean) {

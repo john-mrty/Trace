@@ -87,6 +87,11 @@ export function setTypewriterMode(enabled: boolean) {
   scrollToSelection(enabled ? 'center' : 'nearest');
 }
 
+export function setHideSyntaxMarks(enabled: boolean) {
+  window.config.hideSyntaxMarks = enabled;
+  styling.setHideSyntaxMarks(enabled);
+}
+
 export function setFocusMode(enabled: boolean) {
   window.config.focusMode = enabled;
   styling.setFocusMode(enabled);

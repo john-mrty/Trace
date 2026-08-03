@@ -25,6 +25,7 @@ import { lineIndicatorLayer } from './styling/nodes/line';
 import { linkStyles } from './styling/nodes/link';
 import { selectedLinesDecoration } from './styling/nodes/selection';
 import { invisiblesExtension } from './styling/nodes/invisible';
+import { concealExtension } from './styling/nodes/conceal';
 import { paragraphIndentStyle, lineIndentStyle } from './styling/nodes/indent';
 import { gutterExtensions } from './styling/nodes/gutter';
 import { IndentBehavior } from './config';
@@ -52,6 +53,7 @@ const indentUnit = new Compartment;
 const selectionHighlight = new Compartment;
 const extensionConfigurator = new Compartment;
 const markdownConfigurator = new Compartment;
+const conceal = new Compartment;
 
 window.dynamics = {
   theme,
@@ -66,6 +68,7 @@ window.dynamics = {
   selectionHighlight,
   extensionConfigurator,
   markdownConfigurator,
+  conceal,
 };
 
 export function extensions(options: { lineBreak?: string }) {
@@ -159,6 +162,7 @@ export function extensions(options: { lineBreak?: string }) {
     invisibles.of(invisiblesExtension(window.config.invisiblesBehavior, editingState.hasSelection)), // Must after actionExtensions to have line breaks at the end
     linkStyles, // Must after invisibles because whitespaces can break this
     selectedLines.of(window.config.focusMode ? selectedLinesDecoration : []),
+    conceal.of(window.config.hideSyntaxMarks ? concealExtension : []),
 
     // Input handling
     wordTokenizer(),

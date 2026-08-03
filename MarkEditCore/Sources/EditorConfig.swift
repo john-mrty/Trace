@@ -20,6 +20,7 @@ public struct EditorConfig: Encodable {
   let invisiblesBehavior: EditorInvisiblesBehavior
   let readOnlyMode: Bool
   let typewriterMode: Bool
+  let hideSyntaxMarks: Bool
   let focusMode: Bool
   let lineWrapping: Bool
   let lineHeight: Double
@@ -49,6 +50,7 @@ public struct EditorConfig: Encodable {
     invisiblesBehavior: EditorInvisiblesBehavior,
     readOnlyMode: Bool,
     typewriterMode: Bool,
+    hideSyntaxMarks: Bool,
     focusMode: Bool,
     lineWrapping: Bool,
     lineHeight: Double,
@@ -77,6 +79,7 @@ public struct EditorConfig: Encodable {
     self.invisiblesBehavior = invisiblesBehavior
     self.readOnlyMode = readOnlyMode
     self.typewriterMode = typewriterMode
+    self.hideSyntaxMarks = hideSyntaxMarks
     self.focusMode = focusMode
     self.lineWrapping = lineWrapping
     self.lineHeight = lineHeight
@@ -108,6 +111,7 @@ public struct EditorConfig: Encodable {
     try container.encode(invisiblesBehavior, forKey: "invisiblesBehavior")
     try container.encode(readOnlyMode, forKey: "readOnlyMode")
     try container.encode(typewriterMode, forKey: "typewriterMode")
+    try container.encode(hideSyntaxMarks, forKey: "hideSyntaxMarks")
     try container.encode(focusMode, forKey: "focusMode")
     try container.encode(lineWrapping, forKey: "lineWrapping")
     try container.encode(lineHeight, forKey: "lineHeight")

@@ -11,6 +11,7 @@ import {
   setInvisiblesBehavior,
   setReadOnlyMode,
   setTypewriterMode,
+  setHideSyntaxMarks,
   setFocusMode,
   setLineWrapping,
   setLineHeight,
@@ -34,6 +35,7 @@ export interface WebModuleConfig extends WebModule {
   setInvisiblesBehavior({ behavior }: { behavior: InvisiblesBehavior }): void;
   setReadOnlyMode({ enabled }: { enabled: boolean }): void;
   setTypewriterMode({ enabled }: { enabled: boolean }): void;
+  setHideSyntaxMarks({ enabled }: { enabled: boolean }): void;
   setFocusMode({ enabled }: { enabled: boolean }): void;
   setLineWrapping({ enabled }: { enabled: boolean }): void;
   setLineHeight({ lineHeight }: { lineHeight: number }): void;
@@ -74,6 +76,10 @@ export class WebModuleConfigImpl implements WebModuleConfig {
 
   setTypewriterMode({ enabled }: { enabled: boolean }): void {
     setTypewriterMode(enabled);
+  }
+
+  setHideSyntaxMarks({ enabled }: { enabled: boolean }): void {
+    setHideSyntaxMarks(enabled);
   }
 
   setFocusMode({ enabled }: { enabled: boolean }): void {

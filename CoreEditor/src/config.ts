@@ -66,6 +66,7 @@ export interface Config {
   invisiblesBehavior: InvisiblesBehavior;
   readOnlyMode: boolean;
   typewriterMode: boolean;
+  hideSyntaxMarks: boolean;
   focusMode: boolean;
   lineWrapping: boolean;
   lineHeight: number;
@@ -102,6 +103,7 @@ export interface Dynamics {
   selectionHighlight?: Compartment;
   extensionConfigurator?: Compartment;
   markdownConfigurator?: Compartment;
+  conceal?: Compartment;
 }
 
 export type { WebFontFace };
