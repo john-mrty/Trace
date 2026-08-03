@@ -154,18 +154,17 @@ extension EditorViewController {
       let baseColor = backgroundColor.withAlphaComponent(reduceTransparency ? 1.0 : 0.01)
 
       view.window?.backgroundColor = baseColor
-      titlebarView?.layerBackgroundColor = baseColor
+
+      // Fork behavior: no separate titlebar chrome (iA Writer style). Paint the
+      // titlebar exactly like the document — backdrop blur + 0.95 tint, matching
+      // the CSS translucentBackground alpha in CoreEditor builder.ts.
+      titlebarView?.layerBackgroundColor = reduceTransparency
+        ? backgroundColor
+        : backgroundColor.withAlphaComponent(0.95)
 
       // Clear when translucent, or it fully masks backdropView's behind-window blur
       modernBackgroundView.layerBackgroundColor = reduceTransparency ? backgroundColor : .clear
-      modernEffectView.isHidden = reduceTransparency
-
-      // The effect view is hidden when transparency is reduced, so the material only matters otherwise
-      let material = AppRuntimeConfig.toolbarTranslucency.material
-      modernEffectView.backdropBlur = material.backdropBlur
-
-      let alphaValue = prefersTintedToolbar ? material.tintedOpacity : material.plainOpacity
-      modernEffectView.tintColor = backgroundColor.withAlphaComponent(alphaValue).resolvedColor()
+      modernEffectView.isHidden = true
     }
 
     statusView.setBackgroundColor(backgroundColor)
