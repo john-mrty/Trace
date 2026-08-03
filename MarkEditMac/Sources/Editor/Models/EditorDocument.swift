@@ -428,64 +428,6 @@ extension EditorDocument {
   }
 }
 
-// MARK: - Scripting
-
-extension EditorDocument {
-  /// Handle save operations from AppleScript.
-  ///
-  /// Override to catch invalid output paths early so we can present more informative errors.
-  override func handleSave(_ command: NSScriptCommand) -> Any? {
-    guard let fileURL = command.evaluatedArguments?["File"] as? URL else {
-      // Save without predefined destination (will open save panel if needed)
-      return super.handleSave(command)
-    }
-
-    let inputExtension = fileURL.pathExtension.lowercased()
-
-    // Support extension-less paths by bypassing file type validation
-    if inputExtension.isEmpty {
-      Task { @MainActor in
-        do {
-          try await save(to: fileURL.deletingPathExtension(), ofType: "", for: .saveOperation)
-        } catch {
-          Logger.log(.error, "Failed to handle save: \(error)")
-        }
-      }
-
-      return nil
-    }
-
-    // Provided limited support for the 'as' parameter
-    if let desiredType = command.evaluatedArguments?["FileType"] as? String {
-      let desiredExtension = NewFilenameExtension.preferredExtension(for: desiredType).rawValue
-      if inputExtension == desiredExtension {
-        return super.handleSave(command)
-      }
-
-      // Raise error because we cannot adjust the extension due to sandbox restrictions
-      let scriptError = ScriptingError.extensionMismatch(
-        expectedExtension: desiredExtension,
-        outputType: desiredType
-      )
-
-      scriptError.applyToCommand(command)
-      return nil
-    }
-
-    let isValidExtension = NewFilenameExtension.allCases.contains {
-      $0.rawValue == inputExtension
-    } || (textBundle != nil && inputExtension == "textbundle")
-
-    guard isValidExtension else {
-      let scriptError = ScriptingError.invalidDestination(fileURL, document: self)
-      scriptError.applyToCommand(command)
-      return nil
-    }
-
-    return super.handleSave(command)
-  }
-}
-
 // MARK: - Version Browsing
 
 extension EditorDocument: FileVersionPickerDelegate {
