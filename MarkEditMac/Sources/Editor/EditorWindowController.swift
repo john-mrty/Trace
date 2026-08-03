@@ -67,6 +67,10 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
   }
 
   func windowDidBecomeKey(_ notification: Notification) {
+    // The preloaded content view controller attaches after windowDidLoad,
+    // so ensure the always-on FAB here; no-op once it exists.
+    (window as? EditorWindow)?.showOverlayFab()
+
     if needsUpdateFocus {
       editorViewController?.refreshEditFocus()
       needsUpdateFocus = false
