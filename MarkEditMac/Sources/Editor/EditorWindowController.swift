@@ -150,19 +150,23 @@ private extension EditorWindowController {
   }
 
   func showWindowImmediately(_ sender: Any?) {
-    let isFirstShow = window?.isVisible == false
+    // Gentle scale + fade on first show; the overlay has its own slide-in
+    let animatable = window?.isVisible == false
+      && !AppDesign.reduceMotion
+      && (window as? EditorWindow)?.overlayMode == false
+
+    if animatable {
+      window?.alphaValue = 0
+    }
+
     super.showWindow(sender)
 
-    // Gentle scale + fade on first show; the overlay has its own slide-in
-    guard isFirstShow,
-          !AppDesign.reduceMotion,
-          let window = window as? EditorWindow,
-          !window.overlayMode else {
+    guard animatable, let window else {
+      window?.alphaValue = 1
       return
     }
 
     let target = window.frame
-    window.alphaValue = 0
     window.setFrame(target.insetBy(dx: target.width * 0.01, dy: target.height * 0.01), display: false)
 
     NSAnimationContext.runAnimationGroup { context in

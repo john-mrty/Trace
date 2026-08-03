@@ -1,25 +1,19 @@
-import { Decoration } from '@codemirror/view';
-import { Range } from '@codemirror/state';
+import { Decoration, EditorView } from '@codemirror/view';
+import { Range, RangeSet } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import { createDecoPlugin } from '../helper';
 
 const hiddenDeco = Decoration.replace({});
 
-/**
- * Live-preview concealment: replaces markdown syntax marks with nothing,
- * everywhere — including the cursor line. View-layer only — the
- * document, undo, search, and copy are untouched.
- */
-export const concealExtension = createDecoPlugin(() => {
-  const editor = window.editor;
-  const state = editor.state;
+function concealedRanges(view: EditorView) {
+  const state = view.state;
 
   const ranges: Range<Decoration>[] = [];
   const conceal = (from: number, to: number) => {
     ranges.push(hiddenDeco.range(from, to));
   };
 
-  for (const { from, to } of editor.visibleRanges) {
+  for (const { from, to } of view.visibleRanges) {
     syntaxTree(state).iterate({
       from, to,
       enter: node => {
@@ -56,4 +50,23 @@ export const concealExtension = createDecoPlugin(() => {
   }
 
   return Decoration.set(ranges, true);
-});
+}
+
+/**
+ * Live-preview concealment: replaces markdown syntax marks with nothing,
+ * everywhere — including the cursor line. View-layer only — the
+ * document, undo, search, and copy are untouched.
+ *
+ * atomicRanges makes the caret skip over concealed marks instead of
+ * landing invisibly inside them.
+ */
+export const concealExtension = [
+  createDecoPlugin(() => concealedRanges(window.editor)),
+  EditorView.atomicRanges.of(view => {
+    try {
+      return concealedRanges(view);
+    } catch {
+      return RangeSet.empty;
+    }
+  }),
+];

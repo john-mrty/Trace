@@ -144,6 +144,8 @@ final class EditorWindow: NSWindow {
   }
 
   override func close() {
+    // Unconditional: tears down the FAB's NSEvent monitor for non-overlay windows too
+    hideOverlayFab()
     resetOverlayStateBeforeClosing()
     super.close()
   }

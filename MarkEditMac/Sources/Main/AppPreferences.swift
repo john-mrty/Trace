@@ -220,12 +220,10 @@ enum AppPreferences {
   }
 
   enum Window {
+    // Fork behavior: the FAB replaces the toolbar everywhere, so this
+    // preference no longer pushes to open windows (Settings picker is inert).
     @Storage(key: "window.toolbar-mode", defaultValue: .normal)
-    static var toolbarMode: ToolbarMode {
-      didSet {
-        performUpdates { ($0.view.window as? EditorWindow)?.toolbarMode = toolbarMode }
-      }
-    }
+    static var toolbarMode: ToolbarMode
 
     @Storage(key: "window.tabbing-mode", defaultValue: .automatic)
     static var tabbingMode: NSWindow.TabbingMode {
