@@ -150,7 +150,27 @@ private extension EditorWindowController {
   }
 
   func showWindowImmediately(_ sender: Any?) {
+    let isFirstShow = window?.isVisible == false
     super.showWindow(sender)
+
+    // Gentle scale + fade on first show; the overlay has its own slide-in
+    guard isFirstShow,
+          !AppDesign.reduceMotion,
+          let window = window as? EditorWindow,
+          !window.overlayMode else {
+      return
+    }
+
+    let target = window.frame
+    window.alphaValue = 0
+    window.setFrame(target.insetBy(dx: target.width * 0.01, dy: target.height * 0.01), display: false)
+
+    NSAnimationContext.runAnimationGroup { context in
+      context.duration = 0.15
+      context.timingFunction = CAMediaTimingFunction(name: .easeOut)
+      window.animator().alphaValue = 1
+      window.animator().setFrame(target, display: true)
+    }
   }
 
   func updateTitleBarAppearance() {

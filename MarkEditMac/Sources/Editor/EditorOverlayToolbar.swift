@@ -64,7 +64,9 @@ final class EditorOverlayToolbar: NSView {
 
       settleWorkItem?.cancel()
     } else if scrollMonitor == nil {
-      setUpScrollElevation()
+      // mouseMoved events need opting in; used to un-dim after typing
+      window?.acceptsMouseMovedEvents = true
+      setUpEventMonitor()
     }
   }
 
@@ -93,6 +95,13 @@ final class EditorOverlayToolbar: NSView {
     for (index, action) in actions.enumerated() {
       guard let provider = action.currentSymbolName, buttons.indices.contains(index) else {
         continue
+      }
+
+      if !AppDesign.reduceMotion {
+        let transition = CATransition()
+        transition.duration = 0.18
+        transition.type = .fade
+        buttons[index].layer?.add(transition, forKey: "imageFade")
       }
 
       buttons[index].image = .with(
@@ -141,17 +150,52 @@ private extension EditorOverlayToolbar {
     addSubview(bezel)
   }
 
-  func setUpScrollElevation() {
-    scrollMonitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+  func setUpEventMonitor() {
+    scrollMonitor = NSEvent.addLocalMonitorForEvents(matching: [.scrollWheel, .keyDown, .mouseMoved]) { [weak self] event in
       MainActor.assumeIsolated {
-        self?.scrollDidOccur(in: event.window)
+        self?.handleMonitoredEvent(event)
       }
       return event
     }
   }
 
-  func scrollDidOccur(in eventWindow: NSWindow?) {
-    guard eventWindow === window, !AppDesign.reduceMotion else {
+  func handleMonitoredEvent(_ event: NSEvent) {
+    guard event.window === window else {
+      return
+    }
+
+    switch event.type {
+    case .keyDown:
+      // Recede while writing; any pointer activity brings it back
+      setDimmed(true)
+    case .mouseMoved:
+      setDimmed(false)
+    case .scrollWheel:
+      setDimmed(false)
+      scrollDidOccur()
+    default:
+      break
+    }
+  }
+
+  func setDimmed(_ dimmed: Bool) {
+    let target: CGFloat = dimmed ? 0.4 : 1
+    guard alphaValue != target else {
+      return
+    }
+
+    if AppDesign.reduceMotion {
+      alphaValue = target
+    } else {
+      NSAnimationContext.runAnimationGroup { context in
+        context.duration = 0.15
+        animator().alphaValue = target
+      }
+    }
+  }
+
+  func scrollDidOccur() {
+    guard !AppDesign.reduceMotion else {
       return
     }
 
