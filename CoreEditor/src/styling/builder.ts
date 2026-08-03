@@ -26,8 +26,10 @@ const tags = {
 const sharedStyles: { [selector: string]: StyleSpec } = {
   // Default
   '.cm-content': {
-    paddingTop: '2px',
-    paddingRight: '12px',
+    // Theme rules out-rank index.css, so content gutters must live here
+    paddingTop: '28px',
+    paddingLeft: '24px',
+    paddingRight: '24px',
     paddingBottom: '50vh',
 
     // CodeMirror uses border-left-color of cm-cursor to draw the caret,

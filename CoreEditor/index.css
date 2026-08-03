@@ -59,10 +59,8 @@ html, body {
 /* Reading rhythm */
 .cm-content {
   line-height: 1.65;
-  padding-block: 28px 12px;
   max-width: 78ch;
   margin-inline: auto;
-  padding-inline: 24px;
 }
 
 /* Dim structural marks (not content) so the markup recedes behind the text */
