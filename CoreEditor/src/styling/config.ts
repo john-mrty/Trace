@@ -147,7 +147,7 @@ export function setTypewriterMode(enabled: boolean) {
 }
 
 export function setHideSyntaxMarks(enabled: boolean) {
-  window.editor.dispatch({
+  tryGetEditor()?.dispatch({
     effects: window.dynamics.conceal?.reconfigure(enabled ? concealExtension : []),
   });
 }
