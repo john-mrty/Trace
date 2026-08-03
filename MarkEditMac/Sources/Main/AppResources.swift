@@ -150,21 +150,6 @@ enum Localized {
     static let oneTab = String(localized: "1 tab", comment: "Use 1 tab as the indent unit")
     static let twoTabs = String(localized: "2 tabs", comment: "Use 2 tabs as the indent unit")
 
-    // Assistant
-    static let assistant = String(localized: "Assistant", comment: "Window title for assistant settings")
-    static let formatFiles = String(localized: "Format Files:", comment: "Label for file formatting options")
-    static let insertFinalNewline = String(localized: "Insert final newline", comment: "Option for inserting newline at end of file")
-    static let trimTrailingWhitespace = String(localized: "Trim trailing whitespace", comment: "Option for trimming trailing whitespaces")
-    static let fileFormattingHint = String(localized: "Format when saving files.", comment: "Hint for format files on save")
-    static let completion = String(localized: "Completion:", comment: "Label for word completion options")
-    static let wordsInDocument = String(localized: "Words in document", comment: "Option for words in documents suggestion")
-    static let standardWords = String(localized: "Standard words", comment: "Option for standard words suggestion")
-    static let guessedWords = String(localized: "Guessed words", comment: "Option for guessed words suggestion")
-    static let completionHint = String(localized: "Press ⌥ ⎋ to show the panel.", comment: "Hint for using word completion")
-    static let autocomplete = String(localized: "Autocomplete:", comment: "Label for autocomplete options")
-    static let inlinePredictions = String(localized: "Inline Predictions", comment: "Whether to allow inline predictions")
-    static let suggestWhileTyping = String(localized: "Suggest while typing", comment: "Whether to suggest while typing")
-
     // General
     static let general = String(localized: "General", comment: "Window title for general settings")
     static let appearance = String(localized: "Appearance:", comment: "Appearance for the app")
@@ -251,7 +236,6 @@ enum Icons {
   static let puzzlepieceExtension = "puzzlepiece.extension"
   static let shippingbox = "shippingbox"
   static let sparkles = "sparkles"
-  static let wandAndSparkles = "wand.and.sparkles"
 }
 
 extension EditorLocalizable {

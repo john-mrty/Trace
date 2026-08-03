@@ -191,7 +191,6 @@ private extension AppDelegate {
     if settingsWindowController == nil {
       settingsWindowController = SettingsRootViewController.withTabs([
         .editor,
-        .assistant,
         .general,
         .window,
       ])
