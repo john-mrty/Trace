@@ -111,7 +111,7 @@ html, body {
 
 /* Focus mode: dim everything except the active line range */
 .cm-editor:has(.cm-selectedLineRange) .cm-line:not(.cm-selectedLineRange) {
-  opacity: 0.55;
+  opacity: 0.35;
   transition: opacity 0.2s ease;
 }
 

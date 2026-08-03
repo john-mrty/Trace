@@ -87,6 +87,7 @@ extension EditorViewController {
 
   func setFocusMode(enabled: Bool) {
     bridge.config.setFocusMode(enabled: enabled)
+    (view.window as? EditorWindow)?.overlayFab?.refreshButtonImages()
   }
 
   func setLineWrapping(enabled: Bool) {

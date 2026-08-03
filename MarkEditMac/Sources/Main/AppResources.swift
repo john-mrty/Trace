@@ -61,6 +61,7 @@ enum Localized {
     static let insertTable = String(localized: "Table", comment: "Toolbar item to insert table")
     static let insertCode = String(localized: "Insert Code", comment: "Toolbar item to insert code")
     static let hideSyntaxMarks = String(localized: "Hide Markdown", comment: "Toolbar item to hide Markdown syntax marks")
+    static let dimInactiveLines = String(localized: "Dim Inactive Lines", comment: "Toolbar item to dim lines outside the current selection")
     static let textFormat = String(localized: "Text Format", comment: "Toolbar item to use text format menu")
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
     static let shareDocument = String(localized: "Share this document", comment: "Toolbar item to share the document")
@@ -260,6 +261,8 @@ enum Icons {
   static let eyeSlash = "eye.slash"
   static let gearshape = "gearshape"
   static let italic = "italic"
+  static let sunMax = "sun.max"
+  static let sunMin = "sun.min.fill"
 
   static let interfaceWindow = if #available(macOS 27.0, *) {
     "interface.window"

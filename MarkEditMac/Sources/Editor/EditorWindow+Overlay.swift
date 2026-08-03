@@ -288,6 +288,14 @@ private extension EditorWindow {
           viewController?.toggleHideSyntaxMarks(nil)
         }
       ),
+      EditorOverlayToolbar.Action(
+        symbolName: Icons.sunMax,
+        accessibilityLabel: Localized.Toolbar.dimInactiveLines,
+        currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.sunMin : Icons.sunMax },
+        handler: { _ in
+          AppPreferences.Editor.focusMode.toggle()
+        }
+      ),
     ]
   }
 }
