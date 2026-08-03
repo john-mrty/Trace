@@ -155,12 +155,9 @@ extension EditorViewController {
 
       view.window?.backgroundColor = baseColor
 
-      // Fork behavior: no separate titlebar chrome (iA Writer style). Paint the
-      // titlebar exactly like the document — backdrop blur + 0.95 tint, matching
-      // the CSS translucentBackground alpha in CoreEditor builder.ts.
-      titlebarView?.layerBackgroundColor = reduceTransparency
-        ? backgroundColor
-        : backgroundColor.withAlphaComponent(0.95)
+      // Fork behavior: no titlebar chrome at all (iA Writer style); the web view
+      // extends underneath (see layoutWebView), so the document is the header.
+      titlebarView?.layerBackgroundColor = baseColor
 
       // Clear when translucent, or it fully masks backdropView's behind-window blur
       modernBackgroundView.layerBackgroundColor = reduceTransparency ? backgroundColor : .clear
@@ -233,8 +230,10 @@ extension EditorViewController {
     // Move the view instead of changing its height,
     // because resizing would introduce unnecessary updates,
     // which results in sluggish animation.
-    let height = contentHeight
-    let offset = panelDividerRect.minY - height
+    // Fork behavior: bleed under the titlebar so the document backs the header;
+    // CSS top padding + scroll fade keep text clear of the traffic lights.
+    let height = contentHeight + view.safeAreaInsets.top
+    let offset = panelDividerRect.minY - contentHeight
 
     webView.update(animated).frame = CGRect(
       x: 0,

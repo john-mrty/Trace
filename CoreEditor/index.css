@@ -84,7 +84,7 @@ html, body {
 
 /* Content fades out under the top edge instead of clipping */
 .cm-scroller {
-  mask-image: linear-gradient(to bottom, transparent 0, black 28px);
+  mask-image: linear-gradient(to bottom, transparent 8px, black 56px);
 }
 
 /* Hide the native scrollbar; #scroll-progress is the position indicator */

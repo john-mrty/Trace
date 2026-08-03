@@ -26,8 +26,9 @@ const tags = {
 const sharedStyles: { [selector: string]: StyleSpec } = {
   // Default
   '.cm-content': {
-    // Theme rules out-rank index.css, so content gutters must live here
-    paddingTop: '28px',
+    // Theme rules out-rank index.css, so content gutters must live here.
+    // Top padding clears the titlebar; the web view bleeds underneath it.
+    paddingTop: '56px',
     paddingLeft: '24px',
     paddingRight: '24px',
     paddingBottom: '50vh',
