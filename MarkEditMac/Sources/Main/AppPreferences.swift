@@ -125,6 +125,13 @@ enum AppPreferences {
       }
     }
 
+    @Storage(key: "editor.hide-syntax-marks", defaultValue: false)
+    static var hideSyntaxMarks: Bool {
+      didSet {
+        performUpdates { $0.setHideSyntaxMarks(enabled: hideSyntaxMarks) }
+      }
+    }
+
     @Storage(key: "editor.focus-mode", defaultValue: false)
     static var focusMode: Bool {
       didSet {
@@ -284,6 +291,7 @@ extension AppPreferences {
       }(),
       readOnlyMode: false,
       typewriterMode: Editor.typewriterMode,
+      hideSyntaxMarks: Editor.hideSyntaxMarks,
       focusMode: Editor.focusMode,
       lineWrapping: Editor.lineWrapping,
       lineHeight: Editor.lineHeight.multiplier,

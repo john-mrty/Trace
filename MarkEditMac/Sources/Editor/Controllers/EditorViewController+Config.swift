@@ -79,6 +79,12 @@ extension EditorViewController {
     bridge.config.setTypewriterMode(enabled: enabled)
   }
 
+  func setHideSyntaxMarks(enabled: Bool) {
+    bridge.config.setHideSyntaxMarks(enabled: enabled)
+    updateHideSyntaxMarksToolbarIcon()
+    (view.window as? EditorWindow)?.overlayFab?.refreshButtonImages()
+  }
+
   func setFocusMode(enabled: Bool) {
     bridge.config.setFocusMode(enabled: enabled)
   }
