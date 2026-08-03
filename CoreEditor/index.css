@@ -79,3 +79,51 @@ html, body {
 .cm-line:has(.cm-md-heading1) { padding-top: 1.6em; padding-bottom: 0.4em; }
 .cm-line:has(.cm-md-heading2) { padding-top: 1.4em; padding-bottom: 0.35em; }
 .cm-line:has(.cm-md-heading3) { padding-top: 1.2em; padding-bottom: 0.3em; }
+
+/* Fork polish */
+
+/* Content fades out under the top edge instead of clipping */
+.cm-scroller {
+  mask-image: linear-gradient(to bottom, transparent 0, black 28px);
+}
+
+/* Hide the native scrollbar; #scroll-progress is the position indicator */
+.cm-scroller::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+#scroll-progress {
+  position: fixed;
+  right: 3px;
+  width: 2px;
+  border-radius: 1px;
+  background: rgba(128, 128, 128, 0.55);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+}
+
+#scroll-progress.visible {
+  opacity: 1;
+}
+
+/* Focus mode: dim everything except the active line range */
+.cm-editor:has(.cm-selectedLineRange) .cm-line:not(.cm-selectedLineRange) {
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cm-editor {
+    animation: editor-enter 0.2s ease-out;
+  }
+
+  @keyframes editor-enter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+}

@@ -20,6 +20,7 @@ import { selectedMainText, scrollIntoView, caretScrollDefaults } from './modules
 import { selectedLineColumn } from './modules/selection/selectedLineColumn';
 import { markContentClean } from './modules/history';
 import { updateTextChecker } from './modules/textChecker';
+import { setUpScrollProgress } from './modules/scrollProgress';
 
 import { TextEditor } from './api/editor';
 import { editorReadyListeners } from './api/methods';
@@ -107,6 +108,7 @@ export async function resetEditor(
 
   MarkEdit.editorView = editor;
   (MarkEdit.editorAPI as TextEditor).setView(editor);
+  setUpScrollProgress();
 
   const ensureLineHeight = () => {
     // coordsAtPos ensures the line number height
