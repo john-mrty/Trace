@@ -225,22 +225,6 @@ enum Localized {
     static let invalidDestinationErrorMessage = String(localized: "Cannot export files with extension “%@”, supported extensions: %@.", comment: "Script error when attempting to save files with an unsupported extension")
     static let extensionMismatchErrorMessage = String(localized: "Wrong file extension for type “%@”, use “.%@” instead.", comment: "Script save error when the path extension does not match the output type")
   }
-
-  enum Updater {
-    static let upToDateTitle = String(localized: "You’re up-to-date!", comment: "Title for the up-to-date info")
-    static let upToDateMessage = String(localized: "MarkEdit %@ is currently the latest version.", comment: "Message for the up-to-date info")
-    static let newVersionAvailable = String(localized: "MarkEdit %@ is available!", comment: "Title for new version available")
-    static let updateFailedTitle = String(localized: "Failed to get the update.", comment: "Title for failed to get the update")
-    static let updateFailedMessage = String(localized: "Please check your network connection or get the latest release from the version history.", comment: "Message for failed to get the update")
-    static let needsOSUpdateMessage = String(localized: "This release requires macOS %@ or later and cannot be installed without upgrading your operating system.", comment: "Message for minimum required OS version")
-    static let newVersionOut = String(localized: "🎉 %@ is out", comment: "Title format for new version is out")
-    static let viewReleasePage = String(localized: "View Release Page", comment: "Title for the \"View Release Page\" button")
-    static let notNow = String(localized: "Not Now", comment: "Title for the \"Not Now\" button")
-    static let remindMeLater = String(localized: "Remind Me Later", comment: "Title for the \"Remind Me Later\" button")
-    static let skipThisVersion = String(localized: "Skip This Version", comment: "Title for the \"Skip This Version\" button")
-    static let disableUpdateChecks = String(localized: "Disable Update Checks", comment: "Title for the \"Disable Update Checks\" button")
-    static let checkVersionHistory = String(localized: "Check Version History", comment: "Title for the \"Check Version History\" button")
-  }
 }
 
 // Icon set used in the app: https://developer.apple.com/sf-symbols/

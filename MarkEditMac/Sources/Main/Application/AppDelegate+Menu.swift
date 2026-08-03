@@ -167,12 +167,6 @@ private extension AppDelegate {
 // MARK: - Private
 
 private extension AppDelegate {
-  @IBAction func checkForUpdates(_ sender: Any?) {
-    Task {
-      await AppUpdater.checkForUpdates(explicitly: true)
-    }
-  }
-
   @IBAction func openDocumentsFolder(_ sender: Any?) {
     NSWorkspace.shared.open(.documentsDirectory)
   }
