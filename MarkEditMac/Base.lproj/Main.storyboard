@@ -899,13 +899,6 @@ Gw
                                 <menu key="submenu" title="Extensions" autoenablesItems="NO" id="nkD-z6-yjV">
                                     <items>
                                         <menuItem isSeparatorItem="YES" identifier="extensionsMenuDivider" id="Jat-X6-g2Q"/>
-                                        <menuItem title="Manage Extensions…" image="puzzlepiece.extension" catalog="system" id="MgE-xt-001">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="manageExtensions:" target="Voe-Tx-rLC" id="MgE-xt-002"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="egO-qW-gHN"/>
                                         <menuItem title="Open Documents Folder" id="fyH-S9-f9N">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

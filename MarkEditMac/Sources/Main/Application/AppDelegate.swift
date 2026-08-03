@@ -6,7 +6,6 @@
 
 import AppKit
 import AppKitExtensions
-import ExtensionCore
 import SettingsUI
 import MarkEditCore
 import MarkEditKit
@@ -74,13 +73,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       object: nil
     )
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(extensionsMenuNeedsUpdate(_:)),
-      name: .extensionsMenuNeedsUpdate,
-      object: nil
-    )
-
     // App level setting for "Ask to keep changes when closing documents"
     if let closeAlwaysConfirmsChanges = AppRuntimeConfig.closeAlwaysConfirmsChanges {
       UserDefaults.standard.set(closeAlwaysConfirmsChanges, forKey: NSCloseAlwaysConfirmsChanges)
@@ -105,10 +97,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-      Task {
-        await ExtensionUpdater.checkForUpdates()
-      }
-
       DispatchQueue.global(qos: .utility).async {
         let defaults = UserDefaults.standard.dictionaryRepresentation()
         let plist = defaults.merging(AppRuntimeConfig.jsonObject) { _, rhs in rhs }
@@ -121,13 +109,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     Timer.scheduledTimer(withTimeInterval: 7 * 24 * 60 * 60, repeats: true) { _ in
       Task {
         await EditorSelectionHistory.purgeStaleEntries()
-      }
-    }
-
-    // Wake daily so background catalog refresh and update prompts can run while the app stays open.
-    Timer.scheduledTimer(withTimeInterval: 24 * 60 * 60, repeats: true) { _ in
-      Task {
-        await ExtensionUpdater.checkForUpdates()
       }
     }
 
@@ -177,9 +158,6 @@ extension AppDelegate {
       case "open":
         // markedit://open or markedit://open?path=Untitled.md
         openFile(queryDict: components?.queryDict)
-      case "install-extension":
-        // markedit://install-extension?id=markedit-preview or ?url=https://...
-        ExtensionInstaller.install(queryDict: components?.queryDict)
       default:
         break
       }
@@ -209,10 +187,6 @@ private extension AppDelegate {
     }
   }
 
-  @objc func extensionsMenuNeedsUpdate(_ notification: Notification) {
-    updateExtensionsMenu()
-  }
-
   @IBAction func showPreferences(_ sender: Any?) {
     if settingsWindowController == nil {
       settingsWindowController = SettingsRootViewController.withTabs([
@@ -233,16 +207,5 @@ private extension AppDelegate {
 
   @IBAction func openSettingsJSON(_ sender: Any?) {
     NSWorkspace.shared.open(AppCustomization.settings.fileURL)
-  }
-
-  func updateExtensionsMenu() {
-    guard let menu = mainExtensionsMenu else {
-      return Logger.assertFail("Failed to get mainExtensionsMenu")
-    }
-
-    let badgeText = "✨ "
-    let originalText = menu.title.replacingOccurrences(of: badgeText, with: "")
-    let showsBadge = ExtensionRegistry.hasCachedUpdates || !AppPreferences.Extensions.windowHasBeenOpened
-    menu.title = "\(showsBadge ? badgeText : "")\(originalText)"
   }
 }

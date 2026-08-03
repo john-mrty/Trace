@@ -11,7 +11,7 @@ import MarkEditKit
 /// App-side state for editor extensions, stored as "extensions.json".
 ///
 /// Read fresh from disk on each access, so app writes (install/update/reconcile) and manual edits
-/// both take effect without a relaunch. The remote catalog is fetched by `ExtensionRegistry`.
+/// both take effect without a relaunch.
 public enum ExtensionConfig {
   struct Definition: Codable {
     let __schema: String?

@@ -7,7 +7,6 @@
 import XCTest
 @testable import ExtensionCore
 
-// swiftlint:disable:next type_body_length
 final class ExtensionCoreTests: XCTestCase {
 
   // MARK: - identifier(fromFileName:)
@@ -73,236 +72,6 @@ final class ExtensionCoreTests: XCTestCase {
     XCTAssertFalse(merged.enabled ?? true)
   }
 
-  // MARK: - ExtensionRelease.isCompatible
-
-  func testIsCompatibleAgainstAppVersion() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    XCTAssertTrue(makeRelease(version: "1", minAppVersion: nil).isCompatible)
-    XCTAssertTrue(makeRelease(version: "1", minAppVersion: "").isCompatible)
-    XCTAssertTrue(makeRelease(version: "1", minAppVersion: "1.4.0").isCompatible)
-    XCTAssertTrue(makeRelease(version: "1", minAppVersion: "1.5.0").isCompatible)
-    XCTAssertFalse(makeRelease(version: "1", minAppVersion: "1.6.0").isCompatible)
-    XCTAssertFalse(makeRelease(version: "1", minAppVersion: "1.10.0").isCompatible)
-  }
-
-  // MARK: - ExtensionRelease.pageURL
-
-  func testPageURLFromReleaseAsset() {
-    let release = makeRelease(url: "https://github.com/owner/repo/releases/download/v1.0.0/ext.js")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://github.com/owner/repo/releases/tag/v1.0.0")
-  }
-
-  func testPageURLFromRawContent() {
-    let release = makeRelease(url: "https://raw.githubusercontent.com/owner/repo/v1.0.0/dist/ext.js")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://github.com/owner/repo/tree/v1.0.0")
-  }
-
-  func testPageURLFromOfficialRawContentUsesReleasePage() {
-    let release = makeRelease(url: "https://raw.githubusercontent.com/MarkEdit-app/MarkEdit-preview/v1.8.1/dist/ext.js")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://github.com/MarkEdit-app/MarkEdit-preview/releases/tag/v1.8.1")
-  }
-
-  func testPageURLFromBlobRawLink() {
-    let release = makeRelease(url: "https://github.com/owner/repo/blob/v1.0.0/dist/ext.js?raw=true")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://github.com/owner/repo/tree/v1.0.0")
-  }
-
-  func testPageURLFromOfficialBlobRawLinkUsesReleasePage() {
-    let release = makeRelease(url: "https://github.com/MarkEdit-app/MarkEdit-preview/blob/v1.8.1/dist/ext.js?raw=true")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://github.com/MarkEdit-app/MarkEdit-preview/releases/tag/v1.8.1")
-  }
-
-  func testPageURLFallsBackToHost() {
-    let release = makeRelease(url: "https://example.com/path/ext.js")
-    XCTAssertEqual(release.pageURL?.absoluteString, "https://example.com")
-  }
-
-  // MARK: - availableUpdates
-
-  func testAvailableUpdatesFindsNewerRelease() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "sample", version: "2.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: "1.0.0")]
-    )
-
-    XCTAssertEqual(updates.count, 1)
-    XCTAssertEqual(updates.first?.installed.id, "sample")
-    XCTAssertEqual(updates.first?.entry.latest.version, "2.0.0")
-  }
-
-  func testAvailableUpdatesSkipsUntrackedNonOfficial() {
-    let index = makeIndex([makeEntry(id: "sample", version: "2.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: nil)]
-    )
-
-    XCTAssertTrue(updates.isEmpty)
-  }
-
-  func testAvailableUpdatesAdoptsVersionlessOfficial() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "markedit-preview", version: "2.0.0")])
-    // Version-less official scripts adopt the latest registry release
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "markedit-preview", version: nil)]
-    )
-
-    XCTAssertEqual(updates.count, 1)
-    XCTAssertEqual(updates.first?.installed.id, "markedit-preview")
-    XCTAssertEqual(updates.first?.entry.latest.version, "2.0.0")
-  }
-
-  func testAvailableUpdatesFlagsIncompatibleVersionlessOfficial() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-
-    // Adopted and flagged, not skipped
-    let index = makeIndex([makeEntry(id: "markedit-preview", version: "2.0.0", minAppVersion: "9.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "markedit-preview", version: nil)]
-    )
-
-    XCTAssertEqual(updates.count, 1)
-    XCTAssertEqual(updates.first?.unmetAppVersion, "9.0.0")
-  }
-
-  func testAvailableUpdatesFlagsIncompatibleRelease() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "sample", version: "2.0.0", minAppVersion: "9.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: "1.0.0")]
-    )
-
-    XCTAssertEqual(updates.count, 1)
-    XCTAssertEqual(updates.first?.unmetAppVersion, "9.0.0")
-  }
-
-  func testAvailableUpdatesLeavesCompatibleReleaseUnflagged() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "sample", version: "2.0.0", minAppVersion: "1.4.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: "1.0.0")]
-    )
-
-    XCTAssertEqual(updates.count, 1)
-    XCTAssertNil(updates.first?.unmetAppVersion)
-  }
-
-  func testAvailableUpdatesSkipsEqualOrOlder() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "sample", version: "1.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: "1.0.0")]
-    )
-
-    XCTAssertTrue(updates.isEmpty)
-  }
-
-  func testAvailableUpdatesSkipsUnknownIdentifier() {
-    ExtensionEnvironment.appVersion = "1.5.0"
-    let index = makeIndex([makeEntry(id: "other", version: "2.0.0")])
-    let updates = ExtensionRegistry.availableUpdates(
-      index: index,
-      installed: [makeInstalled(id: "sample", version: "1.0.0")]
-    )
-
-    XCTAssertTrue(updates.isEmpty)
-  }
-
-  // MARK: - hasCachedUpdates
-
-  func testHasCachedUpdatesFalseWithoutCache() throws {
-    let dir = try makeTempDir()
-    defer {
-      try? FileManager.default.removeItem(at: dir)
-      ExtensionEnvironment.documentsDirectory = URL.documentsDirectory
-      ExtensionEnvironment.cachesDirectory = URL.cachesDirectory
-    }
-
-    ExtensionEnvironment.documentsDirectory = dir
-    ExtensionEnvironment.cachesDirectory = dir
-    try seedInstalled([makeInstalled(id: "sample", version: "1.0.0")], in: dir)
-
-    // No cached index on disk means there's nothing to compare against
-    XCTAssertFalse(ExtensionRegistry.hasCachedUpdates)
-  }
-
-  func testHasCachedUpdatesReflectsCachedIndex() throws {
-    let dir = try makeTempDir()
-    let originalAppVersion = ExtensionEnvironment.appVersion
-    defer {
-      try? FileManager.default.removeItem(at: dir)
-      ExtensionEnvironment.documentsDirectory = URL.documentsDirectory
-      ExtensionEnvironment.cachesDirectory = URL.cachesDirectory
-      ExtensionEnvironment.appVersion = originalAppVersion
-    }
-
-    ExtensionEnvironment.documentsDirectory = dir
-    ExtensionEnvironment.cachesDirectory = dir
-    ExtensionEnvironment.appVersion = "1.5.0"
-    try seedInstalled([makeInstalled(id: "sample", version: "1.0.0")], in: dir)
-
-    // A newer release in the cached index surfaces an update
-    try seedCachedIndex(makeIndex([makeEntry(id: "sample", version: "2.0.0")]))
-    XCTAssertTrue(ExtensionRegistry.hasCachedUpdates)
-
-    // Only equal or older releases means nothing to update
-    try seedCachedIndex(makeIndex([makeEntry(id: "sample", version: "1.0.0")]))
-    XCTAssertFalse(ExtensionRegistry.hasCachedUpdates)
-  }
-
-  // MARK: - ExtensionEntry.featured
-
-  func testFeaturedDefaultsToNilWhenAbsent() throws {
-    let json = """
-    {
-      "id": "a",
-      "name": "A",
-      "description": "",
-      "author": "",
-      "homepage": "",
-      "category": "extension",
-      "latest": { "version": "1.0.0", "url": "https://example.com/a.js", "sha256": "abc" }
-    }
-    """
-    let entry = try JSONDecoder().decode(ExtensionEntry.self, from: Data(json.utf8))
-    XCTAssertNil(entry.featured)
-  }
-
-  func testFeaturedDecodesWhenPresent() throws {
-    let json = """
-    {
-      "id": "a",
-      "name": "A",
-      "description": "",
-      "author": "",
-      "homepage": "",
-      "category": "extension",
-      "featured": true,
-      "latest": { "version": "1.0.0", "url": "https://example.com/a.js", "sha256": "abc" }
-    }
-    """
-    let entry = try JSONDecoder().decode(ExtensionEntry.self, from: Data(json.utf8))
-    XCTAssertTrue(try XCTUnwrap(entry.featured))
-  }
-
-  // MARK: - ExtensionIndex.isSupported
-
-  func testIndexSchemaVersionSupport() {
-    XCTAssertTrue(ExtensionIndex(schemaVersion: ExtensionIndex.supportedSchemaVersion, extensions: []).isSupported)
-    // Older schemas remain readable
-    XCTAssertTrue(ExtensionIndex(schemaVersion: ExtensionIndex.supportedSchemaVersion - 1, extensions: []).isSupported)
-    // A newer schema means the app is out of date
-    XCTAssertFalse(ExtensionIndex(schemaVersion: ExtensionIndex.supportedSchemaVersion + 1, extensions: []).isSupported)
-  }
-
   // MARK: - upsertInstalled
 
   func testUpsertUpdatesInPlaceAndAppendsNew() throws {
@@ -365,7 +134,7 @@ final class ExtensionCoreTests: XCTestCase {
     XCTAssertNil(installedRecord(id: "a", in: dir)?["enabled"])
   }
 
-  // MARK: - remove / uninstall
+  // MARK: - remove
 
   func testRemoveDropsRecordOnly() throws {
     let dir = try makeTempDir()
@@ -404,70 +173,11 @@ final class ExtensionCoreTests: XCTestCase {
     ExtensionConfig.reorder(orderedIDs: ["b"])
     XCTAssertEqual(installedIds(in: dir), ["b", "c", "a"])
   }
-
-  func testUninstallDeletesFileAndRecord() throws {
-    let dir = try makeTempDir()
-    defer {
-      try? FileManager.default.removeItem(at: dir)
-      ExtensionEnvironment.documentsDirectory = URL.documentsDirectory
-    }
-
-    ExtensionEnvironment.documentsDirectory = dir
-    try seedExtensions(ids: ["a", "b"], in: dir)
-
-    let scripts = dir.appending(path: "scripts", directoryHint: .isDirectory)
-    try FileManager.default.createDirectory(at: scripts, withIntermediateDirectories: true)
-    let fileURL = scripts.appending(path: "b.js", directoryHint: .notDirectory)
-    try Data("console.log('b')".utf8).write(to: fileURL)
-
-    ExtensionDownloader.uninstall(makeInstalled(id: "b", version: "1.0.0"))
-    XCTAssertFalse(FileManager.default.fileExists(atPath: fileURL.path))
-    XCTAssertEqual(installedIds(in: dir), ["a"])
-  }
 }
 
 // MARK: - Private
 
 private extension ExtensionCoreTests {
-  func makeRelease(version: String, minAppVersion: String?) -> ExtensionRelease {
-    ExtensionRelease(
-      version: version,
-      url: "https://example.com/sample.js",
-      sha256: "abc",
-      minAppVersion: minAppVersion,
-      notes: nil
-    )
-  }
-
-  func makeRelease(url: String) -> ExtensionRelease {
-    ExtensionRelease(
-      version: "1.0.0",
-      url: url,
-      sha256: "abc",
-      minAppVersion: nil,
-      notes: nil
-    )
-  }
-
-  func makeEntry(id: String, version: String, minAppVersion: String? = nil) -> ExtensionEntry {
-    ExtensionEntry(
-      id: id,
-      name: id,
-      description: "",
-      author: "",
-      homepage: "",
-      category: .extension,
-      colorScheme: nil,
-      colorPatterns: nil,
-      featured: nil,
-      latest: makeRelease(version: version, minAppVersion: minAppVersion)
-    )
-  }
-
-  func makeIndex(_ extensions: [ExtensionEntry]) -> ExtensionIndex {
-    ExtensionIndex(schemaVersion: 1, extensions: extensions)
-  }
-
   func makeInstalled(
     id: String,
     version: String?
@@ -494,26 +204,6 @@ private extension ExtensionCoreTests {
     let installed = ids.map { "{ \"id\": \"\($0)\", \"file\": \"\($0).js\" }" }.joined(separator: ",\n")
     let json = "{ \"installed\": [\n\(installed)\n] }"
     try Data(json.utf8).write(to: dir.appending(path: "extensions.json", directoryHint: .notDirectory))
-  }
-
-  /// Writes extensions.json for records that carry a version, so update comparisons have something to compare.
-  func seedInstalled(_ installed: [ExtensionConfig.Installed], in dir: URL) throws {
-    let records = installed.map { item -> String in
-      let version = item.version.map { "\"version\": \"\($0)\", " } ?? ""
-      return "{ \(version)\"id\": \"\(item.id)\", \"file\": \"\(item.file)\" }"
-    }
-
-    let json = "{ \"installed\": [\n\(records.joined(separator: ",\n"))\n] }"
-    try Data(json.utf8).write(to: dir.appending(path: "extensions.json", directoryHint: .notDirectory))
-  }
-
-  /// Writes a registry index to the on-disk cache location read by `cachedIndex`.
-  func seedCachedIndex(_ index: ExtensionIndex) throws {
-    let cacheDir = ExtensionEnvironment.indexCacheDirectory
-    try FileManager.default.createDirectory(at: cacheDir, withIntermediateDirectories: true)
-
-    let data = try JSONEncoder().encode(index)
-    try data.write(to: cacheDir.appending(path: "index.json", directoryHint: .notDirectory))
   }
 
   func installedIds(in dir: URL) -> [String] {

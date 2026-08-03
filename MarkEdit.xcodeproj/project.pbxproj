@@ -34,7 +34,6 @@
 		8729240B2951525C007156B1 /* Main.xib in Resources */ = {isa = PBXBuildFile; fileRef = 872924092951525C007156B1 /* Main.xib */; };
 		872924102951525C007156B1 /* QuickLookExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 872924002951525C007156B1 /* QuickLookExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8729C5A6294B5E6B006F262B /* EditorViewController+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8729C5A5294B5E6B006F262B /* EditorViewController+Menu.swift */; };
-		872E5FC0300918FA00D34792 /* ExtensionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 872E5FBF300918FA00D34792 /* ExtensionsViewController.swift */; };
 		873126E4297BAC9C001521A0 /* EditorViewController+Pandoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873126E3297BAC9C001521A0 /* EditorViewController+Pandoc.swift */; };
 		873ACD4729644E2F00431498 /* EditorViewController+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873ACD4629644E2F00431498 /* EditorViewController+Encoding.swift */; };
 		873D6402295FCC3E0095DEF7 /* AppResources.swift in Sources */ = {isa = PBXBuildFile; fileRef = 873D6401295FCC3E0095DEF7 /* AppResources.swift */; };
@@ -101,12 +100,6 @@
 		CC000004300000000000001A /* EditorSelectionHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000004300000000000001B /* EditorSelectionHistory.swift */; };
 		CC000006300000000000001A /* EditorClosedTabHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC000006300000000000001B /* EditorClosedTabHistory.swift */; };
 		CC000020300000000000FD01 /* FileDrop in Frameworks */ = {isa = PBXBuildFile; productRef = CC000020300000000000FD02 /* FileDrop */; };
-		EE100008EEEE000000000008 /* ExtensionInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100007EEEE000000000007 /* ExtensionInstaller.swift */; };
-		EE10000AEEEE00000000000A /* ExtensionUpdater.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100009EEEE000000000009 /* ExtensionUpdater.swift */; };
-		EE10000CEEEE00000000000C /* ExtensionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE10000BEEEE00000000000B /* ExtensionsModel.swift */; };
-		EE10000EEEEE00000000000E /* ExtensionsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE10000DEEEE00000000000D /* ExtensionsWindowController.swift */; };
-		EE100012EEEE000000000012 /* ExtensionsRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100011EEEE000000000011 /* ExtensionsRowView.swift */; };
-		EE100014EEEE000000000014 /* ExtensionsOverlays.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE100013EEEE000000000013 /* ExtensionsOverlays.swift */; };
 		EE200001EEEE000000000001 /* ExtensionCore in Frameworks */ = {isa = PBXBuildFile; productRef = EE200002EEEE000000000002 /* ExtensionCore */; };
 /* End PBXBuildFile section */
 
@@ -163,7 +156,6 @@
 		8729240C2951525C007156B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8729240D2951525C007156B1 /* Info.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Info.entitlements; sourceTree = "<group>"; };
 		8729C5A5294B5E6B006F262B /* EditorViewController+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Menu.swift"; sourceTree = "<group>"; };
-		872E5FBF300918FA00D34792 /* ExtensionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsViewController.swift; sourceTree = "<group>"; };
 		873126E3297BAC9C001521A0 /* EditorViewController+Pandoc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Pandoc.swift"; sourceTree = "<group>"; };
 		873ACD4629644E2F00431498 /* EditorViewController+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Encoding.swift"; sourceTree = "<group>"; };
 		873D6401295FCC3E0095DEF7 /* AppResources.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppResources.swift; sourceTree = "<group>"; };
@@ -228,12 +220,6 @@
 		CC000003300000000000001B /* AppDelegate+ClosedTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+ClosedTab.swift"; sourceTree = "<group>"; };
 		CC000004300000000000001B /* EditorSelectionHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorSelectionHistory.swift; sourceTree = "<group>"; };
 		CC000006300000000000001B /* EditorClosedTabHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorClosedTabHistory.swift; sourceTree = "<group>"; };
-		EE100007EEEE000000000007 /* ExtensionInstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionInstaller.swift; sourceTree = "<group>"; };
-		EE100009EEEE000000000009 /* ExtensionUpdater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUpdater.swift; sourceTree = "<group>"; };
-		EE10000BEEEE00000000000B /* ExtensionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsModel.swift; sourceTree = "<group>"; };
-		EE10000DEEEE00000000000D /* ExtensionsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsWindowController.swift; sourceTree = "<group>"; };
-		EE100011EEEE000000000011 /* ExtensionsRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsRowView.swift; sourceTree = "<group>"; };
-		EE100013EEEE000000000013 /* ExtensionsOverlays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsOverlays.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,7 +335,6 @@
 			children = (
 				873D6403295FD2FF0095DEF7 /* Main */,
 				870A51C429470D830095C7EB /* Editor */,
-				87A35DF830026B720079CF08 /* Extension */,
 				870F1797298577A000003DA7 /* Panels */,
 				8780AC0A29822C5500065EF4 /* Settings */,
 				87850C8429482A6A00D1A952 /* Extras */,
@@ -400,15 +385,6 @@
 				87B0D1012F1A4C0100B0D101 /* Localizable.xcstrings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		872E5F8C3008DA7300D34792 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				EE100007EEEE000000000007 /* ExtensionInstaller.swift */,
-				EE100009EEEE000000000009 /* ExtensionUpdater.swift */,
-			);
-			path = Core;
 			sourceTree = "<group>";
 		};
 		873D6403295FD2FF0095DEF7 /* Main */ = {
@@ -502,19 +478,6 @@
 				8794A08A2FC53C26005CCC73 /* QuickLookViewController+Dragging.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		87A35DF830026B720079CF08 /* Extension */ = {
-			isa = PBXGroup;
-			children = (
-				872E5F8C3008DA7300D34792 /* Core */,
-				EE10000BEEEE00000000000B /* ExtensionsModel.swift */,
-				EE10000DEEEE00000000000D /* ExtensionsWindowController.swift */,
-				872E5FBF300918FA00D34792 /* ExtensionsViewController.swift */,
-				EE100011EEEE000000000011 /* ExtensionsRowView.swift */,
-				EE100013EEEE000000000013 /* ExtensionsOverlays.swift */,
-			);
-			path = Extension;
 			sourceTree = "<group>";
 		};
 		87A73AAB294C3788006A710E /* Models */ = {
@@ -745,7 +708,6 @@
 				8790B6EC297036B2000DFC1A /* EditorWindow.swift in Sources */,
 				AA10000000000000000000B2 /* EditorWindow+Overlay.swift in Sources */,
 				AA10000000000000000000B1 /* EditorOverlayToolbar.swift in Sources */,
-				EE100014EEEE000000000014 /* ExtensionsOverlays.swift in Sources */,
 				87DCB6202B284AAD00A3056F /* AppHacks.swift in Sources */,
 				87AA1224296560AE00BE4719 /* EditorViewController+HyperLink.swift in Sources */,
 				8725E0802977EEB3006A4961 /* EditorToolbarItems.swift in Sources */,
@@ -758,7 +720,6 @@
 				87AAEE0229585ADC00C8E61C /* AppPreferences.swift in Sources */,
 				873126E4297BAC9C001521A0 /* EditorViewController+Pandoc.swift in Sources */,
 				84FB00F02C6C4AED00850E94 /* AppWritingTools.swift in Sources */,
-				872E5FC0300918FA00D34792 /* ExtensionsViewController.swift in Sources */,
 				87D9322E2A925C6700B20D84 /* EditorReplaceTextField.swift in Sources */,
 				877B965D2C63815000186414 /* AppHotKeys.swift in Sources */,
 				87091B9A2A963C6B00F5EF0D /* EditorTextInput.swift in Sources */,
@@ -770,11 +731,6 @@
 				87DE081B294DDA49004AD33A /* AppTheme.swift in Sources */,
 				870F17682985285B00003DA7 /* EditorViewController+Config.swift in Sources */,
 				8780AC1C29829EDD00065EF4 /* GeneralSettingsView.swift in Sources */,
-				EE100008EEEE000000000008 /* ExtensionInstaller.swift in Sources */,
-				EE10000AEEEE00000000000A /* ExtensionUpdater.swift in Sources */,
-				EE10000CEEEE00000000000C /* ExtensionsModel.swift in Sources */,
-				EE10000EEEEE00000000000E /* ExtensionsWindowController.swift in Sources */,
-				EE100012EEEE000000000012 /* ExtensionsRowView.swift in Sources */,
 				871C995D2973F20E003FF3A7 /* AppDelegate+Menu.swift in Sources */,
 				87DE084B294E22C5004AD33A /* EditorViewController+TextFinder.swift in Sources */,
 				87BEF30129A88F6800596E17 /* AppCustomization.swift in Sources */,

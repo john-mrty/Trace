@@ -10,7 +10,6 @@ import SwiftUI
 import FontPicker
 import SettingsUI
 import SharedUI
-import ExtensionCore
 import MarkEditCore
 import MarkEditKit
 
@@ -44,11 +43,7 @@ struct EditorSettingsView: View {
             createThemePicker()
           }
           .onChange(of: lightTheme) {
-            if lightTheme == Constants.customThemesTag {
-              getCustomThemes(selection: $lightTheme, revertTo: AppPreferences.Editor.lightTheme)
-            } else {
-              AppPreferences.Editor.lightTheme = lightTheme
-            }
+            AppPreferences.Editor.lightTheme = lightTheme
           }
           .formMenuPicker()
 
@@ -56,11 +51,7 @@ struct EditorSettingsView: View {
             createThemePicker()
           }
           .onChange(of: darkTheme) {
-            if darkTheme == Constants.customThemesTag {
-              getCustomThemes(selection: $darkTheme, revertTo: AppPreferences.Editor.darkTheme)
-            } else {
-              AppPreferences.Editor.darkTheme = darkTheme
-            }
+            AppPreferences.Editor.darkTheme = darkTheme
           }
           .formMenuPicker()
         }
@@ -172,10 +163,6 @@ struct EditorSettingsView: View {
 // MARK: - Private
 
 private extension EditorSettingsView {
-  enum Constants {
-    static let customThemesTag = "$customThemes"
-  }
-
   var fontPickerConfiguration: FontPickerConfiguration {
     FontPickerConfiguration(
       modernStyle: AppDesign.modernStyle,
@@ -207,27 +194,6 @@ private extension EditorSettingsView {
   func createThemePicker() -> some View {
     ForEach(AppTheme.allCases, id: \.self) {
       Text($0.description).tag($0.editorTheme)
-    }
-
-    Divider()
-
-    HStack {
-      Image.alwaysVisibleSymbol(named: Icons.wandAndSparkles)
-      Text(Localized.Settings.getCustomThemes)
-    }.tag(Constants.customThemesTag)
-  }
-
-  func getCustomThemes(selection: Binding<String>, revertTo value: String) {
-    ExtensionsWindowController.shared.present(scrollTo: .category(.theme))
-    NSApp.windows.forEach {
-      if $0.contentViewController is SettingsRootViewController {
-        $0.close()
-      }
-    }
-
-    // In macOS Tahoe, this requires a delay to work
-    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-      selection.wrappedValue = value
     }
   }
 }
