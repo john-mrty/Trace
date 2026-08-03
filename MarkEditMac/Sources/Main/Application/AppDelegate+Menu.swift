@@ -167,6 +167,23 @@ private extension AppDelegate {
 // MARK: - Private
 
 private extension AppDelegate {
+  @IBAction func showAboutPanel(_ sender: Any?) {
+    let paragraph = NSMutableParagraphStyle()
+    paragraph.alignment = .center
+    paragraph.lineSpacing = 2
+
+    let credits = NSAttributedString(
+      string: "A quiet place to write.\n\nMarkdown without the markup — syntax fades away, the toolbar floats out of reach, and the page runs edge to edge.\n\nBuilt on the open-source MarkEdit.",
+      attributes: [
+        .font: NSFont.systemFont(ofSize: 11),
+        .foregroundColor: NSColor.secondaryLabelColor,
+        .paragraphStyle: paragraph,
+      ]
+    )
+
+    NSApp.orderFrontStandardAboutPanel(options: [.credits: credits])
+  }
+
   @IBAction func openDocumentsFolder(_ sender: Any?) {
     NSWorkspace.shared.open(.documentsDirectory)
   }
