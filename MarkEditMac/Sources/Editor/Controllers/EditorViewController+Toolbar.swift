@@ -83,11 +83,16 @@ extension EditorViewController {
       return
     }
 
-    item.image = .with(
-      symbolName: AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye,
-      pointSize: Constants.normalizedButtonSize,
-      accessibilityLabel: item.label
-    )
+    let symbolName = AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye
+    if let pointSize = Constants.normalizedButtonSize {
+      item.image = .with(
+        symbolName: symbolName,
+        pointSize: pointSize,
+        accessibilityLabel: item.label
+      )
+    } else {
+      item.image = NSImage(systemSymbolName: symbolName, accessibilityDescription: item.label)
+    }
   }
 
   @objc func toggleHideSyntaxMarks(_ sender: Any?) {
