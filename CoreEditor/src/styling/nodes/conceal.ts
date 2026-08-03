@@ -7,27 +7,16 @@ const hiddenDeco = Decoration.replace({});
 
 /**
  * Live-preview concealment: replaces markdown syntax marks with nothing,
- * except on lines intersecting the selection. View-layer only — the
+ * everywhere — including the cursor line. View-layer only — the
  * document, undo, search, and copy are untouched.
  */
 export const concealExtension = createDecoPlugin(() => {
   const editor = window.editor;
   const state = editor.state;
 
-  const selectedLines = new Set<number>();
-  for (const range of state.selection.ranges) {
-    const first = state.doc.lineAt(range.from).number;
-    const last = state.doc.lineAt(range.to).number;
-    for (let line = first; line <= last; ++line) {
-      selectedLines.add(line);
-    }
-  }
-
   const ranges: Range<Decoration>[] = [];
   const conceal = (from: number, to: number) => {
-    if (!selectedLines.has(state.doc.lineAt(from).number)) {
-      ranges.push(hiddenDeco.range(from, to));
-    }
+    ranges.push(hiddenDeco.range(from, to));
   };
 
   for (const { from, to } of editor.visibleRanges) {

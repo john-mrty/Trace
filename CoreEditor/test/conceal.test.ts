@@ -11,14 +11,12 @@ function contentText() {
 }
 
 describe('Conceal syntax marks', () => {
-  test('hides marks except on selected lines', async () => {
+  test('hides marks everywhere, including the cursor line', async () => {
     editor.setUp(doc, concealExtension);
     await sleep(200);
 
-    // Cursor starts at 0 → line 1 is active, its marks stay revealed
-    expect(contentText()).toContain('# Title');
-
-    // Line 3 is not selected → all inline marks concealed
+    expect(contentText()).not.toContain('#');
+    expect(contentText()).toContain('Title');
     expect(contentText()).not.toContain('**');
     expect(contentText()).not.toContain('`');
     expect(contentText()).not.toContain('~~');
@@ -26,12 +24,11 @@ describe('Conceal syntax marks', () => {
     expect(contentText()).not.toContain('[text]');
     expect(contentText()).toContain('bold and code and gone text');
 
-    // Move cursor to line 3 → its marks reveal, heading conceals
+    // Moving the cursor onto a marked line changes nothing — still concealed
     window.editor.dispatch({ selection: EditorSelection.cursor(doc.indexOf('**bold**')) });
     await sleep(200);
-    expect(contentText()).toContain('**bold**');
-    expect(contentText()).toContain('[text](https://example.com)');
-    expect(contentText()).not.toContain('# Title');
+    expect(contentText()).not.toContain('**');
+    expect(contentText()).not.toContain('#');
     expect(contentText()).toContain('Title');
   });
 });
