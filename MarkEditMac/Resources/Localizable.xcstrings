@@ -939,6 +939,9 @@
         }
       }
     },
+    "Dim Inactive Lines" : {
+      "comment" : "Toolbar item to dim lines outside the current selection"
+    },
     "Disable Update Checks" : {
       "comment" : "Title for the \"Disable Update Checks\" button",
       "localizations" : {
@@ -1659,6 +1662,9 @@
           }
         }
       }
+    },
+    "Hide Markdown" : {
+      "comment" : "Toolbar item to hide Markdown syntax marks"
     },
     "Homepage" : {
       "comment" : "Link to an extension's homepage",
