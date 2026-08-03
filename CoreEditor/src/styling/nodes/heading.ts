@@ -7,6 +7,7 @@
  * @returns Font size for a *possible* header
  */
 export function calculateFontSize(fontSize: number, level: number) {
-  const diffs = window.config.headerFontSizeDiffs ?? [5, 3, 1];
+  // Default H1 to twice the body size; explicit runtime config still wins.
+  const diffs = window.config.headerFontSizeDiffs ?? [fontSize, 3, 1];
   return fontSize + ([0, ...diffs][level] || 0);
 }
