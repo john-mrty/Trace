@@ -271,7 +271,7 @@ extension EditorViewController {
 
   override func viewWillAppear() {
     super.viewWillAppear()
-    configureToolbar()
+    configureWindowAppearance()
   }
 
   override func viewDidLayout() {

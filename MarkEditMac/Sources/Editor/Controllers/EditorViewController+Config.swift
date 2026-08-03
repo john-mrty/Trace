@@ -81,7 +81,6 @@ extension EditorViewController {
 
   func setHideSyntaxMarks(enabled: Bool) {
     bridge.config.setHideSyntaxMarks(enabled: enabled)
-    updateHideSyntaxMarksToolbarIcon()
     (view.window as? EditorWindow)?.overlayFab?.refreshButtonImages()
   }
 

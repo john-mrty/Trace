@@ -52,19 +52,11 @@ enum Localized {
     static let formatHeaders = String(localized: "Headers", comment: "Toolbar item to toggle heading levels")
     static let toggleBold = String(localized: "Bold", comment: "Toolbar item to toggle bold")
     static let toggleItalic = String(localized: "Italic", comment: "Toolbar item to toggle italic")
-    static let toggleStrikethrough = String(localized: "Strikethrough", comment: "Toolbar item to toggle strikethrough")
-    static let insertLink = String(localized: "Insert Link", comment: "Toolbar item to insert link")
-    static let insertImage = String(localized: "Insert Image", comment: "Toolbar item to insert image")
     static let toggleList = String(localized: "Toggle List", comment: "Toolbar item to toggle bullet list")
-    static let toggleBlockquote = String(localized: "Quote", comment: "Toolbar item to toggle blockquote")
-    static let horizontalRule = String(localized: "Horizontal Rule", comment: "Toolbar item to insert horizontal rule")
-    static let insertTable = String(localized: "Table", comment: "Toolbar item to insert table")
-    static let insertCode = String(localized: "Insert Code", comment: "Toolbar item to insert code")
     static let hideSyntaxMarks = String(localized: "Hide Markdown", comment: "Toolbar item to hide Markdown syntax marks")
     static let dimInactiveLines = String(localized: "Dim Inactive Lines", comment: "Toolbar item to dim lines outside the current selection")
     static let textFormat = String(localized: "Text Format", comment: "Toolbar item to use text format menu")
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
-    static let shareDocument = String(localized: "Share this document", comment: "Toolbar item to share the document")
     static let copyPandocCommand = String(localized: "Copy Pandoc Command", comment: "Toolbar item to copy pandoc command")
   }
 
@@ -221,10 +213,8 @@ enum Icons {
   static let arrowUturnBackwardCircle = "arrow.uturn.backward.circle"
   static let bold = "bold"
   static let characterCursorIbeam = "character.cursor.ibeam"
-  static let chartPie = "chart.pie"
   static let checkmarkSeal = "checkmark.seal.fill"
   static let cupAndHeatWaves = "cup.and.heat.waves"
-  static let curlybracesSquare = "curlybraces.square"
   static let ellipsisCircle = "ellipsis.circle"
   static let eye = "eye"
   static let eyeSlash = "eye.slash"
@@ -248,7 +238,6 @@ enum Icons {
   static let laurelLeading = "laurel.leading"
   static let laurelTrailing = "laurel.trailing"
   static let lightbulbMaxFill = "lightbulb.max.fill"
-  static let link = "link"
   static let listBullet = "list.bullet"
   static let listBulletRectangle = "list.bullet.rectangle"
 
@@ -259,16 +248,9 @@ enum Icons {
   }
 
   static let paintpalette = "paintpalette"
-  static let photo = "photo"
   static let puzzlepieceExtension = "puzzlepiece.extension"
   static let shippingbox = "shippingbox"
   static let sparkles = "sparkles"
-  static let squareAndArrowUp = "square.and.arrow.up"
-  static let squareSplit1x2 = "square.split.1x2"
-  static let strikethrough = "strikethrough"
-  static let tablecells = "tablecells"
-  static let textQuote = "text.quote"
-  static let textformat = "textformat"
   static let wandAndSparkles = "wand.and.sparkles"
 }
 

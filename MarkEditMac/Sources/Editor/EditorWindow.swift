@@ -32,7 +32,6 @@ final class EditorWindow: NSWindow {
       toolbarStyle = toolbarMode == .compact ? .unifiedCompact : .unified
       super.toolbar = toolbarMode == .hidden ? nil : cachedToolbar
       updateTitleBarAppearance()
-      (contentViewController as? EditorViewController)?.updateHideSyntaxMarksToolbarIcon()
     }
   }
 

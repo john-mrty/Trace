@@ -117,21 +117,10 @@ extension EditorViewController {
     addLocalMonitorForEvents()
   }
 
-  func configureToolbar() {
-    let toolbar = NSToolbar(identifier: "EditorToolbar")
-    toolbar.displayMode = .iconOnly
-    toolbar.delegate = self
-    toolbar.allowsUserCustomization = true
-    toolbar.autosavesConfiguration = true
-
-    view.window?.toolbar = toolbar
-    view.window?.toolbar?.validateVisibleItems()
-
-    view.window?.acceptsMouseMovedEvents = true
+  /// Applies the initial appearance and theme colors once the view is attached to a window.
+  func configureWindowAppearance() {
     view.window?.appearance = AppTheme.current.resolvedAppearance
-
     updateWindowColors(.current)
-    resetCustomToolbarItems()
   }
 
   func updateWindowColors(_ theme: AppTheme) {
@@ -390,6 +379,12 @@ extension EditorViewController {
     }
 
     resetCustomToolbarItems()
+  }
+
+  func customItem(with identifier: NSToolbarItem.Identifier) -> CustomToolbarItem? {
+    AppRuntimeConfig.customToolbarItems.first {
+      $0.identifier.rawValue == identifier.rawValue
+    }
   }
 
   func resetCustomToolbarItems() {
