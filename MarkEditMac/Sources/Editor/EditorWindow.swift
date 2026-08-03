@@ -146,6 +146,15 @@ final class EditorWindow: NSWindow {
     super.close()
   }
 
+  /// AppKit auto-joins tab groups here (e.g. opening another document while this window
+  /// is key). The overlay frame/chrome must not end up hosting a second window's toolbar,
+  /// so exit overlay on both sides of the join before letting the join happen.
+  override func addTabbedWindow(_ window: NSWindow, ordered: NSWindow.OrderingMode) {
+    exitOverlayForTabJoin()
+    (window as? EditorWindow)?.exitOverlayForTabJoin()
+    super.addTabbedWindow(window, ordered: ordered)
+  }
+
   override func resignKey() {
     super.resignKey()
 

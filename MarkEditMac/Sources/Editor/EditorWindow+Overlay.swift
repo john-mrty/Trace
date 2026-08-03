@@ -138,6 +138,17 @@ extension EditorWindow {
     overlayGeneration += 1
   }
 
+  /// Exits overlay mode (or finalizes an in-flight exit) synchronously, non-animated.
+  /// The overlay must never host a tab bar/toolbar, so any window about to join a tab
+  /// group — on either side of the join — needs to have left overlay mode first.
+  func exitOverlayForTabJoin() {
+    if isExitingOverlay {
+      finalizeExitingOverlayIfNeeded()
+    } else if overlayMode {
+      exitOverlayMode(animated: false)
+    }
+  }
+
   /// Restores overlay-related window state (level, collection behavior, frame) without
   /// animation and clears overlay flags. Used when the window is about to close, so
   /// none of the floating-overlay state persists into a restored window next launch.
