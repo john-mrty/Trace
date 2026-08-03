@@ -65,7 +65,8 @@ final class EditorWindow: NSWindow {
   override func awakeFromNib() {
     super.awakeFromNib()
     toolbar = NSToolbar() // Required for multi-tab layout
-    toolbarMode = AppPreferences.Window.toolbarMode
+    // Fork behavior: the FAB replaces the toolbar everywhere, ignore the toolbar-mode pref
+    toolbarMode = .hidden
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
 

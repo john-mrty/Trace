@@ -99,7 +99,6 @@ extension EditorWindow {
       }
 
       self.resetOverlayChrome()
-      self.hideOverlayFab()
       self.orderOut(nil)
       self.isExitingOverlay = false
       completion?()
@@ -133,7 +132,6 @@ extension EditorWindow {
     }
 
     resetOverlayChrome()
-    hideOverlayFab()
     isExitingOverlay = false
     overlayGeneration += 1
   }

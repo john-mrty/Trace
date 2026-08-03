@@ -23,6 +23,9 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     windowFrameAutosaveName = "Editor"
     window?.setFrameUsingName(windowFrameAutosaveName)
     saveWindowRect()
+
+    // Fork behavior: the FAB is the toolbar in every window, not just the overlay
+    (window as? EditorWindow)?.showOverlayFab()
   }
 
   override func showWindow(_ sender: Any?) {
