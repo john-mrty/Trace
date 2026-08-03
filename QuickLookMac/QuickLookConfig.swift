@@ -81,6 +81,7 @@ extension EditorConfig {
       invisiblesBehavior: .never,
       readOnlyMode: true,
       typewriterMode: false,
+      hideSyntaxMarks: false,
       focusMode: false,
       lineWrapping: true,
       lineHeight: 1.4,
