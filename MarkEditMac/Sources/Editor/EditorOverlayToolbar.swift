@@ -91,6 +91,11 @@ final class EditorOverlayToolbar: NSView {
     }
   }
 
+  override func viewDidChangeEffectiveAppearance() {
+    super.viewDidChangeEffectiveAppearance()
+    applyTint()
+  }
+
   func refreshButtonImages() {
     for (index, action) in actions.enumerated() {
       guard let provider = action.currentSymbolName, buttons.indices.contains(index) else {
@@ -131,9 +136,6 @@ private extension EditorOverlayToolbar {
   }
 
   func setUpChrome() {
-    // Always a white capsule; aqua appearance keeps icons/hover dark in dark mode too
-    appearance = NSAppearance(named: .aqua)
-
     wantsLayer = true
     layer?.shadowColor = NSColor.black.cgColor
     layer?.shadowOpacity = Constants.restingShadowOpacity
@@ -145,12 +147,18 @@ private extension EditorOverlayToolbar {
     background.layer?.cornerRadius = Constants.height / 2
     background.layer?.masksToBounds = true
 
-    // Same recipe as the document background: backdrop blur + near-white tint
+    // Same recipe as the document background: backdrop blur + near-opaque tint
     background.material = .popover
-    background.tintColor = NSColor.white.withAlphaComponent(0.95)
+    applyTint()
 
     addSubview(background)
     addSubview(bezel)
+  }
+
+  // Layer colors don't track appearance changes, so resolve manually
+  func applyTint() {
+    let base: NSColor = effectiveAppearance.isDarkMode ? NSColor(white: 0.16, alpha: 1) : .white
+    background.tintColor = base.withAlphaComponent(0.95)
   }
 
   func setUpEventMonitor() {
