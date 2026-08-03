@@ -155,7 +155,8 @@ extension EditorViewController {
       view.window?.backgroundColor = baseColor
       titlebarView?.layerBackgroundColor = baseColor
 
-      modernBackgroundView.layerBackgroundColor = backgroundColor
+      // Clear when translucent, or it fully masks backdropView's behind-window blur
+      modernBackgroundView.layerBackgroundColor = reduceTransparency ? backgroundColor : .clear
       modernEffectView.isHidden = reduceTransparency
 
       // The effect view is hidden when transparency is reduced, so the material only matters otherwise
