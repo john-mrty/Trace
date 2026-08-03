@@ -77,6 +77,22 @@ extension EditorViewController {
       $0.identifier.rawValue == identifier.rawValue
     }
   }
+
+  func updateHideSyntaxMarksToolbarIcon() {
+    guard let item = view.window?.toolbar?.items.first(where: { $0.itemIdentifier == .hideSyntaxMarks }) else {
+      return
+    }
+
+    item.image = .with(
+      symbolName: AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye,
+      pointSize: Constants.normalizedButtonSize,
+      accessibilityLabel: item.label
+    )
+  }
+
+  @objc func toggleHideSyntaxMarks(_ sender: Any?) {
+    AppPreferences.Editor.hideSyntaxMarks.toggle()
+  }
 }
 
 // MARK: - NSToolbarDelegate
@@ -97,6 +113,7 @@ extension EditorViewController: NSToolbarDelegate {
       case .horizontalRule: return horizontalRuleItem
       case .insertTable: return insertTableItem
       case .insertCode: return insertCodeItem
+      case .hideSyntaxMarks: return hideSyntaxMarksItem
       case .textFormat: return textFormatItem
       case .statistics: return statisticsItem
       case .shareDocument: return shareDocumentItem
@@ -245,6 +262,12 @@ private extension EditorViewController {
     ].compactMap { $0?.copiedItem }
 
     return .with(identifier: .insertCode, menu: menu)
+  }
+
+  var hideSyntaxMarksItem: NSToolbarItem {
+    .with(identifier: .hideSyntaxMarks, iconSize: Constants.normalizedButtonSize) {
+      AppPreferences.Editor.hideSyntaxMarks.toggle()
+    }
   }
 
   var textFormatItem: NSToolbarItem {

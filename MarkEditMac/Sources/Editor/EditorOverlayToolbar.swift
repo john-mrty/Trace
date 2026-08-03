@@ -18,6 +18,7 @@ final class EditorOverlayToolbar: NSView {
   struct Action {
     let symbolName: String
     let accessibilityLabel: String
+    var currentSymbolName: (() -> String)?
     let handler: (NSButton) -> Void
   }
 
@@ -68,6 +69,21 @@ final class EditorOverlayToolbar: NSView {
       x += Constants.buttonSize + Constants.buttonSpacing
     }
   }
+
+  func refreshButtonImages() {
+    for (index, action) in actions.enumerated() {
+      guard let provider = action.currentSymbolName, buttons.indices.contains(index) else {
+        continue
+      }
+
+      buttons[index].image = .with(
+        symbolName: provider(),
+        pointSize: Constants.iconPointSize,
+        weight: .medium,
+        accessibilityLabel: action.accessibilityLabel
+      )
+    }
+  }
 }
 
 // MARK: - Private
@@ -107,7 +123,7 @@ private extension EditorOverlayToolbar {
     buttons = actions.enumerated().map { index, action in
       let button = OverlayIconButton()
       button.image = .with(
-        symbolName: action.symbolName,
+        symbolName: action.currentSymbolName?() ?? action.symbolName,
         pointSize: Constants.iconPointSize,
         weight: .medium,
         accessibilityLabel: action.accessibilityLabel

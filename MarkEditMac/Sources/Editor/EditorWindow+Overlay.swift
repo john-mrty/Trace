@@ -242,8 +242,8 @@ private extension EditorWindow {
     static let fabEdgeOffset: CGFloat = 16
   }
 
-  /// The 5 most useful writing actions, matching `NSToolbarItem.Identifier.defaultItems`'s
-  /// order: table of contents, headers, bold, italic, list.
+  /// The 6 most useful writing actions, matching `NSToolbarItem.Identifier.defaultItems`'s
+  /// order: table of contents, headers, bold, italic, list, hide syntax marks.
   func overlayFabActions(for viewController: EditorViewController) -> [EditorOverlayToolbar.Action] {
     [
       EditorOverlayToolbar.Action(
@@ -282,6 +282,14 @@ private extension EditorWindow {
         ].compactMap { $0?.copiedItem }
         menu.popUp(positioning: nil, at: .zero, in: button)
       },
+      EditorOverlayToolbar.Action(
+        symbolName: Icons.eye,
+        accessibilityLabel: Localized.Toolbar.hideSyntaxMarks,
+        currentSymbolName: { AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye },
+        handler: { [weak viewController] _ in
+          viewController?.toggleHideSyntaxMarks(nil)
+        }
+      ),
     ]
   }
 }

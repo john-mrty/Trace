@@ -101,6 +101,7 @@ extension NSToolbarItem.Identifier {
   static let shareDocument = newItem("shareDocument")
   static let copyPandocCommand = newItem("copyPandocCommand")
   static let writingTools = newItem("writingTools")
+  static let hideSyntaxMarks = newItem("hideSyntaxMarks")
 
   static var defaultItems: [NSToolbarItem.Identifier] {
     [
@@ -109,6 +110,7 @@ extension NSToolbarItem.Identifier {
       .toggleBold,
       .toggleItalic,
       .toggleList,
+      .hideSyntaxMarks,
     ]
   }
 
@@ -126,6 +128,7 @@ extension NSToolbarItem.Identifier {
       .horizontalRule,
       .insertTable,
       .insertCode,
+      .hideSyntaxMarks,
       .textFormat,
       .statistics,
       .shareDocument,
@@ -166,6 +169,7 @@ private extension NSToolbarItem.Identifier {
     case .horizontalRule: return Localized.Toolbar.horizontalRule
     case .insertTable: return Localized.Toolbar.insertTable
     case .insertCode: return Localized.Toolbar.insertCode
+    case .hideSyntaxMarks: return Localized.Toolbar.hideSyntaxMarks
     case .textFormat: return Localized.Toolbar.textFormat
     case .statistics: return Localized.Toolbar.statistics
     case .shareDocument: return Localized.Toolbar.shareDocument
@@ -189,6 +193,7 @@ private extension NSToolbarItem.Identifier {
     case .horizontalRule: return Icons.squareSplit1x2
     case .insertTable: return Icons.tablecells
     case .insertCode: return Icons.curlybracesSquare
+    case .hideSyntaxMarks: return AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye
     case .textFormat: return Icons.textformat
     case .statistics: return Icons.chartPie
     case .shareDocument: return Icons.squareAndArrowUp
