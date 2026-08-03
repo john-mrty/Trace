@@ -22,10 +22,12 @@ final class EditorOverlayToolbar: NSView {
     let handler: (NSButton) -> Void
   }
 
-  private let material = MaterialView()
+  private let background = NSView()
   private let bezel = BezelView(cornerRadius: Constants.height / 2)
   private let actions: [Action]
   private var buttons: [NSButton] = []
+  private var scrollMonitor: Any?
+  private var settleWorkItem: DispatchWorkItem?
 
   init(actions: [Action]) {
     self.actions = actions
@@ -49,10 +51,27 @@ final class EditorOverlayToolbar: NSView {
     )
   }
 
+  // Install the scroll monitor only while attached to a window; this also
+  // tears it down on removal, avoiding main-actor work in deinit.
+  override func viewDidMoveToWindow() {
+    super.viewDidMoveToWindow()
+
+    if window == nil {
+      if let scrollMonitor {
+        NSEvent.removeMonitor(scrollMonitor)
+        self.scrollMonitor = nil
+      }
+
+      settleWorkItem?.cancel()
+    } else if scrollMonitor == nil {
+      setUpScrollElevation()
+    }
+  }
+
   override func layout() {
     super.layout()
 
-    material.frame = bounds
+    background.frame = bounds
     bezel.frame = bounds
     layer?.shadowPath = CGPath(
       roundedRect: bounds,
@@ -95,28 +114,81 @@ private extension EditorOverlayToolbar {
     static let buttonSpacing: CGFloat = 2
     static let buttonSize: CGFloat = 28
     static let iconPointSize: Double = 13
+    static let restingShadowRadius: CGFloat = 8
+    static let raisedShadowRadius: CGFloat = 18
+    static let restingShadowOpacity: Float = 0.18
+    static let raisedShadowOpacity: Float = 0.32
+    static let shadowSettleDelay: TimeInterval = 0.3
   }
 
   func setUpChrome() {
+    // Always a white capsule; aqua appearance keeps icons/hover dark in dark mode too
+    appearance = NSAppearance(named: .aqua)
+
     wantsLayer = true
     layer?.shadowColor = NSColor.black.cgColor
-    layer?.shadowOpacity = 0.15
-    layer?.shadowRadius = 8
-    layer?.shadowOffset = .zero
+    layer?.shadowOpacity = Constants.restingShadowOpacity
+    layer?.shadowRadius = Constants.restingShadowRadius
+    layer?.shadowOffset = CGSize(width: 0, height: -1)
 
-    material.wantsLayer = true
-    material.layer?.cornerCurve = .continuous
-    material.layer?.cornerRadius = Constants.height / 2
-    material.layer?.masksToBounds = true
-    material.material = .popover
+    background.wantsLayer = true
+    background.layer?.cornerCurve = .continuous
+    background.layer?.cornerRadius = Constants.height / 2
+    background.layer?.masksToBounds = true
+    background.layerBackgroundColor = .white
 
-    // Reduced transparency gets a solid, fully opaque capsule instead of the blur.
-    if AppDesign.reduceTransparency {
-      material.tintColor = .windowBackgroundColor
+    addSubview(background)
+    addSubview(bezel)
+  }
+
+  func setUpScrollElevation() {
+    scrollMonitor = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+      MainActor.assumeIsolated {
+        self?.scrollDidOccur(in: event.window)
+      }
+      return event
+    }
+  }
+
+  func scrollDidOccur(in eventWindow: NSWindow?) {
+    guard eventWindow === window, !AppDesign.reduceMotion else {
+      return
     }
 
-    addSubview(material)
-    addSubview(bezel)
+    setShadow(raised: true)
+    settleWorkItem?.cancel()
+
+    let workItem = DispatchWorkItem { [weak self] in
+      self?.setShadow(raised: false)
+    }
+
+    settleWorkItem = workItem
+    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.shadowSettleDelay, execute: workItem)
+  }
+
+  /// Backing layers suppress implicit animations, so animate the shadow explicitly.
+  func setShadow(raised: Bool) {
+    guard let layer else {
+      return
+    }
+
+    let radius = raised ? Constants.raisedShadowRadius : Constants.restingShadowRadius
+    let opacity = raised ? Constants.raisedShadowOpacity : Constants.restingShadowOpacity
+
+    for (keyPath, from, to) in [
+      ("shadowRadius", layer.presentation()?.shadowRadius ?? layer.shadowRadius, radius),
+      ("shadowOpacity", CGFloat(layer.presentation()?.shadowOpacity ?? layer.shadowOpacity), CGFloat(opacity)),
+    ] {
+      let animation = CABasicAnimation(keyPath: keyPath)
+      animation.fromValue = from
+      animation.toValue = to
+      animation.duration = 0.22
+      animation.timingFunction = CAMediaTimingFunction(name: .easeOut)
+      layer.add(animation, forKey: keyPath)
+    }
+
+    layer.shadowRadius = radius
+    layer.shadowOpacity = opacity
   }
 
   func setUpButtons() {
