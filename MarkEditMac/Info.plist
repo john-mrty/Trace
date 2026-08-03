@@ -132,8 +132,6 @@
 			<string>$(PRODUCT_MODULE_NAME).EditorDocument</string>
 		</dict>
 	</array>
-	<key>CFBundleName</key>
-	<string>Trace</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

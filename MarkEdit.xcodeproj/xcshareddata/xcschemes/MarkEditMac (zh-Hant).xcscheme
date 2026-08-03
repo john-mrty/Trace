@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "870A51A1294700DE0095C7EB"
-               BuildableName = "MarkEdit.app"
+               BuildableName = "Trace.app"
                BlueprintName = "MarkEditMac"
                ReferencedContainer = "container:MarkEdit.xcodeproj">
             </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "870A51A1294700DE0095C7EB"
-            BuildableName = "MarkEdit.app"
+            BuildableName = "Trace.app"
             BlueprintName = "MarkEditMac"
             ReferencedContainer = "container:MarkEdit.xcodeproj">
          </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "870A51A1294700DE0095C7EB"
-            BuildableName = "MarkEdit.app"
+            BuildableName = "Trace.app"
             BlueprintName = "MarkEditMac"
             ReferencedContainer = "container:MarkEdit.xcodeproj">
          </BuildableReference>
