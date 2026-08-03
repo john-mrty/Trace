@@ -22,7 +22,7 @@ final class EditorOverlayToolbar: NSView {
     let handler: (NSButton) -> Void
   }
 
-  private let background = NSView()
+  private let background = MaterialView()
   private let bezel = BezelView(cornerRadius: Constants.height / 2)
   private let actions: [Action]
   private var buttons: [NSButton] = []
@@ -144,7 +144,10 @@ private extension EditorOverlayToolbar {
     background.layer?.cornerCurve = .continuous
     background.layer?.cornerRadius = Constants.height / 2
     background.layer?.masksToBounds = true
-    background.layerBackgroundColor = .white
+
+    // Same recipe as the document background: backdrop blur + near-white tint
+    background.material = .popover
+    background.tintColor = NSColor.white.withAlphaComponent(0.95)
 
     addSubview(background)
     addSubview(bezel)
