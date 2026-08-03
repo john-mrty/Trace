@@ -75,7 +75,6 @@ extension EditorViewController: NSMenuItemValidation {
   private static let fileActions = [
     #selector(copyFilePath(_:)),
     #selector(copyFolderPath(_:)),
-    #selector(copyPandocCommand(_:)),
     #selector(revealInFinder(_:)),
     #selector(deleteVersionsByDate(_:)),
     #selector(deleteVersionsByCapacity(_:)),
@@ -377,19 +376,6 @@ private extension EditorViewController {
   @IBAction func copyFolderPath(_ sender: Any?) {
     guard let folderURL = document?.folderURL else { return }
     NSPasteboard.general.overwrite(string: folderURL.path)
-  }
-
-  @IBAction func copyPandocCommand(_ sender: Any?) {
-    guard let document, let format = (sender as? NSMenuItem)?.identifier?.rawValue else {
-      Logger.log(.error, "Failed to copy pandoc command")
-      return
-    }
-
-    copyPandocCommand(document: document, format: format)
-  }
-
-  @IBAction func learnPandoc(_ sender: Any?) {
-    NSWorkspace.shared.safelyOpenURL(string: "https://github.com/MarkEdit-app/MarkEdit/wiki/Manual#pandoc")
   }
 
   @IBAction func deleteVersionsByDate(_ sender: Any?) {

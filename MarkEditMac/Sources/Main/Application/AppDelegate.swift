@@ -17,7 +17,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet weak var mainExtensionsMenu: NSMenu?
   @IBOutlet weak var mainWindowMenu: NSMenu?
 
-  @IBOutlet weak var copyPandocCommandMenu: NSMenu?
   @IBOutlet weak var openFileInMenu: NSMenu?
   @IBOutlet weak var reopenFileMenu: NSMenu?
   @IBOutlet weak var lineEndingsMenu: NSMenu?

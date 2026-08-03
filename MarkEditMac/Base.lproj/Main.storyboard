@@ -201,50 +201,6 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Copy Pandoc Command" id="53x-nK-wnX">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Copy Pandoc Command" id="QZC-LS-WMo">
-                                                <items>
-                                                    <menuItem title="Export to HTML" identifier="html" id="iIq-nl-rwB">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="copyPandocCommand:" target="Ady-hI-5gd" id="XzJ-IH-DlB"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Export to PDF" identifier="pdf" id="oc0-ce-Yrd">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="copyPandocCommand:" target="Ady-hI-5gd" id="exM-gT-yXb"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Export to Word Docx" identifier="docx" id="Ukm-Sm-nrt">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="copyPandocCommand:" target="Ady-hI-5gd" id="m4b-D9-ogv"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Export to RTF" identifier="rtf" id="QVA-GW-ruk">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="copyPandocCommand:" target="Ady-hI-5gd" id="vGl-GC-xNL"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Export to EPUB" identifier="epub" id="ORv-QM-Kju">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="copyPandocCommand:" target="Ady-hI-5gd" id="Azb-UJ-tCG"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem isSeparatorItem="YES" id="KaR-GR-i0Y"/>
-                                                    <menuItem title="Learn More…" id="yv7-Am-Rb2">
-                                                        <modifierMask key="keyEquivalentModifierMask"/>
-                                                        <connections>
-                                                            <action selector="learnPandoc:" target="Ady-hI-5gd" id="z8q-nL-VUU"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                </items>
-                                            </menu>
-                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="cON-X6-d1V"/>
                                         <menuItem title="Reveal in Finder" keyEquivalent="r" id="gwQ-Vq-avP">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
@@ -1022,7 +978,6 @@ Gw
                 </application>
                 <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MarkEdit" customModuleProvider="target">
                     <connections>
-                        <outlet property="copyPandocCommandMenu" destination="QZC-LS-WMo" id="GLu-1M-G8M"/>
                         <outlet property="editCommandsMenu" destination="9un-8n-UQZ" id="TkW-D6-2rF"/>
                         <outlet property="editFindMenu" destination="1b7-l0-nxx" id="qe6-lW-EOG"/>
                         <outlet property="editFontMenu" destination="VwK-Nx-wgD" id="gtE-IA-gOo"/>

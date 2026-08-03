@@ -57,7 +57,6 @@ enum Localized {
     static let dimInactiveLines = String(localized: "Dim Inactive Lines", comment: "Toolbar item to dim lines outside the current selection")
     static let textFormat = String(localized: "Text Format", comment: "Toolbar item to use text format menu")
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
-    static let copyPandocCommand = String(localized: "Copy Pandoc Command", comment: "Toolbar item to copy pandoc command")
   }
 
   enum Search {
@@ -193,7 +192,6 @@ enum Localized {
 //
 // Note: double check availability and deployment target before adding new icons
 enum Icons {
-  static let appleTerminal = "apple.terminal"
   static let arrowDownCircle = "arrow.down.circle"
   static let arrowUturnBackwardCircle = "arrow.uturn.backward.circle"
   static let bold = "bold"
