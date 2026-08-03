@@ -142,6 +142,9 @@ extension EditorViewController {
     view.window?.backgroundColor = AppDesign.reduceTransparency ? backgroundColor : .clear
     view.window?.isOpaque = AppDesign.reduceTransparency
     backdropView.isHidden = AppDesign.reduceTransparency
+    // Brightness floor under the blur: without this, dark desktops bleed through
+    // far more than the web layer's 0.95 alpha alone can cover.
+    backdropView.tintColor = backgroundColor.withAlphaComponent(0.6)
     titlebarView?.layerBackgroundColor = backgroundColor
 
     let prefersTintedToolbar = theme.prefersTintedToolbar || backgroundColor.isTintedColor
