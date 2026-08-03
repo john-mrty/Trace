@@ -136,7 +136,7 @@ function buildTheme(colors: EditorColors, scheme?: ColorScheme) {
     // Root
     '&': {
       color: colors.text,
-      backgroundColor: translucentBackground(colors.background, 0.88),
+      backgroundColor: translucentBackground(colors.background, 0.95),
     },
     '.cm-cursor, .cm-dropCursor': {
       borderLeftColor: colors.caret,
@@ -153,7 +153,7 @@ function buildTheme(colors: EditorColors, scheme?: ColorScheme) {
     // Gutters
     '.cm-gutters': {
       color: colors.lineNumber,
-      backgroundColor: translucentBackground(colors.background, 0.94),
+      backgroundColor: translucentBackground(colors.background, 0.97),
     },
     '.cm-lineNumbers > .cm-activeLineGutter': {
       color: colors.text,
