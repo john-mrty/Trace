@@ -3,6 +3,7 @@
   "strings" : {
     "**URL:** %@" : {
       "comment" : "Extension URL line (format) in the install confirmation",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -43,6 +44,7 @@
     },
     "%lld extensions" : {
       "comment" : "Segment tooltip showing the number of extensions",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -124,6 +126,7 @@
     },
     "⚠️ This source is not reviewed by MarkEdit. Only continue if you trust it." : {
       "comment" : "Caution shown before installing an extension from a raw URL",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -141,6 +144,7 @@
     },
     "🎉 %@ is out" : {
       "comment" : "Title format for new version is out",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -226,6 +230,7 @@
     },
     "Actions" : {
       "comment" : "Toolbar menu of extension manager actions",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -276,6 +281,7 @@
       }
     },
     "Allows the evaluation to return a Promise object. When enabled, the JavaScript must return a value." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -327,6 +333,7 @@
     },
     "Argument “%@” not found in event descriptor, the descriptor is likely malformed." : {
       "comment" : "Script error when a command argument is missing due to a corrupted Apple Event",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -344,6 +351,7 @@
     },
     "Ask Before Updating" : {
       "comment" : "Update behavior: prompt before updating",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -428,6 +436,7 @@
       }
     },
     "Call Async JavaScript" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -462,6 +471,7 @@
     },
     "Cannot export files with extension “%@”, supported extensions: %@." : {
       "comment" : "Script error when attempting to save files with an unsupported extension",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -519,6 +529,7 @@
     },
     "Check Version History" : {
       "comment" : "Title for the \"Check Version History\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -604,6 +615,7 @@
     },
     "Compact" : {
       "comment" : "Compact mode for window toolbar",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -637,6 +649,7 @@
       }
     },
     "Content" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -688,6 +701,7 @@
     },
     "Couldn’t find a command to handle incoming Apple Event." : {
       "comment" : "Script error when MarkEdit has no command to handle the incoming Apple Event",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -705,6 +719,7 @@
     },
     "Couldn’t find the extension “%@” in the registry." : {
       "comment" : "Error when a deep-link id does not resolve in the registry",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -722,6 +737,7 @@
     },
     "Couldn’t reach the extension registry." : {
       "comment" : "Error shown when the registry can't be loaded",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -738,6 +754,7 @@
       }
     },
     "Create New Document" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -754,6 +771,7 @@
       }
     },
     "Creates a new document, with optional parameters to set the file name and the initial content." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -944,6 +962,7 @@
     },
     "Disable Update Checks" : {
       "comment" : "Title for the \"Disable Update Checks\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -978,6 +997,7 @@
     },
     "Discover" : {
       "comment" : "Extension manager mode: browse the registry",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1063,6 +1083,7 @@
     },
     "Enabled" : {
       "comment" : "Toggle title for enabling an installed extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1096,6 +1117,7 @@
       }
     },
     "Evaluate JavaScript" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1129,6 +1151,7 @@
       }
     },
     "Evaluates JavaScript and gets the result on the active document; throws an error if no editor is opened." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1146,6 +1169,7 @@
     },
     "Extension Installed" : {
       "comment" : "Title for the extension installed confirmation",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1163,6 +1187,7 @@
     },
     "Extension Updates Available" : {
       "comment" : "Title for the extension updates prompt",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1180,6 +1205,7 @@
     },
     "Extensions" : {
       "comment" : "Title of the extension manager window",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1197,6 +1223,7 @@
     },
     "Extensions Updated" : {
       "comment" : "Title shown after extensions are updated",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1214,6 +1241,7 @@
     },
     "Failed to get the update." : {
       "comment" : "Title for failed to get the update",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1231,6 +1259,7 @@
     },
     "Failed to install the extension." : {
       "comment" : "Title for a failed extension installation",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1248,6 +1277,7 @@
     },
     "Featured" : {
       "comment" : "Badge shown for featured extensions recommended by MarkEdit",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1281,6 +1311,7 @@
       }
     },
     "File Name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1515,6 +1546,7 @@
     },
     "Get Custom Themes…" : {
       "comment" : "Get custom themes from the GitHub",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1531,6 +1563,7 @@
       }
     },
     "Get File Content" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1547,6 +1580,7 @@
       }
     },
     "Gets file content of the active document; throws an error if no editor is opened." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1597,6 +1631,7 @@
       }
     },
     "Granularity" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1648,6 +1683,7 @@
     },
     "Hidden" : {
       "comment" : "Hidden mode for window toolbar",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1668,6 +1704,7 @@
     },
     "Homepage" : {
       "comment" : "Link to an extension's homepage",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1718,6 +1755,7 @@
       }
     },
     "Initial Content" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1905,6 +1943,7 @@
     },
     "Install" : {
       "comment" : "Button title to confirm installing an extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1922,6 +1961,7 @@
     },
     "Install “%@”?" : {
       "comment" : "Title (format) for the extension install confirmation",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1939,6 +1979,7 @@
     },
     "Install Extension from URL" : {
       "comment" : "Title for the install-from-URL prompt",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1956,6 +1997,7 @@
     },
     "Install from URL…" : {
       "comment" : "Menu item to install an extension from a URL",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1973,6 +2015,7 @@
     },
     "Installed" : {
       "comment" : "Extension manager mode: installed extensions",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2024,6 +2067,7 @@
     },
     "JavaScript evaluation failed at line %d, column %d: %@" : {
       "comment" : "Script error when JavaScript evaluation raises a detailed error",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2047,6 +2091,7 @@
     },
     "JavaScript evaluation failed for an unknown reason." : {
       "comment" : "Script error when JavaScript evaluation raises an error with no details",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2081,6 +2126,7 @@
     },
     "Later" : {
       "comment" : "Button title to postpone relaunching after installing an extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2200,6 +2246,7 @@
     },
     "Local" : {
       "comment" : "Label for a local extension that isn't tracked by the registry",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2234,6 +2281,7 @@
     },
     "MarkEdit %@ is available!" : {
       "comment" : "Title for new version available",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2251,6 +2299,7 @@
     },
     "MarkEdit %@ is currently the latest version." : {
       "comment" : "Message for the up-to-date info",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2267,6 +2316,7 @@
       }
     },
     "Missing active document to proceed." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2318,6 +2368,7 @@
     },
     "Never Check" : {
       "comment" : "Update behavior: never reach the registry in the background",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2351,6 +2402,7 @@
       }
     },
     "New Document named ${fileName} with ${initialContent}" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2419,6 +2471,7 @@
     },
     "No editor for document “%@” found." : {
       "comment" : "Script error when MarkEdit cannot find the editor view to run document commands in",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2436,6 +2489,7 @@
     },
     "No extensions found." : {
       "comment" : "Empty state for the Discover list",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2453,6 +2507,7 @@
     },
     "No extensions installed." : {
       "comment" : "Empty state for installed extensions",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2470,6 +2525,7 @@
     },
     "No updates available." : {
       "comment" : "Empty state when the installed list is filtered to updates only",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2503,7 +2559,7 @@
       }
     },
     "Normal" : {
-      "comment" : "Normal line spacing\nNormal mode for window toolbar",
+      "comment" : "Normal line spacing",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2521,6 +2577,7 @@
     },
     "Not Now" : {
       "comment" : "Title for the \"Not Now\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2538,6 +2595,7 @@
     },
     "Official" : {
       "comment" : "Badge shown for extensions authored by the MarkEdit-app organization",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2555,6 +2613,7 @@
     },
     "Official Website" : {
       "comment" : "Menu item to open the extensions official website",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2606,6 +2665,7 @@
     },
     "Open Scripts Folder" : {
       "comment" : "Menu item to reveal the extensions scripts folder",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2643,6 +2703,7 @@
     },
     "Please check your network connection or get the latest release from the version history." : {
       "comment" : "Message for failed to get the update",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2847,6 +2908,7 @@
     },
     "Refresh" : {
       "comment" : "Menu item to refetch the extension registry",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2864,6 +2926,7 @@
     },
     "Refreshing…" : {
       "comment" : "State shown while the extension list is being refreshed",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2898,6 +2961,7 @@
     },
     "Relaunch" : {
       "comment" : "Button title to relaunch the app after installing an extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2915,6 +2979,7 @@
     },
     "Relaunch MarkEdit to start using “%@”." : {
       "comment" : "Message (format) shown after an extension is installed",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2932,6 +2997,7 @@
     },
     "Relaunch MarkEdit to use the updated extensions." : {
       "comment" : "Message shown after extensions are updated",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2949,6 +3015,7 @@
     },
     "Relaunch to apply your changes." : {
       "comment" : "Notice shown when extension changes need a relaunch",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2983,6 +3050,7 @@
     },
     "Remind Me Later" : {
       "comment" : "Title for the \"Remind Me Later\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3085,6 +3153,7 @@
     },
     "Retry" : {
       "comment" : "Button to retry reaching the extension registry",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3102,6 +3171,7 @@
     },
     "Reveal" : {
       "comment" : "Button title to reveal an extension's script file in Finder",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3135,6 +3205,7 @@
       }
     },
     "Save Changes" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3322,6 +3393,7 @@
     },
     "Show Available Updates" : {
       "comment" : "Update behavior: only surface updates in the Extensions window",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3390,6 +3462,7 @@
     },
     "Skip This Version" : {
       "comment" : "Title for the \"Skip This Version\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3458,6 +3531,7 @@
     },
     "Submit an Extension…" : {
       "comment" : "Menu item to open the extension contributing guide",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3679,6 +3753,7 @@
     },
     "The extension couldn’t be downloaded or verified." : {
       "comment" : "Message for a failed extension installation",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3713,6 +3788,7 @@
     },
     "This extension requires MarkEdit %@ or later." : {
       "comment" : "Error (format) when an extension needs a newer app version",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3730,6 +3806,7 @@
     },
     "This release requires macOS %@ or later and cannot be installed without upgrading your operating system." : {
       "comment" : "Message for minimum required OS version",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3747,6 +3824,7 @@
     },
     "This removes its script from the scripts folder." : {
       "comment" : "Message shown when confirming an extension uninstall",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3815,6 +3893,7 @@
     },
     "Toolbar Mode:" : {
       "comment" : "Label for window toolbar mode",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3866,6 +3945,7 @@
     },
     "Turn off to keep the extension installed but inactive" : {
       "comment" : "Tooltip explaining the enable switch",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3934,6 +4014,7 @@
     },
     "Uninstall" : {
       "comment" : "Button title to uninstall an extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3951,6 +4032,7 @@
     },
     "Uninstall “%@”?" : {
       "comment" : "Title (format) to confirm uninstalling an extension",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3968,6 +4050,7 @@
     },
     "Update" : {
       "comment" : "Button title to install extension updates",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3985,6 +4068,7 @@
     },
     "Update All" : {
       "comment" : "Menu item to update all extensions with available updates",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4002,6 +4086,7 @@
     },
     "Update Automatically" : {
       "comment" : "Update behavior: update automatically",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4019,6 +4104,7 @@
     },
     "Update Behavior" : {
       "comment" : "Submenu title for how the app handles extension updates, from never checking to fully automatic",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4035,6 +4121,7 @@
       }
     },
     "Update File Content" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4069,6 +4156,7 @@
     },
     "Update to %@" : {
       "comment" : "Button title (format) to update an extension to a version",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4086,6 +4174,7 @@
     },
     "Updates" : {
       "comment" : "Extension manager mode: installed extensions filtered to those with available updates",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4102,6 +4191,7 @@
       }
     },
     "Updates file content of the active document; throws an error if no editor is opened." : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4119,6 +4209,7 @@
     },
     "Updating…" : {
       "comment" : "State shown while extensions are being updated",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4136,6 +4227,7 @@
     },
     "View Release Page" : {
       "comment" : "Button in the release notes popover to open the release page\nTitle for the \"View Release Page\" button",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4153,6 +4245,7 @@
     },
     "What’s New" : {
       "comment" : "Button revealing an extension's latest release notes in a popover",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4169,6 +4262,7 @@
       }
     },
     "Whole Document" : {
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4322,6 +4416,7 @@
     },
     "Wrong file extension for type “%@”, use “.%@” instead." : {
       "comment" : "Script save error when the path extension does not match the output type",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -4345,6 +4440,7 @@
     },
     "You’re up-to-date!" : {
       "comment" : "Title for the up-to-date info",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {

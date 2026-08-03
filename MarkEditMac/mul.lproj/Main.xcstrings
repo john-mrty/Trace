@@ -2442,7 +2442,7 @@
     },
     "MgE-xt-001.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Manage Extensions…\"; ObjectID = \"MgE-xt-001\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3415,7 +3415,7 @@
     },
     "s40-D9-CoM.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Check for Updates…\"; ObjectID = \"s40-D9-CoM\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

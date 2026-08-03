@@ -12,9 +12,7 @@ import MarkEditKit
 /**
  Overlay lifecycle for `EditorWindow` (Option+` right-edge overlay), plus the floating FAB
  toolbar (`EditorOverlayToolbar`) shown while in that mode. Lives in its own file so the
- main `EditorWindow` class body stays under SwiftLint's `type_body_length` limit. The FAB
- reuses the same selectors/menus as the real `NSToolbar` items in
- `EditorViewController+Toolbar.swift`, in the same order as `.defaultItems`.
+ main `EditorWindow` class body stays under SwiftLint's `type_body_length` limit.
  */
 extension EditorWindow {
   /// Summons this window as a right-edge overlay: floating above other apps, full height.
@@ -240,8 +238,8 @@ private extension EditorWindow {
     static let fabEdgeOffset: CGFloat = 16
   }
 
-  /// The 6 most useful writing actions, matching `NSToolbarItem.Identifier.defaultItems`'s
-  /// order: table of contents, headers, bold, italic, list, hide syntax marks.
+  /// The most useful writing actions: table of contents, headers, bold,
+  /// italic, list, hide syntax marks, dim inactive lines.
   func overlayFabActions(for viewController: EditorViewController) -> [EditorOverlayToolbar.Action] {
     [
       EditorOverlayToolbar.Action(
