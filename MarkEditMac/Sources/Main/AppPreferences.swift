@@ -58,24 +58,6 @@ enum AppPreferences {
   }
 
   enum Editor {
-    @Storage(key: "editor.light-theme", defaultValue: AppTheme.GitHubLight.editorTheme)
-    static var lightTheme: String {
-      didSet {
-        Task { @MainActor in
-          AppTheme.current.updateAppearance(animateChanges: true)
-        }
-      }
-    }
-
-    @Storage(key: "editor.dark-theme", defaultValue: AppTheme.GitHubDark.editorTheme)
-    static var darkTheme: String {
-      didSet {
-        Task { @MainActor in
-          AppTheme.current.updateAppearance(animateChanges: true)
-        }
-      }
-    }
-
     @Storage(key: "editor.accent-color", defaultValue: AppAccentColor.amber)
     static var accentColor: AppAccentColor {
       didSet {

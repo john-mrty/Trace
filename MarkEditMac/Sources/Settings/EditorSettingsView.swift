@@ -15,8 +15,6 @@ import MarkEditKit
 
 @MainActor
 struct EditorSettingsView: View {
-  @State private var lightTheme = AppPreferences.Editor.lightTheme
-  @State private var darkTheme = AppPreferences.Editor.darkTheme
   @State private var accentColor = AppPreferences.Editor.accentColor
   @State private var showLineNumbers = AppPreferences.Editor.showLineNumbers
   @State private var showActiveLineIndicator = AppPreferences.Editor.showActiveLineIndicator
@@ -40,22 +38,6 @@ struct EditorSettingsView: View {
 
       SettingsForm {
         Section {
-          Picker(Localized.Settings.lightTheme, selection: $lightTheme) {
-            createThemePicker(isDark: false)
-          }
-          .onChange(of: lightTheme) {
-            AppPreferences.Editor.lightTheme = lightTheme
-          }
-          .formMenuPicker()
-
-          Picker(Localized.Settings.darkTheme, selection: $darkTheme) {
-            createThemePicker(isDark: true)
-          }
-          .onChange(of: darkTheme) {
-            AppPreferences.Editor.darkTheme = darkTheme
-          }
-          .formMenuPicker()
-
           Picker(Localized.Settings.accentColor, selection: $accentColor) {
             ForEach(AppAccentColor.allCases, id: \.self) {
               Text($0.description).tag($0)
@@ -199,12 +181,5 @@ private extension EditorSettingsView {
         AppPreferences.Editor.fontSize = fontSize
       }
     )
-  }
-
-  @ViewBuilder
-  func createThemePicker(isDark: Bool) -> some View {
-    ForEach(AppTheme.allCases.filter { $0.isDark == isDark }, id: \.self) {
-      Text($0.description).tag($0.editorTheme)
-    }
   }
 }

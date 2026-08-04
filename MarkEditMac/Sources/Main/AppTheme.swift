@@ -42,10 +42,7 @@ struct AppTheme {
 
 extension AppTheme: CaseIterable, Hashable, CustomStringConvertible {
   static var allCases: [AppTheme] {
-    [
-      GitHubLight, GitHubDark,
-      MinimalLight, MinimalDark,
-    ]
+    [GitHubLight, GitHubDark]
   }
 
   static var GitHubLight: Self {
@@ -66,34 +63,12 @@ extension AppTheme: CaseIterable, Hashable, CustomStringConvertible {
     )
   }
 
-  static var MinimalLight: Self {
-    Self(
-      isDark: false,
-      editorTheme: "minimal-light",
-      windowBackground: NSColor(hexCode: 0xffffff),
-      prefersTintedToolbar: false
-    )
-  }
-
-  static var MinimalDark: Self {
-    Self(
-      isDark: true,
-      editorTheme: "minimal-dark",
-      windowBackground: NSColor(hexCode: 0x1e1e1e),
-      prefersTintedToolbar: true
-    )
-  }
-
   var description: String {
     switch self {
     case Self.GitHubLight:
-      return "GitHub (Light)"
+      return "Light"
     case Self.GitHubDark:
-      return "GitHub (Dark)"
-    case Self.MinimalLight:
-      return "Minimal (Light)"
-    case Self.MinimalDark:
-      return "Minimal (Dark)"
+      return "Dark"
     default:
       fatalError("Invalid theme was found")
     }
@@ -148,17 +123,7 @@ enum AppAccentColor: String, Codable, CaseIterable, CustomStringConvertible {
   }
 }
 
-@MainActor
 extension AppTheme {
-  // Stored names can reference removed themes or a mismatched appearance
-  // (e.g. a light theme saved as the dark choice); resolve to a sane default.
-  static var lightTheme: Self {
-    let theme = withName(AppPreferences.Editor.lightTheme)
-    return theme.isDark ? GitHubLight : theme
-  }
-
-  static var darkTheme: Self {
-    let theme = withName(AppPreferences.Editor.darkTheme)
-    return theme.isDark ? theme : GitHubDark
-  }
+  static var lightTheme: Self { GitHubLight }
+  static var darkTheme: Self { GitHubDark }
 }
