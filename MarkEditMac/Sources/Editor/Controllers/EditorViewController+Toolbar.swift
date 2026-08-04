@@ -36,11 +36,12 @@ extension EditorViewController {
 
     // Anchored above an explicit source view (e.g. the FAB button)
     if let sourceView {
-      return tableOfContentsMenu.popUp(
+      tableOfContentsMenu.popUp(
         positioning: nil,
         at: CGPoint(x: 0, y: sourceView.bounds.maxY + 8),
         in: sourceView
       )
+      return
     }
 
     // Pop up the menu relative to the toolbar item
