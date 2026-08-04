@@ -18,7 +18,22 @@ extension AppDelegate {
   }
 
   func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
-    shouldOpenOrCreateDocument() && openOrCreateDocument(sender: sender)
+    guard shouldOpenOrCreateDocument() else {
+      return false
+    }
+
+    showWelcomeWindow()
+    return false
+  }
+
+  func showWelcomeWindow() {
+    if welcomeWindowController == nil {
+      welcomeWindowController = WelcomeWindowController()
+    }
+
+    welcomeWindowController?.refreshRecentDocuments()
+    welcomeWindowController?.window?.center()
+    welcomeWindowController?.showWindow(self)
   }
 
   func applicationDockMenu(_ sender: NSApplication) -> NSMenu? {
@@ -129,6 +144,173 @@ extension AppDelegate {
 
     NSApp.activate(ignoringOtherApps: true)
     target.enterOverlayMode(animated: true)
+  }
+}
+
+// MARK: - Welcome Window
+
+/// Shown on launch (and dock re-activation) when no document is open:
+/// create a new document, open one, or jump back into a recent file.
+@MainActor
+final class WelcomeWindowController: NSWindowController {
+  private let recentsStackView = NSStackView()
+  private var observation: NSObjectProtocol?
+
+  convenience init() {
+    let window = NSWindow(
+      contentRect: CGRect(x: 0, y: 0, width: 400, height: 0),
+      styleMask: [.titled, .closable, .fullSizeContentView],
+      backing: .buffered,
+      defer: false
+    )
+
+    window.titlebarAppearsTransparent = true
+    window.titleVisibility = .hidden
+    window.isMovableByWindowBackground = true
+    self.init(window: window)
+
+    window.contentView = createContentView()
+
+    // Dismiss once any editor window takes over, no matter how it was opened
+    observation = NotificationCenter.default.addObserver(
+      forName: NSWindow.didBecomeMainNotification,
+      object: nil,
+      queue: .main
+    ) { [weak self] notification in
+      guard notification.object is EditorWindow else {
+        return
+      }
+
+      Task { @MainActor in
+        self?.close()
+      }
+    }
+  }
+
+  func refreshRecentDocuments() {
+    recentsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    let recentURLs = NSDocumentController.shared.recentDocumentURLs.prefix(5)
+
+    guard !recentURLs.isEmpty else {
+      let emptyLabel = NSTextField(labelWithString: String(localized: "No recent documents"))
+      emptyLabel.font = .systemFont(ofSize: 12)
+      emptyLabel.textColor = .tertiaryLabelColor
+      recentsStackView.addArrangedSubview(emptyLabel)
+      return
+    }
+
+    for url in recentURLs {
+      let button = NSButton()
+      button.isBordered = false
+      button.imagePosition = .imageLeading
+      button.alignment = .left
+      button.image = NSWorkspace.shared.icon(forFile: url.path)
+      button.image?.size = CGSize(width: 16, height: 16)
+      button.attributedTitle = NSAttributedString(
+        string: url.deletingPathExtension().lastPathComponent,
+        attributes: [.font: NSFont.systemFont(ofSize: 13), .foregroundColor: NSColor.labelColor]
+      )
+      button.toolTip = url.path
+      button.target = self
+      button.action = #selector(openRecentDocument(_:))
+      button.identifier = NSUserInterfaceItemIdentifier(url.path)
+      recentsStackView.addArrangedSubview(button)
+    }
+  }
+}
+
+// MARK: - Private
+
+private extension WelcomeWindowController {
+  func createContentView() -> NSView {
+    let iconView = NSImageView(image: NSApp.applicationIconImage)
+    iconView.widthAnchor.constraint(equalToConstant: 96).isActive = true
+    iconView.heightAnchor.constraint(equalToConstant: 96).isActive = true
+
+    let titleLabel = NSTextField(labelWithString: "Trace")
+    titleLabel.font = .systemFont(ofSize: 26, weight: .semibold)
+
+    let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    let versionLabel = NSTextField(labelWithString: String(localized: "Version \(version)"))
+    versionLabel.font = .systemFont(ofSize: 12)
+    versionLabel.textColor = .secondaryLabelColor
+
+    let newButton = NSButton(
+      title: Localized.Document.newDocument,
+      target: self,
+      action: #selector(createNewDocument(_:))
+    )
+    newButton.bezelStyle = .rounded
+    newButton.controlSize = .large
+    newButton.keyEquivalent = "\r"
+
+    let openButton = NSButton(
+      title: Localized.Document.openDocument,
+      target: self,
+      action: #selector(openExistingDocument(_:))
+    )
+    openButton.bezelStyle = .rounded
+    openButton.controlSize = .large
+
+    let buttonsStackView = NSStackView(views: [newButton, openButton])
+    buttonsStackView.orientation = .horizontal
+    buttonsStackView.spacing = 10
+
+    recentsStackView.orientation = .vertical
+    recentsStackView.alignment = .leading
+    recentsStackView.spacing = 8
+
+    let stackView = NSStackView(views: [
+      iconView,
+      titleLabel,
+      versionLabel,
+      buttonsStackView,
+      recentsStackView,
+    ])
+
+    stackView.orientation = .vertical
+    stackView.alignment = .centerX
+    stackView.spacing = 8
+    stackView.setCustomSpacing(2, after: titleLabel)
+    stackView.setCustomSpacing(24, after: versionLabel)
+    stackView.setCustomSpacing(28, after: buttonsStackView)
+    stackView.edgeInsets = NSEdgeInsets(top: 36, left: 48, bottom: 36, right: 48)
+
+    let contentView = NSView()
+    contentView.addSubview(stackView)
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+      stackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+      stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+      stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+      contentView.widthAnchor.constraint(greaterThanOrEqualToConstant: 400),
+    ])
+
+    return contentView
+  }
+
+  @objc func createNewDocument(_ sender: NSButton) {
+    close()
+    NSDocumentController.shared.newDocument(nil)
+  }
+
+  @objc func openExistingDocument(_ sender: NSButton) {
+    close()
+    NSApp.showOpenPanel()
+  }
+
+  @objc func openRecentDocument(_ sender: NSButton) {
+    guard let path = sender.identifier?.rawValue else {
+      return
+    }
+
+    close()
+    NSDocumentController.shared.openDocument(
+      withContentsOf: URL(filePath: path),
+      display: true
+    ) { _, _, _ in }
   }
 }
 
