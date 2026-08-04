@@ -34,17 +34,20 @@ extension EditorViewController {
     bridge.core.handleFocusLost()
     presentedPopover?.close()
 
-    // Anchored above an explicit source view (e.g. the FAB button). Populate before
-    // showing, then pin the *last* item at the anchor so the menu extends upward
-    // and its bottom edge stays just above the view.
+    // Anchored above an explicit source view (e.g. the FAB button). Populate first
+    // so the menu height is known, then place the top-left anchor a full menu
+    // height above the view — the menu grows downward and its bottom edge lands
+    // just above the view. Mind flipped coordinates: NSButton is flipped, so
+    // "above" is negative y.
     if let sourceView {
       let menu = tableOfContentsMenu
       menu.delegate = nil
       Task { @MainActor in
         await populateTableOfContentsMenu(menu)
+        let offset = 12 + menu.size.height
         menu.popUp(
-          positioning: menu.items.last,
-          at: CGPoint(x: 0, y: sourceView.bounds.maxY + 12),
+          positioning: nil,
+          at: CGPoint(x: 0, y: sourceView.isFlipped ? -offset : sourceView.bounds.maxY + offset),
           in: sourceView
         )
       }
