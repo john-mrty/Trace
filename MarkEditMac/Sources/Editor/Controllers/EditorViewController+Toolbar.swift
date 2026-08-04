@@ -35,16 +35,16 @@ extension EditorViewController {
     presentedPopover?.close()
 
     // Anchored above an explicit source view (e.g. the FAB button). Populate before
-    // showing: the menu's top-left pins to the anchor point and it grows downward,
-    // so its final height must be known to keep the bottom edge above the view.
+    // showing, then pin the *last* item at the anchor so the menu extends upward
+    // and its bottom edge stays just above the view.
     if let sourceView {
       let menu = tableOfContentsMenu
       menu.delegate = nil
       Task { @MainActor in
         await populateTableOfContentsMenu(menu)
         menu.popUp(
-          positioning: nil,
-          at: CGPoint(x: 0, y: sourceView.bounds.maxY + 12 + menu.size.height),
+          positioning: menu.items.last,
+          at: CGPoint(x: 0, y: sourceView.bounds.maxY + 12),
           in: sourceView
         )
       }
