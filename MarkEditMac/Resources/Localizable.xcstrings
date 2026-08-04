@@ -813,6 +813,7 @@
     },
     "Dark Theme:" : {
       "comment" : "Dark theme for the editor",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2177,6 +2178,7 @@
     },
     "Light Theme:" : {
       "comment" : "Light theme for the editor",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
