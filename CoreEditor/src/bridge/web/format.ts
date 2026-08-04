@@ -1,6 +1,8 @@
 import { WebModule } from '../webModule';
 import {
   EditCommand,
+  FormatState,
+  getFormatState,
   toggleBold,
   toggleItalic,
   toggleStrikethrough,

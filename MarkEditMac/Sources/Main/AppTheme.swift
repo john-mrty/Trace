@@ -100,15 +100,17 @@ extension AppTheme: CaseIterable, Hashable, CustomStringConvertible {
   }
 }
 
-// MARK: - Private
-
 @MainActor
-private extension AppTheme {
+extension AppTheme {
+  // Stored names can reference removed themes or a mismatched appearance
+  // (e.g. a light theme saved as the dark choice); resolve to a sane default.
   static var lightTheme: Self {
-    withName(AppPreferences.Editor.lightTheme)
+    let theme = withName(AppPreferences.Editor.lightTheme)
+    return theme.isDark ? GitHubLight : theme
   }
 
   static var darkTheme: Self {
-    withName(AppPreferences.Editor.darkTheme)
+    let theme = withName(AppPreferences.Editor.darkTheme)
+    return theme.isDark ? theme : GitHubDark
   }
 }

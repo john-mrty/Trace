@@ -40,7 +40,7 @@ struct EditorSettingsView: View {
       SettingsForm {
         Section {
           Picker(Localized.Settings.lightTheme, selection: $lightTheme) {
-            createThemePicker()
+            createThemePicker(isDark: false)
           }
           .onChange(of: lightTheme) {
             AppPreferences.Editor.lightTheme = lightTheme
@@ -48,7 +48,7 @@ struct EditorSettingsView: View {
           .formMenuPicker()
 
           Picker(Localized.Settings.darkTheme, selection: $darkTheme) {
-            createThemePicker()
+            createThemePicker(isDark: true)
           }
           .onChange(of: darkTheme) {
             AppPreferences.Editor.darkTheme = darkTheme
@@ -191,8 +191,8 @@ private extension EditorSettingsView {
   }
 
   @ViewBuilder
-  func createThemePicker() -> some View {
-    ForEach(AppTheme.allCases, id: \.self) {
+  func createThemePicker(isDark: Bool) -> some View {
+    ForEach(AppTheme.allCases.filter { $0.isDark == isDark }, id: \.self) {
       Text($0.description).tag($0.editorTheme)
     }
   }

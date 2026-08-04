@@ -1,3 +1,8 @@
+export interface FormatState {
+  bold: boolean;
+  italic: boolean;
+}
+
 export enum EditCommand {
   indentLess = 'indentLess',
   indentMore = 'indentMore',

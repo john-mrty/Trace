@@ -59,6 +59,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppDesign.migrateMainMenuIcons(delegate: self)
+
+    // Normalize stored theme names that reference removed themes
+    // or a mismatched appearance (see AppTheme.lightTheme/darkTheme)
+    AppPreferences.Editor.lightTheme = AppTheme.lightTheme.editorTheme
+    AppPreferences.Editor.darkTheme = AppTheme.darkTheme.editorTheme
+
     appearanceObservation = NSApp.observe(\.effectiveAppearance) { _, _ in
       Task { @MainActor in
         AppTheme.current.updateAppearance()

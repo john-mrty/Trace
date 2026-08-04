@@ -17,8 +17,11 @@ import {
   toggleComment,
 } from '@codemirror/commands';
 
-import { EditCommand } from './types';
+import { syntaxTree } from '@codemirror/language';
+import { SyntaxNode } from '@lezer/common';
+import { EditCommand, FormatState } from './types';
 import { scrollIntoView } from '../selection';
+import selectedRanges from '../selection/selectedRanges';
 import formatContent from './formatContent';
 import toggleBlockWithMarks from './toggleBlockWithMarks';
 import toggleLineLeadingMark from './toggleLineLeadingMark';
@@ -26,6 +29,28 @@ import toggleListStyle from './toggleListStyle';
 import replaceSelections from './replaceSelections';
 import insertBlockWithMarks from './insertBlockWithMarks';
 import insertSnippet from '../snippets/insertSnippet';
+
+/**
+ * Whether any selection sits inside bold or italic formatting,
+ * used to reflect state in native UI (e.g. the FAB) since
+ * concealed syntax marks give no visual cue.
+ */
+export function getFormatState(): FormatState {
+  const tree = syntaxTree(window.editor.state);
+  const contains = (nodeName: string) => selectedRanges().some(range => {
+    for (let node: SyntaxNode | null = tree.resolve(range.from); node !== null; node = node.parent) {
+      if (node.name === nodeName) {
+        return true;
+      }
+    }
+    return false;
+  });
+
+  return {
+    bold: contains('StrongEmphasis'),
+    italic: contains('Emphasis'),
+  };
+}
 
 export function toggleBold() {
   toggleBlockWithMarks('**', '**', 'StrongEmphasis', 'EmphasisMark');
