@@ -135,6 +135,7 @@ extension EditorViewController: EditorModuleCoreDelegate {
   func editorCoreWindowDidLoad(_ sender: EditorModuleCore) {
     hasFinishedLoading = true
     resetEditor()
+    setAccentColor()
     notifyAppReady()
   }
 

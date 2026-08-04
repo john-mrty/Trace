@@ -76,6 +76,13 @@ enum AppPreferences {
       }
     }
 
+    @Storage(key: "editor.accent-color", defaultValue: AppAccentColor.amber)
+    static var accentColor: AppAccentColor {
+      didSet {
+        performUpdates { $0.setAccentColor() }
+      }
+    }
+
     @Storage(key: "editor.font-style", defaultValue: .systemMono)
     static var fontStyle: FontStyle {
       didSet {

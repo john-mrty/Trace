@@ -120,6 +120,7 @@ enum Localized {
     static let openFontPanel = String(localized: "Open Font Panel…", comment: "Menu item for selecting custom fonts")
     static let lightTheme = String(localized: "Light Theme:", comment: "Light theme for the editor")
     static let darkTheme = String(localized: "Dark Theme:", comment: "Dark theme for the editor")
+    static let accentColor = String(localized: "Accent Color:", comment: "Accent color for the editor caret, selection, and toolbar")
     static let displayOptions = String(localized: "Show:", comment: "Label for display options")
     static let lineNumbers = String(localized: "Line numbers", comment: "Option to show line numbers")
     static let activeLineIndicator = String(localized: "Active line indicator", comment: "Option to show active line indicator")

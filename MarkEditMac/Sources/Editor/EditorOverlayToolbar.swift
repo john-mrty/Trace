@@ -105,7 +105,7 @@ final class EditorOverlayToolbar: NSView {
       let button = buttons[index]
 
       if let isActive = action.isActive {
-        button.contentTintColor = isActive() ? Constants.accentColor : nil
+        button.contentTintColor = isActive() ? AppPreferences.Editor.accentColor.nsColor : nil
       }
 
       guard let provider = action.currentSymbolName else {
@@ -143,11 +143,6 @@ private extension EditorOverlayToolbar {
     static let restingShadowOpacity: Float = 0.18
     static let raisedShadowOpacity: Float = 0.32
     static let shadowSettleDelay: TimeInterval = 0.3
-
-    // Matches the editor's amber caret/selection accent
-    static let accentColor = NSColor(name: nil) { appearance in
-      appearance.isDarkMode ? NSColor(hexCode: 0xe0a458) : NSColor(hexCode: 0x9a6b1f)
-    }
   }
 
   func setUpChrome() {
@@ -275,7 +270,7 @@ private extension EditorOverlayToolbar {
         )
       }
       if let isActive = action.isActive {
-        button.contentTintColor = isActive() ? Constants.accentColor : nil
+        button.contentTintColor = isActive() ? AppPreferences.Editor.accentColor.nsColor : nil
       }
 
       button.setAccessibilityLabel(action.accessibilityLabel)
@@ -328,8 +323,7 @@ private final class OverlayIconButton: NSButton {
 
   override func mouseEntered(with event: NSEvent) {
     super.mouseEntered(with: event)
-    // Warm accent wash, matching the editor's amber caret/selection
-    layerBackgroundColor = NSColor(srgbRed: 0.72, green: 0.55, blue: 0.28, alpha: 0.16)
+    layerBackgroundColor = AppPreferences.Editor.accentColor.nsColor.withAlphaComponent(0.16)
   }
 
   override func mouseExited(with event: NSEvent) {

@@ -87,6 +87,10 @@ export function setTypewriterMode(enabled: boolean) {
   scrollToSelection(enabled ? 'center' : 'nearest');
 }
 
+export function setAccentColor(caretColor: string, selectionColor: string) {
+  styling.setEditorAccent(caretColor, selectionColor);
+}
+
 export function setHideSyntaxMarks(enabled: boolean) {
   window.config.hideSyntaxMarks = enabled;
   styling.setHideSyntaxMarks(enabled);

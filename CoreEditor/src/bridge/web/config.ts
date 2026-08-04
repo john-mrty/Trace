@@ -3,6 +3,7 @@ import { WebFontFace, InvisiblesBehavior } from '../../config';
 import { TabKeyBehavior } from '../../modules/indentation';
 
 import {
+  setAccentColor,
   setTheme,
   setFontFace,
   setFontSize,
@@ -28,6 +29,7 @@ import {
  */
 export interface WebModuleConfig extends WebModule {
   setTheme({ name }: { name: string }): void;
+  setAccentColor({ caretColor, selectionColor }: { caretColor: string; selectionColor: string }): void;
   setFontFace({ fontFace }: { fontFace: WebFontFace }): void;
   setFontSize({ fontSize }: { fontSize: number }): void;
   setShowLineNumbers({ enabled }: { enabled: boolean }): void;
@@ -48,6 +50,10 @@ export interface WebModuleConfig extends WebModule {
 export class WebModuleConfigImpl implements WebModuleConfig {
   setTheme({ name }: { name: string }): void {
     setTheme(name);
+  }
+
+  setAccentColor({ caretColor, selectionColor }: { caretColor: string; selectionColor: string }): void {
+    setAccentColor(caretColor, selectionColor);
   }
 
   setFontFace({ fontFace }: { fontFace: WebFontFace }): void {

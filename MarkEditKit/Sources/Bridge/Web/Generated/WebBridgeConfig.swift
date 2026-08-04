@@ -26,6 +26,15 @@ public final class WebBridgeConfig {
     webView?.invoke(path: "webModules.config.setTheme", message: message, completion: completion)
   }
 
+  public func setAccentColor(caretColor: String, selectionColor: String, completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    let message = BridgeMessage(
+      ("caretColor", caretColor),
+      ("selectionColor", selectionColor)
+    )
+
+    webView?.invoke(path: "webModules.config.setAccentColor", message: message, completion: completion)
+  }
+
   public func setFontFace(fontFace: WebFontFace, completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     let message = BridgeMessage(
       ("fontFace", fontFace)

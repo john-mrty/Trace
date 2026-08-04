@@ -38,6 +38,7 @@ extension EditorViewController {
   func setTheme(_ theme: AppTheme) {
     updateWindowColors(theme)
     bridge.config.setTheme(name: theme.editorTheme)
+    setAccentColor(isDark: theme.isDark)
 
     // It's possible to select a light theme for dark mode,
     // override the window appearance to keep consistent.
@@ -53,6 +54,16 @@ extension EditorViewController {
 
   func setFontFace(_ fontFace: WebFontFace) {
     bridge.config.setFontFace(fontFace: fontFace)
+  }
+
+  func setAccentColor(isDark: Bool? = nil) {
+    let isDark = isDark ?? AppTheme.current.isDark
+    let accent = AppPreferences.Editor.accentColor
+    bridge.config.setAccentColor(
+      caretColor: accent.cssCaretColor(isDark: isDark),
+      selectionColor: accent.cssSelectionColor(isDark: isDark)
+    )
+    (view.window as? EditorWindow)?.overlayFab?.refreshButtonImages()
   }
 
   func setFontSize(_ fontSize: Double) {

@@ -17,6 +17,7 @@ import MarkEditKit
 struct EditorSettingsView: View {
   @State private var lightTheme = AppPreferences.Editor.lightTheme
   @State private var darkTheme = AppPreferences.Editor.darkTheme
+  @State private var accentColor = AppPreferences.Editor.accentColor
   @State private var showLineNumbers = AppPreferences.Editor.showLineNumbers
   @State private var showActiveLineIndicator = AppPreferences.Editor.showActiveLineIndicator
   @State private var showSelectionStatus = AppPreferences.Editor.showSelectionStatus
@@ -52,6 +53,16 @@ struct EditorSettingsView: View {
           }
           .onChange(of: darkTheme) {
             AppPreferences.Editor.darkTheme = darkTheme
+          }
+          .formMenuPicker()
+
+          Picker(Localized.Settings.accentColor, selection: $accentColor) {
+            ForEach(AppAccentColor.allCases, id: \.self) {
+              Text($0.description).tag($0)
+            }
+          }
+          .onChange(of: accentColor) {
+            AppPreferences.Editor.accentColor = accentColor
           }
           .formMenuPicker()
         }

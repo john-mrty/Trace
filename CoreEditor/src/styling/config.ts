@@ -21,6 +21,7 @@ import { tryGetEditor, afterDomUpdate, isMotionReduced } from '../common/utils';
  */
 export default interface StyleSheets {
   accentColor?: HTMLStyleElement;
+  editorAccent?: HTMLStyleElement;
   fontFace?: HTMLStyleElement;
   fontSize?: HTMLStyleElement;
   typewriterMode?: HTMLStyleElement;
@@ -150,6 +151,22 @@ export function setHideSyntaxMarks(enabled: boolean) {
   tryGetEditor()?.dispatch({
     effects: window.dynamics.conceal?.reconfigure(enabled ? concealExtension : []),
   });
+}
+
+/**
+ * User-selectable accent: overrides the theme's caret and selection colors.
+ * `!important` because theme styles are injected after this stylesheet.
+ */
+export function setEditorAccent(caretColor: string, selectionColor: string) {
+  if (styleSheets.editorAccent === undefined) {
+    styleSheets.editorAccent = createStyleSheet('');
+  }
+
+  styleSheets.editorAccent.textContent = `
+    .cm-content { caret-color: ${caretColor}; }
+    .cm-cursor, .cm-dropCursor { border-left-color: ${caretColor} !important; }
+    .cm-selectionBackground { background: ${selectionColor} !important; }
+  `;
 }
 
 export function setFocusMode(enabled: boolean) {
