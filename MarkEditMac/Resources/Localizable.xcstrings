@@ -228,6 +228,9 @@
         }
       }
     },
+    "Accent Color:" : {
+      "comment" : "Accent color for the editor caret, selection, and toolbar"
+    },
     "Actions" : {
       "comment" : "Toolbar menu of extension manager actions",
       "extractionState" : "stale",

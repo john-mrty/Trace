@@ -103,30 +103,31 @@ extension AppTheme: CaseIterable, Hashable, CustomStringConvertible {
 /// User-selectable accent, applied to the editor caret/selection and FAB states.
 enum AppAccentColor: String, Codable, CaseIterable, CustomStringConvertible {
   case amber
-  case terracotta
-  case clay
-  case moss
+  case ember
+  case crimson
+  case fern
   case teal
   case graphite
 
   var description: String {
     switch self {
     case .amber: return "Amber"
-    case .terracotta: return "Terracotta"
-    case .clay: return "Clay"
-    case .moss: return "Moss"
+    case .ember: return "Ember"
+    case .crimson: return "Crimson"
+    case .fern: return "Fern"
     case .teal: return "Teal"
     case .graphite: return "Graphite"
     }
   }
 
+  // Light values hold ≥4.5:1 contrast on white; dark values stay luminous on dark
   func hexCode(isDark: Bool) -> UInt32 {
     switch self {
-    case .amber: return isDark ? 0xe0a458 : 0x9a6b1f
-    case .terracotta: return isDark ? 0xe8926d : 0xa84a2a
-    case .clay: return isDark ? 0xe57e70 : 0x9e3a30
-    case .moss: return isDark ? 0xa8b665 : 0x5a6b34
-    case .teal: return isDark ? 0x6fb5b0 : 0x26666a
+    case .amber: return isDark ? 0xfbbf24 : 0xb45309
+    case .ember: return isDark ? 0xfb923c : 0xc2410c
+    case .crimson: return isDark ? 0xf87171 : 0xdc2626
+    case .fern: return isDark ? 0x4ade80 : 0x15803d
+    case .teal: return isDark ? 0x2dd4bf : 0x0f766e
     case .graphite: return isDark ? 0xd0d0d0 : 0x3d3d3d
     }
   }
