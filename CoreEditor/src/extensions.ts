@@ -7,6 +7,7 @@ import {
   crosshairCursor,
   highlightActiveLineGutter,
   keymap,
+  placeholder,
 } from '@codemirror/view';
 
 import { Compartment, EditorState } from '@codemirror/state';
@@ -163,6 +164,7 @@ export function extensions(options: { lineBreak?: string }) {
     linkStyles, // Must after invisibles because whitespaces can break this
     selectedLines.of(window.config.focusMode ? selectedLinesDecoration : []),
     conceal.of(window.config.hideSyntaxMarks ? concealExtension : []),
+    placeholder('Start writing\u2026'),
 
     // Input handling
     wordTokenizer(),

@@ -127,3 +127,28 @@ html, body {
     }
   }
 }
+
+/* Smooth caret: glide between positions, breathe instead of hard-blink */
+.cm-cursor {
+  transition: left 80ms ease-out, top 80ms ease-out;
+}
+
+.cm-cursorLayer {
+  animation: trace-caret-breathe 1.2s ease-in-out infinite !important;
+}
+
+@keyframes trace-caret-breathe {
+  0%, 40% { opacity: 1; }
+  60%, 80% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-cursor { transition: none; }
+}
+
+/* Empty-document ghost prompt */
+.cm-placeholder {
+  color: inherit;
+  opacity: 0.28;
+}

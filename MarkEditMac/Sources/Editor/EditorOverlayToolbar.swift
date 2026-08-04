@@ -305,7 +305,8 @@ private final class OverlayIconButton: NSButton {
 
   override func mouseEntered(with event: NSEvent) {
     super.mouseEntered(with: event)
-    layerBackgroundColor = .quaternaryLabelColor
+    // Warm accent wash, matching the editor's amber caret/selection
+    layerBackgroundColor = NSColor(srgbRed: 0.72, green: 0.55, blue: 0.28, alpha: 0.16)
   }
 
   override func mouseExited(with event: NSEvent) {
