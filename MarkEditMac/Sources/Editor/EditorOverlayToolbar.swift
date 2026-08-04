@@ -21,6 +21,8 @@ final class EditorOverlayToolbar: NSView {
     var currentSymbolName: (() -> String)?
     // For glyphs SF Symbols lacks; takes precedence over symbolName
     var customImage: NSImage?
+    // When true, the icon tints with the app accent color
+    var isActive: (() -> Bool)?
     let handler: (NSButton) -> Void
   }
 
@@ -99,8 +101,14 @@ final class EditorOverlayToolbar: NSView {
   }
 
   func refreshButtonImages() {
-    for (index, action) in actions.enumerated() {
-      guard let provider = action.currentSymbolName, buttons.indices.contains(index) else {
+    for (index, action) in actions.enumerated() where buttons.indices.contains(index) {
+      let button = buttons[index]
+
+      if let isActive = action.isActive {
+        button.contentTintColor = isActive() ? Constants.accentColor : nil
+      }
+
+      guard let provider = action.currentSymbolName else {
         continue
       }
 
@@ -108,10 +116,10 @@ final class EditorOverlayToolbar: NSView {
         let transition = CATransition()
         transition.duration = 0.18
         transition.type = .fade
-        buttons[index].layer?.add(transition, forKey: "imageFade")
+        button.layer?.add(transition, forKey: "imageFade")
       }
 
-      buttons[index].image = .with(
+      button.image = .with(
         symbolName: provider(),
         pointSize: Constants.iconPointSize,
         weight: .medium,
@@ -135,6 +143,11 @@ private extension EditorOverlayToolbar {
     static let restingShadowOpacity: Float = 0.18
     static let raisedShadowOpacity: Float = 0.32
     static let shadowSettleDelay: TimeInterval = 0.3
+
+    // Matches the editor's amber caret/selection accent
+    static let accentColor = NSColor(name: nil) { appearance in
+      appearance.isDarkMode ? NSColor(hexCode: 0xe0a458) : NSColor(hexCode: 0x9a6b1f)
+    }
   }
 
   func setUpChrome() {
@@ -261,6 +274,10 @@ private extension EditorOverlayToolbar {
           accessibilityLabel: action.accessibilityLabel
         )
       }
+      if let isActive = action.isActive {
+        button.contentTintColor = isActive() ? Constants.accentColor : nil
+      }
+
       button.setAccessibilityLabel(action.accessibilityLabel)
       button.toolTip = action.accessibilityLabel
       button.tag = index

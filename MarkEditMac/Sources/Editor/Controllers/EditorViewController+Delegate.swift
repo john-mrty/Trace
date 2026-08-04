@@ -213,6 +213,15 @@ extension EditorViewController: EditorModuleCoreDelegate {
       cancelCompletion()
     }
 
+    // Reflect bold/italic state at the selection in the FAB; with syntax
+    // marks concealed, the tinted icons are the only formatting cue
+    if let overlayFab = (view.window as? EditorWindow)?.overlayFab {
+      Task {
+        formatState = try? await bridge.format.getFormatState()
+        overlayFab.refreshButtonImages()
+      }
+    }
+
     // The content is edited once contentEdited is true, it cannot go back
     hasBeenEdited = hasBeenEdited || contentEdited
 

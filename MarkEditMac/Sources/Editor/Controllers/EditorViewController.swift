@@ -31,6 +31,8 @@ final class EditorViewController: NSViewController {
   var localEventMonitor: Any?
   var safeAreaObservation: NSKeyValueObservation?
   var userDefinedMenuItems = [EditorMenuItem]()
+  // Latest bold/italic state at the selection, mirrored in the FAB
+  var formatState: FormatState?
 
   weak var presentedMenu: NSMenu?
   weak var presentedPopover: NSPopover?

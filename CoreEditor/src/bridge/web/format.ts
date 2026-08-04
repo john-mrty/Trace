@@ -28,6 +28,7 @@ import { insertHyperLink, insertTable } from '../../modules/snippets';
  * @overrideModuleName WebBridgeFormat
  */
 export interface WebModuleFormat extends WebModule {
+  getFormatState(): FormatState;
   toggleBold(): void;
   toggleItalic(): void;
   toggleStrikethrough(): void;
@@ -48,6 +49,10 @@ export interface WebModuleFormat extends WebModule {
 }
 
 export class WebModuleFormatImpl implements WebModuleFormat {
+  getFormatState(): FormatState {
+    return getFormatState();
+  }
+
   toggleBold(): void {
     toggleBold();
   }

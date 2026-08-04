@@ -222,7 +222,7 @@ export const customizedCommandsKeymap: KeyBinding[] = [
 ];
 
 export { formatContent };
-export type { EditCommand };
+export type { EditCommand, FormatState };
 
 /**
  * Scroll one page, leaving the selection untouched.

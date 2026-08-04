@@ -18,6 +18,14 @@ public final class WebBridgeFormat {
     self.webView = webView
   }
 
+  public func getFormatState() async throws -> FormatState {
+    guard let webView else {
+      throw WKWebView.InvokeError.unexpectedNil
+    }
+
+    return try await webView.invoke(path: "webModules.format.getFormatState")
+  }
+
   public func toggleBold(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     webView?.invoke(path: "webModules.format.toggleBold", completion: completion)
   }
@@ -113,6 +121,28 @@ public final class WebBridgeFormat {
     )
 
     webView?.invoke(path: "webModules.format.performEditCommand", message: message, completion: completion)
+  }
+}
+
+public struct FormatState: Codable {
+  public var bold: Bool
+  public var italic: Bool
+
+  public init(bold: Bool, italic: Bool) {
+    self.bold = bold
+    self.italic = italic
+  }
+
+  public init(from decoder: any Decoder) throws {
+    let container = try decoder.container(keyedBy: BridgeFieldKey.self)
+    bold = try container.value("bold")
+    italic = try container.value("italic")
+  }
+
+  public func encode(to encoder: any Encoder) throws {
+    var container = encoder.container(keyedBy: BridgeFieldKey.self)
+    try container.encode(bold, forKey: "bold")
+    try container.encode(italic, forKey: "italic")
   }
 }
 

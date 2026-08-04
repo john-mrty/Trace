@@ -263,16 +263,20 @@ private extension EditorWindow {
       },
       EditorOverlayToolbar.Action(
         symbolName: Icons.bold,
-        accessibilityLabel: Localized.Toolbar.toggleBold
-      ) { [weak viewController] _ in
-        viewController?.toggleBold(nil)
-      },
+        accessibilityLabel: Localized.Toolbar.toggleBold,
+        isActive: { [weak viewController] in viewController?.formatState?.bold ?? false },
+        handler: { [weak viewController] _ in
+          viewController?.toggleBold(nil)
+        }
+      ),
       EditorOverlayToolbar.Action(
         symbolName: Icons.italic,
-        accessibilityLabel: Localized.Toolbar.toggleItalic
-      ) { [weak viewController] _ in
-        viewController?.toggleItalic(nil)
-      },
+        accessibilityLabel: Localized.Toolbar.toggleItalic,
+        isActive: { [weak viewController] in viewController?.formatState?.italic ?? false },
+        handler: { [weak viewController] _ in
+          viewController?.toggleItalic(nil)
+        }
+      ),
       EditorOverlayToolbar.Action(
         symbolName: Icons.listBullet,
         accessibilityLabel: Localized.Toolbar.toggleList
@@ -287,10 +291,12 @@ private extension EditorWindow {
       },
       EditorOverlayToolbar.Action(
         symbolName: Icons.numberSign,
-        accessibilityLabel: Localized.Toolbar.hideSyntaxMarks
-      ) { [weak viewController] _ in
-        viewController?.toggleHideSyntaxMarks(nil)
-      },
+        accessibilityLabel: Localized.Toolbar.hideSyntaxMarks,
+        isActive: { AppPreferences.Editor.hideSyntaxMarks },
+        handler: { [weak viewController] _ in
+          viewController?.toggleHideSyntaxMarks(nil)
+        }
+      ),
       EditorOverlayToolbar.Action(
         symbolName: Icons.moon,
         accessibilityLabel: Localized.Toolbar.dimInactiveLines,
