@@ -44,7 +44,9 @@ extension EditorViewController {
       menu.delegate = nil
       Task { @MainActor in
         await populateTableOfContentsMenu(menu)
-        let offset = 12 + menu.size.height
+        // menu.size over-reports the rendered height (~45pt: hidden trailing
+        // separator + modern menu-style padding), hence the negative trim
+        let offset = menu.size.height - 33
         menu.popUp(
           positioning: nil,
           at: CGPoint(x: 0, y: sourceView.isFlipped ? -offset : sourceView.bounds.maxY + offset),
