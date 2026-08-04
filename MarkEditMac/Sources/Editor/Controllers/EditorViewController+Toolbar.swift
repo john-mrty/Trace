@@ -34,13 +34,20 @@ extension EditorViewController {
     bridge.core.handleFocusLost()
     presentedPopover?.close()
 
-    // Anchored above an explicit source view (e.g. the FAB button)
+    // Anchored above an explicit source view (e.g. the FAB button). Populate before
+    // showing: the menu's top-left pins to the anchor point and it grows downward,
+    // so its final height must be known to keep the bottom edge above the view.
     if let sourceView {
-      tableOfContentsMenu.popUp(
-        positioning: nil,
-        at: CGPoint(x: 0, y: sourceView.bounds.maxY + 8),
-        in: sourceView
-      )
+      let menu = tableOfContentsMenu
+      menu.delegate = nil
+      Task { @MainActor in
+        await populateTableOfContentsMenu(menu)
+        menu.popUp(
+          positioning: nil,
+          at: CGPoint(x: 0, y: sourceView.bounds.maxY + 12 + menu.size.height),
+          in: sourceView
+        )
+      }
       return
     }
 
@@ -89,40 +96,44 @@ private extension EditorViewController {
   }
 
   func updateTableOfContentsMenu(_ menu: NSMenu) {
+    Task {
+      await populateTableOfContentsMenu(menu)
+    }
+  }
+
+  func populateTableOfContentsMenu(_ menu: NSMenu) async {
     // Remove existing items, the first two are placeholders that we want to keep
     for (index, item) in menu.items.enumerated() where index > 1 {
       menu.removeItem(item)
     }
 
-    Task {
-      let tableOfContents = await tableOfContents
-      let baseLevel = tableOfContents?.map { $0.level }.min() ?? 1
+    let tableOfContents = await tableOfContents
+    let baseLevel = tableOfContents?.map { $0.level }.min() ?? 1
 
-      tableOfContents?.forEach { info in
-        let title = String(repeating: " ", count: (info.level - baseLevel) * 2) + info.title
-        let item = menu.addItem(withTitle: title, action: #selector(self.gotoHeader(_:)))
-        item.representedObject = info
-        item.setAccessibilityLabel(title)
-        item.setAccessibilityValue(info.level)
+    tableOfContents?.forEach { info in
+      let title = String(repeating: " ", count: (info.level - baseLevel) * 2) + info.title
+      let item = menu.addItem(withTitle: title, action: #selector(self.gotoHeader(_:)))
+      item.representedObject = info
+      item.setAccessibilityLabel(title)
+      item.setAccessibilityValue(info.level)
 
-        if info.selected {
-          item.setAccessibilityHelp(Localized.General.selected)
-        }
-
-        let fontSize = 15.0 - min(3, Double(info.level))
-        let attributedTitle = NSMutableAttributedString()
-
-        attributedTitle.append(NSAttributedString(string: info.selected ? "‣" : " ", attributes: [
-          .font: NSFont.monospacedSystemFont(ofSize: fontSize, weight: .medium),
-        ]))
-
-        attributedTitle.append(NSAttributedString(string: " \(title)", attributes: [
-          .font: NSFont.systemFont(ofSize: fontSize, weight: .medium),
-        ]))
-
-        item.attributedTitle = attributedTitle
-        menu.addItem(.separator())
+      if info.selected {
+        item.setAccessibilityHelp(Localized.General.selected)
       }
+
+      let fontSize = 15.0 - min(3, Double(info.level))
+      let attributedTitle = NSMutableAttributedString()
+
+      attributedTitle.append(NSAttributedString(string: info.selected ? "‣" : " ", attributes: [
+        .font: NSFont.monospacedSystemFont(ofSize: fontSize, weight: .medium),
+      ]))
+
+      attributedTitle.append(NSAttributedString(string: " \(title)", attributes: [
+        .font: NSFont.systemFont(ofSize: fontSize, weight: .medium),
+      ]))
+
+      item.attributedTitle = attributedTitle
+      menu.addItem(.separator())
     }
   }
 
