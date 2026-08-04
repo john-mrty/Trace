@@ -292,9 +292,9 @@ private extension EditorWindow {
         viewController?.toggleHideSyntaxMarks(nil)
       },
       EditorOverlayToolbar.Action(
-        symbolName: Icons.sunMax,
+        symbolName: Icons.moon,
         accessibilityLabel: Localized.Toolbar.dimInactiveLines,
-        currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.sunMin : Icons.sunMax },
+        currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.moonFill : Icons.moon },
         handler: { _ in
           AppPreferences.Editor.focusMode.toggle()
         }

@@ -201,8 +201,8 @@ enum Icons {
   static let ellipsisCircle = "ellipsis.circle"
   static let gearshape = "gearshape"
   static let italic = "italic"
-  static let sunMax = "sun.max"
-  static let sunMin = "sun.min.fill"
+  static let moon = "moon"
+  static let moonFill = "moon.fill"
 
   static let interfaceWindow = if #available(macOS 27.0, *) {
     "interface.window"
