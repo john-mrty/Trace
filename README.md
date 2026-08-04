@@ -1,76 +1,43 @@
-<picture>
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MarkEdit-app/MarkEdit/main/Icon.png" width="96">
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MarkEdit-app/MarkEdit/main/Icon-dark.png" width="96">
-  <img src="./Icon.png" width="96">
-</picture>
+<p align="center">
+  <img src="MarkEditMac/Resources/AppIcon.icon/Assets/Trace.png" width="96">
+</p>
 
-# MarkEdit
+<h1 align="center">Trace</h1>
 
-[![](https://img.shields.io/badge/Platform-macOS_15.0+-blue?color=007bff)](https://github.com/MarkEdit-app/MarkEdit?tab=readme-ov-file#installation) [![](https://github.com/MarkEdit-app/MarkEdit/actions/workflows/build-and-test.yml/badge.svg?branch=main)](https://github.com/MarkEdit-app/MarkEdit/actions/workflows/build-and-test.yml)
+<p align="center"><em>A quiet place to write.</em></p>
 
-MarkEdit is a free and **open-source** Markdown editor, for macOS. It's just like _TextEdit_ on Mac but dedicated to `Markdown`.
+Trace is a minimal Markdown writer for macOS, built for prose rather than code. It's a heavily reworked fork of the excellent [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — same fast, native CodeMirror core, reshaped around one idea: **the words are the interface**.
 
-No bloat. Markdown editing done right in a 4 MB app that flies through million-line files.
+Markdown without the markup. Syntax marks fade away as you write, the toolbar floats out of reach until you need it, and the page runs edge to edge under a soft glass surface.
 
-We do not claim to be the best in any single dimension. Instead, we aim to strike the right balance across **size**, **speed**, **native integration**, and **correctness**.
+## What it does
 
-_For perspective: at just 4 MB, MarkEdit is much smaller than Electron apps. Handling a 10 MB file with ease puts it ahead of TextKit-based editors. Performance-first editors built with Rust lack native features, while correctness alone rules out editors that rely on regex-based Markdown parsing._
+- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written; your document reads like the finished piece. Toggle them back from the floating toolbar when you need to see the plumbing.
+- **Floating toolbar** — a small capsule at the bottom of the window with the handful of actions prose actually needs: table of contents, headings, bold, italic, lists, syntax visibility, and focus mode. It recedes while you type and returns when you reach for the mouse. Active states glow amber.
+- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, in light and dark.
+- **Focus mode** — dims everything except the lines you're working on.
+- **Overlay mode** — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
+- **A caret with a pulse** — glides between positions and breathes at rest instead of blinking. (Respects Reduce Motion.)
+- **Four themes** — GitHub and Minimal, in light and dark pairs, unified by a warm amber accent.
 
-> [!TIP]
-> Discover our other free and open-source apps at [libremac.github.io](https://libremac.github.io/).
->
-> Follow our Mastodon account [@MarkEditApp](https://mastodon.social/@MarkEditApp) for the latest updates.
+## What it doesn't do
 
-## Preview
+Trace is deliberately smaller than MarkEdit. The updater, AppleScript and Shortcuts support, the extensions manager, the assistant pane, Pandoc export, and the classic toolbar were all removed. If you want the full-featured editor, use [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — it's great.
 
-![Screenshots 01](/Screenshots/01.png)
+## Under the hood
 
-![Screenshots 02](/Screenshots/02.png)
+Everything that makes MarkEdit fast is still here:
 
-![Screenshots 03](/Screenshots/03.png)
+- Native AppKit shell with a CodeMirror 6 core — a small app that opens instantly and handles very large documents without breaking a sweat.
+- Real Markdown parsing (Lezer, following the GFM spec), not regex.
+- Plain text files on disk. No library, no lock-in, no cloud, no data collection.
 
-![Screenshots 04](/Screenshots/04.png)
+## Requirements & building
 
-## What makes MarkEdit different
+- macOS 15.0+
+- Build with Xcode: open `MarkEdit.xcodeproj` and run the **MarkEditMac** scheme.
+- The editor core lives in `CoreEditor/` (TypeScript). After changing it: `cd CoreEditor && yarn install && yarn build`, then rebuild the app.
 
-- Privacy-focused: doesn't collect any user data
-- Native: clean and intuitive, feels right at home on Mac
-- Fast: edits 10 MB files easily
-- Lightweight: installer size is about 4 MB
-- Extensible: seamless integration with Shortcuts and AppleScript
+## Credits
 
-MarkEdit strictly follows the [GFM specification](https://github.github.com/gfm/), with no proprietary syntax or invented features. Complex editing like multi-caret and code folding is built on [CodeMirror 6](https://codemirror.net/) for correctness and performance, consistently faster than most macOS editors. UI controls remain native to macOS in both aesthetics and behavior, including force-touch word lookup, inline predictions, and Writing Tools.
-
-Customization is built around CSS, JavaScript, and [CodeMirror extensions](https://github.com/MarkEdit-app/MarkEdit-api). Official extensions include [MarkEdit-preview](https://markedit-app.github.io/extensions/#markedit-preview) for a preview pane, [MarkEdit-theming](https://github.com/MarkEdit-app/MarkEdit-theming) for custom themes, and [MarkEdit-ai-writer](https://markedit-app.github.io/extensions/#markedit-ai-writer) for Apple Intelligence on macOS Tahoe or later.
-
-<img src="./Screenshots/extensions.png" width="800" alt="MarkEdit Extensions">
-
-> To learn more, refer to [Philosophy](https://github.com/MarkEdit-app/MarkEdit/wiki/Philosophy), [Why MarkEdit](https://github.com/MarkEdit-app/MarkEdit/wiki/Why-MarkEdit) and [MarkEdit Extensions](https://markedit-app.github.io/extensions/).
-
-## Installation
-
-Get `MarkEdit.dmg` from the <a href="https://github.com/MarkEdit-app/MarkEdit/releases/latest" target="_blank">latest release</a>, open it, and drag `MarkEdit.app` to `Applications`. Or install via [Homebrew](https://brew.sh/): `brew install --cask markedit`.
-
-<img src="./Screenshots/install.png" width="540" alt="Install MarkEdit">
-
-MarkEdit checks for updates automatically; you can also browse version history [here](https://github.com/MarkEdit-app/MarkEdit/releases).
-
-For older macOS: [macos-12](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-12), [macos-13](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-13), [macos-14](https://github.com/MarkEdit-app/MarkEdit/releases/tag/macos-14).
-
-## Using MarkEdit
-
-Please refer to the [wiki page](https://github.com/MarkEdit-app/MarkEdit/wiki/Manual) for details. Check out [MarkEdit-skill](https://github.com/MarkEdit-app/MarkEdit-skill) if you're interested in managing MarkEdit with an AI agent.
-
-## Why MarkEdit is free
-
-MarkEdit is a tool we use every day and keep improving for ourselves. We ship it openly, hoping it's useful to others with the same needs.
-
-## Contributing to MarkEdit
-
-For bugs, [open an issue](https://github.com/MarkEdit-app/MarkEdit/issues/new) or [pull request](https://github.com/MarkEdit-app/MarkEdit/compare). For behavior changes, discuss first; MarkEdit is intentionally minimal ([why](https://github.com/MarkEdit-app/MarkEdit/wiki/Why-MarkEdit#feature-poor)).
-
-Please refer to the [wiki page](https://github.com/MarkEdit-app/MarkEdit/wiki/Development) for development instructions.
-
-## Acknowledgments
-
-Built on [CodeMirror 6](https://codemirror.net/), with [ts-gyb](https://github.com/microsoft/ts-gyb) for code generation.
+Trace is built on [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) by [cyanzhong](https://github.com/cyanzhong) and contributors, released under the MIT license, with [CodeMirror 6](https://codemirror.net/) at its core and [ts-gyb](https://github.com/microsoft/ts-gyb) for code generation. The heart of this app is their work — this fork just gives it a quieter voice.
