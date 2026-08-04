@@ -199,8 +199,6 @@ enum Icons {
   static let checkmarkSeal = "checkmark.seal.fill"
   static let cupAndHeatWaves = "cup.and.heat.waves"
   static let ellipsisCircle = "ellipsis.circle"
-  static let eye = "eye"
-  static let eyeSlash = "eye.slash"
   static let gearshape = "gearshape"
   static let italic = "italic"
   static let sunMax = "sun.max"

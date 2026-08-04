@@ -122,24 +122,24 @@
       }
     },
     "1Xt-HY-uBw.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"MarkEdit\"; ObjectID = \"1Xt-HY-uBw\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Trace\"; ObjectID = \"1Xt-HY-uBw\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MarkEdit"
+            "value" : "Trace"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit"
           }
         }
@@ -290,24 +290,24 @@
       }
     },
     "4sb-4s-VLi.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Quit MarkEdit\"; ObjectID = \"4sb-4s-VLi\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Quit Trace\"; ObjectID = \"4sb-4s-VLi\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Quit MarkEdit"
+            "value" : "Quit Trace"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "退出 MarkEdit"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "結束 MarkEdit"
           }
         }
@@ -338,24 +338,24 @@
       }
     },
     "5kV-Vb-QxS.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"About MarkEdit\"; ObjectID = \"5kV-Vb-QxS\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"About Trace\"; ObjectID = \"5kV-Vb-QxS\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "About MarkEdit"
+            "value" : "About Trace"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "关于 MarkEdit"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "關於 MarkEdit"
           }
         }
@@ -592,7 +592,7 @@
     },
     "53x-nK-wnX.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Copy Pandoc Command\"; ObjectID = \"53x-nK-wnX\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1564,24 +1564,24 @@
       }
     },
     "FKE-Sm-Kum.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"MarkEdit Help\"; ObjectID = \"FKE-Sm-Kum\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Trace Help\"; ObjectID = \"FKE-Sm-Kum\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MarkEdit Help"
+            "value" : "Trace Help"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit 帮助"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit 輔助說明"
           }
         }
@@ -2082,7 +2082,7 @@
     },
     "iIq-nl-rwB.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to HTML\"; ObjectID = \"iIq-nl-rwB\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2671,7 +2671,7 @@
     },
     "oc0-ce-Yrd.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to PDF\"; ObjectID = \"oc0-ce-Yrd\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2694,24 +2694,24 @@
       }
     },
     "Olw-nP-bQN.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Hide MarkEdit\"; ObjectID = \"Olw-nP-bQN\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Hide Trace\"; ObjectID = \"Olw-nP-bQN\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Hide MarkEdit"
+            "value" : "Hide Trace"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "隐藏 MarkEdit"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "隱藏 MarkEdit"
           }
         }
@@ -2719,7 +2719,7 @@
     },
     "ORv-QM-Kju.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to EPUB\"; ObjectID = \"ORv-QM-Kju\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3127,7 +3127,7 @@
     },
     "QVA-GW-ruk.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to RTF\"; ObjectID = \"QVA-GW-ruk\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3151,7 +3151,7 @@
     },
     "QZC-LS-WMo.title" : {
       "comment" : "Class = \"NSMenu\"; title = \"Copy Pandoc Command\"; ObjectID = \"QZC-LS-WMo\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3727,7 +3727,7 @@
     },
     "Ukm-Sm-nrt.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to Word Docx\"; ObjectID = \"Ukm-Sm-nrt\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3774,24 +3774,24 @@
       }
     },
     "uQy-DD-JDr.title" : {
-      "comment" : "Class = \"NSMenu\"; title = \"MarkEdit\"; ObjectID = \"uQy-DD-JDr\";",
+      "comment" : "Class = \"NSMenu\"; title = \"Trace\"; ObjectID = \"uQy-DD-JDr\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "MarkEdit"
+            "value" : "Trace"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "MarkEdit"
           }
         }
@@ -4423,7 +4423,7 @@
     },
     "yv7-Am-Rb2.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Learn More…\"; ObjectID = \"yv7-Am-Rb2\";",
-      "extractionState" : "extracted_with_value",
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

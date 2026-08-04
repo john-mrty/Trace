@@ -28,6 +28,29 @@ public extension NSImage {
     return image
   }
 
+  /// Text glyph rendered as a template image, for icons SF Symbols lacks (e.g. a bare "H").
+  static func withText(
+    _ string: String,
+    pointSize: Double,
+    weight: NSFont.Weight = .regular,
+    accessibilityLabel: String? = nil
+  ) -> NSImage {
+    let attributed = NSAttributedString(string: string, attributes: [
+      .font: NSFont.systemFont(ofSize: pointSize, weight: weight),
+      .foregroundColor: NSColor.black,
+    ])
+
+    let size = attributed.size()
+    let image = NSImage(size: size, flipped: false) { _ in
+      attributed.draw(at: .zero)
+      return true
+    }
+
+    image.isTemplate = true
+    image.accessibilityDescription = accessibilityLabel
+    return image
+  }
+
   func resized(with size: CGSize) -> NSImage {
     let frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
     guard let representation = bestRepresentation(for: frame, context: nil, hints: nil) else {

@@ -16,9 +16,11 @@ import SharedUI
  */
 final class EditorOverlayToolbar: NSView {
   struct Action {
-    let symbolName: String
+    var symbolName: String?
     let accessibilityLabel: String
     var currentSymbolName: (() -> String)?
+    // For glyphs SF Symbols lacks; takes precedence over symbolName
+    var customImage: NSImage?
     let handler: (NSButton) -> Void
   }
 
@@ -249,12 +251,16 @@ private extension EditorOverlayToolbar {
   func setUpButtons() {
     buttons = actions.enumerated().map { index, action in
       let button = OverlayIconButton()
-      button.image = .with(
-        symbolName: action.currentSymbolName?() ?? action.symbolName,
-        pointSize: Constants.iconPointSize,
-        weight: .medium,
-        accessibilityLabel: action.accessibilityLabel
-      )
+      if let customImage = action.customImage {
+        button.image = customImage
+      } else if let symbolName = action.currentSymbolName?() ?? action.symbolName {
+        button.image = .with(
+          symbolName: symbolName,
+          pointSize: Constants.iconPointSize,
+          weight: .medium,
+          accessibilityLabel: action.accessibilityLabel
+        )
+      }
       button.setAccessibilityLabel(action.accessibilityLabel)
       button.toolTip = action.accessibilityLabel
       button.tag = index

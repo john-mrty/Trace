@@ -236,6 +236,7 @@ extension EditorWindow {
 private extension EditorWindow {
   enum Constants {
     static let fabEdgeOffset: CGFloat = 16
+    static let headingGlyphPointSize: Double = 12
   }
 
   /// The most useful writing actions: table of contents, headers, bold,
@@ -249,8 +250,14 @@ private extension EditorWindow {
         viewController?.showTableOfContentsMenu()
       },
       EditorOverlayToolbar.Action(
-        symbolName: Icons.numberSign,
-        accessibilityLabel: Localized.Toolbar.formatHeaders
+        accessibilityLabel: Localized.Toolbar.formatHeaders,
+        // SF Symbols has no bare "H"; render one to match the FontAwesome heading icon
+        customImage: .withText(
+          "H",
+          pointSize: Constants.headingGlyphPointSize,
+          weight: .semibold,
+          accessibilityLabel: Localized.Toolbar.formatHeaders
+        )
       ) { button in
         NSApp.appDelegate?.formatHeadersMenu?.copiedMenu?.popUp(positioning: nil, at: .zero, in: button)
       },
@@ -279,13 +286,11 @@ private extension EditorWindow {
         menu.popUp(positioning: nil, at: .zero, in: button)
       },
       EditorOverlayToolbar.Action(
-        symbolName: Icons.eye,
-        accessibilityLabel: Localized.Toolbar.hideSyntaxMarks,
-        currentSymbolName: { AppPreferences.Editor.hideSyntaxMarks ? Icons.eyeSlash : Icons.eye },
-        handler: { [weak viewController] _ in
-          viewController?.toggleHideSyntaxMarks(nil)
-        }
-      ),
+        symbolName: Icons.numberSign,
+        accessibilityLabel: Localized.Toolbar.hideSyntaxMarks
+      ) { [weak viewController] _ in
+        viewController?.toggleHideSyntaxMarks(nil)
+      },
       EditorOverlayToolbar.Action(
         symbolName: Icons.sunMax,
         accessibilityLabel: Localized.Toolbar.dimInactiveLines,
