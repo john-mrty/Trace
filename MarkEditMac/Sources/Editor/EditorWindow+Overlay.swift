@@ -246,8 +246,8 @@ private extension EditorWindow {
       EditorOverlayToolbar.Action(
         symbolName: Icons.listBulletRectangle,
         accessibilityLabel: Localized.Toolbar.tableOfContents
-      ) { [weak viewController] _ in
-        viewController?.showTableOfContentsMenu()
+      ) { [weak viewController] button in
+        viewController?.showTableOfContentsMenu(from: button)
       },
       EditorOverlayToolbar.Action(
         accessibilityLabel: Localized.Toolbar.formatHeaders,
