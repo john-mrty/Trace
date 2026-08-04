@@ -10,7 +10,12 @@
     },
     {
       "appearance" : "dark",
-      "value" : "system-dark"
+      "value" : {
+        "linear-gradient" : [
+          "srgb:0.35294,0.34510,0.34118,1.00000",
+          "srgb:0.20392,0.19608,0.18824,1.00000"
+        ]
+      }
     }
   ],
   "groups" : [
