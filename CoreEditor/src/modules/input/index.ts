@@ -133,6 +133,18 @@ export function interceptInputs() {
  */
 export function observeChanges() {
   return EditorView.updateListener.of(update => {
+    // Keep the caret vertically centered when moving with the keyboard;
+    // pointer selections are excluded so clicking doesn't yank the view
+    if (window.config.typewriterMode && update.selectionSet && !update.docChanged) {
+      const isKeyboardMove = update.transactions.some(tr => {
+        return tr.isUserEvent('select') && !tr.isUserEvent('select.pointer');
+      });
+
+      if (isKeyboardMove) {
+        scrollToSelection('center');
+      }
+    }
+
     if (update.docChanged) {
       // This should be called before updating the native view
       setHistoryExplictlyMoved(update);

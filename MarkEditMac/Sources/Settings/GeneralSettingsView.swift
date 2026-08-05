@@ -11,28 +11,17 @@ import MarkEditKit
 
 @MainActor
 struct GeneralSettingsView: View {
-  @State private var appearance = AppPreferences.General.appearance
   @State private var newWindowBehavior = AppPreferences.General.newWindowBehavior
   @State private var quitAlwaysKeepsWindows = AppPreferences.General.quitAlwaysKeepsWindows
   @State private var newFilenameExtension = AppPreferences.General.newFilenameExtension
   @State private var defaultTextEncoding = AppPreferences.General.defaultTextEncoding
   @State private var defaultLineEndings = AppPreferences.General.defaultLineEndings
+  @State private var tabbingMode = AppPreferences.Window.tabbingMode
+  @State private var reduceTransparency = AppPreferences.Window.reduceTransparency
 
   var body: some View {
     SettingsForm {
       Section {
-        Picker(Localized.Settings.appearance, selection: $appearance) {
-          Text(Localized.Settings.system).tag(Appearance.system)
-          Divider()
-          Text(Localized.Settings.light).tag(Appearance.light)
-          Text(Localized.Settings.dark).tag(Appearance.dark)
-        }
-        .onChange(of: appearance) {
-          NSApp.appearance = appearance.resolved()
-          AppPreferences.General.appearance = appearance
-        }
-        .formMenuPicker()
-
         Picker(Localized.Settings.newWindowBehavior, selection: $newWindowBehavior) {
           Text(Localized.Document.openDocument).tag(NewWindowBehavior.openDocument)
           Text(Localized.Document.newDocument).tag(NewWindowBehavior.newDocument)
@@ -84,6 +73,24 @@ struct GeneralSettingsView: View {
           AppPreferences.General.defaultLineEndings = defaultLineEndings
         }
         .formMenuPicker()
+      }
+
+      Section {
+        Picker(Localized.Settings.tabbingMode, selection: $tabbingMode) {
+          Text(Localized.Settings.automatic).tag(NSWindow.TabbingMode.automatic)
+          Text(Localized.Settings.preferred).tag(NSWindow.TabbingMode.preferred)
+          Text(Localized.Settings.disallowed).tag(NSWindow.TabbingMode.disallowed)
+        }
+        .onChange(of: tabbingMode) {
+          AppPreferences.Window.tabbingMode = tabbingMode
+        }
+        .formMenuPicker()
+
+        Toggle(Localized.Settings.reduceTransparencyDescription, isOn: $reduceTransparency)
+          .onChange(of: reduceTransparency) {
+            AppPreferences.Window.reduceTransparency = reduceTransparency
+          }
+          .formLabel(Localized.Settings.reduceTransparencyLabel)
       }
     }
   }

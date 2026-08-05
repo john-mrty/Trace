@@ -12,7 +12,7 @@ import AppKitExtensions
 
  For now, system fonts are all default, while custom fonts can have weight or style specified.
  */
-@frozen public enum FontStyle: Codable {
+@frozen public enum FontStyle: Codable, Hashable {
   case systemDefault
   case systemMono
   case systemRounded

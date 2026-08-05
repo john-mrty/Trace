@@ -110,14 +110,11 @@ enum Localized {
     // Editor
     static let editor = String(localized: "Editor", comment: "Window title for editor settings")
     static let font = String(localized: "Font:", comment: "Label for font settings")
-    static let selectFont = String(localized: "Select…", comment: "Menu label for selecting fonts")
+    static let fontSize = String(localized: "Font Size:", comment: "Label for font size stepper")
     static let systemDefault = String(localized: "System Default", comment: "System default font name")
     static let systemMono = String(localized: "System Mono", comment: "System mono font name")
     static let systemRounded = String(localized: "System Rounded", comment: "System rounded font name")
     static let systemSerif = String(localized: "System Serif", comment: "System serif font name")
-    static let recentlyUsed = String(localized: "Recently Used", comment: "Menu item to show recently used fonts")
-    static let moreFonts = String(localized: "More Fonts", comment: "Menu item to browse all fonts")
-    static let openFontPanel = String(localized: "Open Font Panel…", comment: "Menu item for selecting custom fonts")
     static let accentColor = String(localized: "Accent Color:", comment: "Accent color for the editor caret, selection, and toolbar")
     static let displayOptions = String(localized: "Show:", comment: "Label for display options")
     static let activeLineIndicator = String(localized: "Active line indicator", comment: "Option to show active line indicator")
@@ -129,22 +126,9 @@ enum Localized {
     static let editBehavior = String(localized: "Edit Behavior:", comment: "Editor behavior like focus mode and typewriter mode")
     static let typewriterModeTitle = String(localized: "Typewriter scrolling", comment: "Explanation for typewriter mode")
     static let focusModeTitle = String(localized: "Dim inactive lines", comment: "Explanation for focus mode")
-    static let lineWrappingLabel = String(localized: "Line Wrapping:", comment: "Label for line wrapping option")
-    static let lineWrappingDescription = String(localized: "Wrap lines to editor width", comment: "Explanation for line wrapping option")
     static let lineHeight = String(localized: "Line Height:", comment: "Label for line height option")
-    static let tightHeight = String(localized: "Tight", comment: "Tight line spacing")
     static let normalHeight = String(localized: "Normal", comment: "Normal line spacing")
     static let relaxedHeight = String(localized: "Relaxed", comment: "Relaxed line spacing")
-    static let tabKeyBehavior = String(localized: "Tab Key:", comment: "Label for tab key behavior settings")
-    static let insertsTab = String(localized: "Inserts tab character", comment: "Default tab key behavior")
-    static let insertsTwoSpaces = String(localized: "Inserts 2 spaces", comment: "Press tab key to insert 2 spaces")
-    static let insertsFourSpaces = String(localized: "Inserts 4 spaces", comment: "Press tab key to insert 4 spaces")
-    static let indentsMore = String(localized: "Indents more", comment: "Press tab key to indent more")
-    static let indentUnit = String(localized: "Prefer Indent Using:", comment: "Label for indent unit settings")
-    static let twoSpaces = String(localized: "2 spaces", comment: "Use 2 spaces as the indent unit")
-    static let fourSpaces = String(localized: "4 spaces", comment: "Use 4 spaces as the indent unit")
-    static let oneTab = String(localized: "1 tab", comment: "Use 1 tab as the indent unit")
-    static let twoTabs = String(localized: "2 tabs", comment: "Use 2 tabs as the indent unit")
 
     // General
     static let general = String(localized: "General", comment: "Window title for general settings")
@@ -163,7 +147,6 @@ enum Localized {
     static let classicMacLineEndings = String(localized: "Classic Mac OS (CR)", comment: "Line endings used on Classic Mac OS")
 
     // Window
-    static let window = String(localized: "Window", comment: "Window title for window settings")
     static let tabbingMode = String(localized: "Tabbing Mode:", comment: "Label for window tabbing mode settings")
     static let automatic = String(localized: "Automatic", comment: "Automatic window tabbing mode")
     static let preferred = String(localized: "Preferred", comment: "Preferred window tabbing mode")
@@ -200,12 +183,6 @@ enum Icons {
   static let italic = "italic"
   static let moon = "moon"
   static let moonFill = "moon.fill"
-
-  static let interfaceWindow = if #available(macOS 27.0, *) {
-    "interface.window"
-  } else {
-    "macwindow"
-  }
 
   static let interfaceWindowOnRectangle = if #available(macOS 27.0, *) {
     "interface.window.on.rectangle"

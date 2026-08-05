@@ -2126,6 +2126,7 @@
     },
     "Keep caret in the middle" : {
       "comment" : "Explanation for typewriter mode",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3989,6 +3990,9 @@
           }
         }
       }
+    },
+    "Typewriter scrolling" : {
+      "comment" : "Explanation for typewriter mode"
     },
     "Unfold" : {
       "comment" : "Phrase used in CodeMirror to unfold a piece of text",

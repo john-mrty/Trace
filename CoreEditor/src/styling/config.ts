@@ -145,6 +145,7 @@ export function setTypewriterMode(enabled: boolean) {
     styleSheets.typewriterMode = createStyleSheet(`
       .cm-content {
         padding-top: 50vh !important;
+        padding-bottom: 50vh !important;
       }
     `, false);
   }

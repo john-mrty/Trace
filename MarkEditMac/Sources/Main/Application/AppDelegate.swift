@@ -193,7 +193,6 @@ private extension AppDelegate {
       settingsWindowController = SettingsRootViewController.withTabs([
         .editor,
         .general,
-        .window,
       ])
 
       // The window size relies on the SwiftUI content view size, it takes time
