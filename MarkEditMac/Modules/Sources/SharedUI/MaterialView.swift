@@ -23,6 +23,15 @@ public class MaterialView: NSView {
     }
   }
 
+  public var state: NSVisualEffectView.State {
+    get {
+      effectView.state
+    }
+    set {
+      effectView.state = newValue
+    }
+  }
+
   public var backdropBlur: Double? {
     get {
       effectView.backdropBlur
