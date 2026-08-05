@@ -25,7 +25,6 @@ public class NonBezelButton: NSButton {
   }
 
   override public func draw(_ dirtyRect: CGRect) {
-    super.draw(dirtyRect)
     layerBackgroundColor?.setFill()
 
     let rectPath = NSBezierPath(rect: bounds)
@@ -57,6 +56,9 @@ public class NonBezelButton: NSButton {
         rectPath.fill()
       }
     }
+
+    // Title and image must render after the background fills
+    super.draw(dirtyRect)
   }
 
   override public func drawFocusRingMask() {

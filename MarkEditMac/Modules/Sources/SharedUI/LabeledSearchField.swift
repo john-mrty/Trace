@@ -9,7 +9,7 @@ import AppKitExtensions
 
 public final class LabeledSearchField: NSSearchField {
   private let modernStyle: Bool
-  private let bezelView = BezelView(cornerRadius: Constants.bezelCornerRadius)
+  private let bezelView = BezelView()
 
   // To render custom icons in modern style due to the unwanted bezel added by Apple
   private lazy var searchIconView = CustomIconView()
@@ -34,6 +34,10 @@ public final class LabeledSearchField: NSSearchField {
     usesSingleLineMode = false
     focusRingType = .exterior
 
+    bezelView.layer?.shadowOpacity = 0.1
+    bezelView.layer?.shadowRadius = 3
+    bezelView.layer?.shadowOffset = CGSize(width: 0, height: -1)
+
     addSubview(bezelView)
     addSubview(labelView)
   }
@@ -46,6 +50,7 @@ public final class LabeledSearchField: NSSearchField {
   override public func layout() {
     super.layout()
     bezelView.frame = bounds
+    bezelView.cornerRadius = bounds.height * 0.5
 
     labelView.sizeToFit()
     labelView.frame = CGRect(
@@ -86,8 +91,8 @@ public final class LabeledSearchField: NSSearchField {
     // Custom focus ring drawing mostly because macOS Tahoe needs this
     NSBezierPath(
       roundedRect: bounds,
-      xRadius: Constants.bezelCornerRadius,
-      yRadius: Constants.bezelCornerRadius
+      xRadius: bounds.height * 0.5,
+      yRadius: bounds.height * 0.5
     ).fill()
   }
 
@@ -133,10 +138,6 @@ public final class LabeledSearchField: NSSearchField {
 // MARK: - Private
 
 private extension LabeledSearchField {
-  enum Constants {
-    static let bezelCornerRadius: Double = 6.0
-  }
-
   func renderCustomIcons(modernBezel: NSView) {
     // This is used for styling only, user interactions are not handled here
     modernBezel.isHidden = true

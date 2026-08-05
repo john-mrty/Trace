@@ -12,6 +12,11 @@ import AppKit
 public final class BezelView: NSView {
   private let borderColor: NSColor
 
+  public var cornerRadius: Double {
+    get { layer.map { Double($0.cornerRadius) } ?? 0 }
+    set { layer?.cornerRadius = newValue }
+  }
+
   public init(borderColor: NSColor = .separatorColor, cornerRadius: Double = 6) {
     self.borderColor = borderColor
     super.init(frame: .zero)
