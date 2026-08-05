@@ -172,6 +172,7 @@ export function setEditorAccent(caretColor: string, selectionColor: string) {
     .cm-content { caret-color: ${caretColor}; }
     .cm-cursor, .cm-dropCursor { border-left-color: ${caretColor} !important; }
     .cm-selectionBackground { background: ${selectionColor} !important; }
+    .cm-md-listMark { color: ${caretColor} !important; }
   `;
 }
 
