@@ -28,8 +28,10 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-content': {
     // Theme rules out-rank index.css, so content gutters must live here.
     // Top padding clears the titlebar; the web view bleeds underneath it.
-    paddingTop: '56px',
-    paddingLeft: '24px',
+    // Left padding matches the fixed gutter width so text stays put when
+    // line numbers toggle with syntax visibility.
+    paddingTop: '40px',
+    paddingLeft: '48px',
     paddingRight: '24px',
     paddingBottom: '50vh',
 
@@ -68,13 +70,21 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     borderRadius: '3px',
     border: 'none',
   },
+  // Numbers sit directly on the canvas: fixed width equal to the content's
+  // left padding, which zeroes out below so the text never shifts
   '.cm-gutters': {
+    width: '48px',
+    justifyContent: 'flex-end',
     borderRight: 'none',
+    backgroundColor: 'transparent !important',
     fontFamily: 'ui-monospace, monospace',
   },
-  // '.cm-gutterElement': {
-  //   boxShadow: 'inset 0px 0px 0px 1px #f00',
-  // },
+  '.cm-gutters ~ .cm-content': {
+    paddingLeft: '0px',
+  },
+  '.cm-lineNumbers .cm-gutterElement': {
+    paddingRight: '14px',
+  },
   '.cm-activeLineGutter': {
     backgroundColor: 'inherit',
   },
@@ -154,7 +164,6 @@ function buildTheme(colors: EditorColors, scheme?: ColorScheme) {
     // Gutters
     '.cm-gutters': {
       color: colors.lineNumber,
-      backgroundColor: translucentBackground(colors.background, 0.97),
     },
     '.cm-lineNumbers > .cm-activeLineGutter': {
       color: colors.text,

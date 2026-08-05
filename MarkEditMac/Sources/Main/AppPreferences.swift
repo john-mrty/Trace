@@ -79,24 +79,10 @@ enum AppPreferences {
       }
     }
 
-    @Storage(key: "editor.show-line-numbers", defaultValue: false)
-    static var showLineNumbers: Bool {
-      didSet {
-        performUpdates { $0.setShowLineNumbers(enabled: showLineNumbers) }
-      }
-    }
-
     @Storage(key: "editor.show-active-line-indicator", defaultValue: false)
     static var showActiveLineIndicator: Bool {
       didSet {
         performUpdates { $0.setShowActiveLineIndicator(enabled: showActiveLineIndicator) }
-      }
-    }
-
-    @Storage(key: "editor.show-selection-status", defaultValue: true)
-    static var showSelectionStatus: Bool {
-      didSet {
-        performUpdates { $0.setShowSelectionStatus(enabled: showSelectionStatus) }
       }
     }
 
@@ -250,7 +236,7 @@ extension AppPreferences {
       theme: theme,
       fontFace: Editor.fontStyle.webFontFace,
       fontSize: Editor.fontSize,
-      showLineNumbers: Editor.showLineNumbers,
+      showLineNumbers: !Editor.hideSyntaxMarks,
       showActiveLineIndicator: Editor.showActiveLineIndicator,
       invisiblesBehavior: {
       #if DEBUG

@@ -60,7 +60,7 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
   }
 
   func windowDidResignMain(_ notification: Notification) {
-    if AppPreferences.Editor.showLineNumbers {
+    if !AppPreferences.Editor.hideSyntaxMarks {
       // In theory, this is not indeed, but we've seen wrong state without this
       editorViewController?.bridge.core.handleMouseExited(clientX: 0, clientY: 0)
     }

@@ -1,10 +1,10 @@
 import { Decoration, DecorationSet, lineNumbers } from '@codemirror/view';
-import { codeFolding, foldGutter, foldState } from '@codemirror/language';
+import { codeFolding, foldState } from '@codemirror/language';
 
+// No foldGutter: numbers sit bare on the canvas, folding stays command-driven
 export const gutterExtensions = [
   lineNumbers(),
   codeFolding({ placeholderText: '•••' }),
-  foldGutter({ openText: '▼', closedText: '▶︎' }),
 ];
 
 export function isPositionFolded(pos: number) {

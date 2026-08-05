@@ -114,7 +114,7 @@ final class EditorViewController: NSViewController {
       self?.showGotoLineWindow(nil)
     }
 
-    view.isHidden = !AppPreferences.Editor.showSelectionStatus
+    view.isHidden = AppPreferences.Editor.hideSyntaxMarks
     return view
   }()
 
@@ -436,7 +436,7 @@ extension EditorViewController {
     }
 
     hasBeenEdited = false
-    setShowSelectionStatus(enabled: AppPreferences.Editor.showSelectionStatus)
+    setShowSelectionStatus(enabled: !AppPreferences.Editor.hideSyntaxMarks)
   }
 
   func setHasModalSheet(value: Bool) {
