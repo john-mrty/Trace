@@ -520,7 +520,7 @@ Gw
                                                             <action selector="startFind:" target="Ady-hI-5gd" id="gbX-kI-0uc"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Find and Replace…" tag="12" keyEquivalent="f" id="YEy-JH-Tfz">
+                                                    <menuItem title="Find and Replace…" hidden="YES" tag="12" keyEquivalent="f" id="YEy-JH-Tfz">
                                                         <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
                                                         <connections>
                                                             <action selector="startReplace:" target="Ady-hI-5gd" id="qE3-Yw-Lt7"/>

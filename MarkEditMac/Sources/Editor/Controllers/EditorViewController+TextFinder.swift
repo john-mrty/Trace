@@ -15,6 +15,8 @@ extension EditorViewController {
     explicitly: Bool = false,
     startsEditing: Bool = true
   ) {
+    // Fork behavior: replace is stripped; every entry point lands on find
+    let mode = mode == .replace ? EditorFindMode.find : mode
     guard !hasUnfinishedAnimations else {
       return
     }

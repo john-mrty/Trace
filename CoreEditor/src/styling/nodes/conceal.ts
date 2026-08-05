@@ -21,6 +21,20 @@ class BulletWidget extends WidgetType {
 
 const bulletDeco = Decoration.replace({ widget: new BulletWidget() });
 
+class RuleWidget extends WidgetType {
+  toDOM() {
+    const span = document.createElement('span');
+    span.className = 'cm-md-ruleFill';
+    return span;
+  }
+
+  override eq() {
+    return true;
+  }
+}
+
+const ruleDeco = Decoration.replace({ widget: new RuleWidget() });
+
 function concealedRanges(view: EditorView) {
   const state = view.state;
 
@@ -50,6 +64,10 @@ function concealedRanges(view: EditorView) {
             if (parent === 'InlineCode') {
               conceal(node.from, node.to);
             }
+            break;
+          case 'HorizontalRule':
+            // "---" reads as a low-contrast full-width rule
+            ranges.push(ruleDeco.range(node.from, node.to));
             break;
           case 'ListMark':
             // "* Item" reads as a round bullet; "-" and "+" keep their literal glyphs

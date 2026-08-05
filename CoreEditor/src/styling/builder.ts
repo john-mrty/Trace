@@ -70,6 +70,14 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     borderRadius: '3px',
     border: 'none',
   },
+  // Concealed "---": a quiet rule instead of the literal dashes
+  '.cm-md-ruleFill': {
+    display: 'inline-block',
+    width: '100%',
+    borderTop: '1px solid currentColor',
+    opacity: '0.15',
+    verticalAlign: 'middle',
+  },
   // Numbers sit directly on the canvas: fixed width equal to the content's
   // left padding, which zeroes out below so the text never shifts
   '.cm-gutters': {

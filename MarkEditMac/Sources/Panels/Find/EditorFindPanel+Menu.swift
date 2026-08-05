@@ -12,9 +12,6 @@ extension EditorFindPanel {
   /// Reset the search menu, generally after search mode changed.
   func resetMenu() {
     let menu = NSMenu()
-    menu.addItem(withTitle: Localized.Search.find, action: #selector(enableFindMode(_:))).setOn(mode != .replace)
-    menu.addItem(withTitle: Localized.Search.replace, action: #selector(enableReplaceMode(_:))).setOn(mode == .replace)
-    menu.addItem(.separator())
 
     let caseItem = menu.addItem(withTitle: Localized.Search.caseSensitive, action: #selector(toggleCaseSensitive(_:)))
     caseItem.tag = Option.caseSensitive.rawValue
@@ -69,14 +66,6 @@ private extension EditorFindPanel {
     case wholeWord = 20003
     case literalSearch = 20004
     case regularExpression = 20005
-  }
-
-  @objc func enableFindMode(_ sender: NSMenuItem) {
-    delegate?.editorFindPanel(self, modeDidChange: .find)
-  }
-
-  @objc func enableReplaceMode(_ sender: NSMenuItem) {
-    delegate?.editorFindPanel(self, modeDidChange: .replace)
   }
 
   @objc func toggleCaseSensitive(_ sender: NSMenuItem) {

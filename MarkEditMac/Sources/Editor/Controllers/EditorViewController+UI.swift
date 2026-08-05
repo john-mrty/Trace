@@ -35,6 +35,14 @@ extension EditorViewController {
     backdropView.isHidden = AppDesign.reduceTransparency
     wrapper.addSubview(backdropView, positioned: .below, relativeTo: nil)
 
+    // Find floats as a rounded capsule matching the FAB, not a full-width bar
+    findPanel.layer?.cornerRadius = 12
+    findPanel.layer?.cornerCurve = .continuous
+    findPanel.layer?.borderWidth = 1
+    findPanel.layer?.shadowOpacity = 0.15
+    findPanel.layer?.shadowRadius = 10
+    findPanel.layer?.shadowOffset = CGSize(width: 0, height: -3)
+
     wrapper.addSubview(findPanel)
     wrapper.addSubview(replacePanel)
     wrapper.addSubview(webView)
@@ -160,6 +168,8 @@ extension EditorViewController {
 
     statusView.setBackgroundColor(backgroundColor)
     findPanel.setBackgroundColor(backgroundColor)
+    findPanel.layer?.borderColor = NSColor.separatorColor.cgColor
+    findPanel.layer?.shadowColor = NSColor.black.cgColor
     replacePanel.setBackgroundColor(backgroundColor)
   }
 
@@ -205,10 +215,10 @@ extension EditorViewController {
 
     if AppDesign.modernTitleBar {
       modernEffectHeight.constant = view.safeAreaInsets.top + panelDivider.frame.height
-      modernDividerView.update(animated).alphaValue = findPanel.mode == .hidden ? 0 : AppDesign.dividerAlpha
+      // The floating find capsule carries its own edge; no full-width divider
+      modernDividerView.update(animated).alphaValue = 0
     } else {
-      // To avoid duplicate dividers on legacy titlebar
-      panelDivider.isHidden = findPanel.mode == .hidden
+      panelDivider.isHidden = true
     }
 
     // The position of this divider should be fixed
@@ -523,19 +533,20 @@ private extension EditorViewController {
   }
 
   var findPanelHeight: Double {
-    switch findPanel.mode {
-    case .hidden: return 0
-    case .find: return findPanel.frame.height
-    case .replace: return findPanel.frame.height + replacePanel.frame.height
-    }
+    // The find capsule floats over the page; content never shifts
+    0
   }
 
   var findPanelRect: CGRect {
-    CGRect(
-      x: 0,
-      y: contentHeight - (findPanel.mode == .hidden ? 0 : findPanel.frame.height),
-      width: view.bounds.width,
-      height: findPanel.frame.height
+    let width = min(480, view.bounds.width - 32)
+    let height = findPanel.frame.height
+    let y = findPanel.mode == .hidden ? contentHeight : contentHeight - height - 12
+
+    return CGRect(
+      x: view.bounds.width - width - 16,
+      y: y,
+      width: width,
+      height: height
     )
   }
 
@@ -549,17 +560,10 @@ private extension EditorViewController {
   }
 
   var panelDividerRect: CGRect {
-    let offset: Double = {
-      if findPanel.mode == .hidden {
-        return contentHeight - panelDivider.length
-      }
-
-      return (findPanel.mode == .replace ? replacePanelRect : findPanelRect).minY
-    }()
-
-    return CGRect(
+    // The floating find capsule has no full-width divider
+    CGRect(
       x: 0,
-      y: offset,
+      y: contentHeight - panelDivider.length,
       width: view.frame.width,
       height: panelDivider.length
     )

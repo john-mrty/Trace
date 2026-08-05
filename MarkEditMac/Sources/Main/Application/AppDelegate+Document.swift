@@ -22,6 +22,13 @@ extension AppDelegate {
       return false
     }
 
+    // The very first launch opens the manual as a document instead of the welcome window
+    if !UserDefaults.standard.bool(forKey: Self.manualOpenedKey) {
+      UserDefaults.standard.set(true, forKey: Self.manualOpenedKey)
+      createNewFile(fileName: "Welcome to Trace", initialContent: Self.welcomeManual)
+      return false
+    }
+
     showWelcomeWindow()
     return false
   }
@@ -339,4 +346,49 @@ private extension AppDelegate {
       return true
     }
   }
+}
+
+// MARK: - Welcome Manual
+
+private extension AppDelegate {
+  static let manualOpenedKey = "trace.manual.opened"
+
+  static let welcomeManual = """
+  # Welcome to Trace
+
+  *A quiet place to write.*
+
+  This document is the manual. It's also just a Markdown file — edit it, save it somewhere, or close it and never see it again.
+
+  ## The idea
+
+  Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make this an editable heading. The words are the interface.
+
+  When you want to see the plumbing, press the `#` button in the toolbar below — syntax marks, line numbers, and a selection counter appear. Press it again to write.
+
+  ## The floating toolbar
+
+  The small capsule at the bottom holds everything prose needs: table of contents, headings, bold, italic, lists, syntax, and focus mode. It fades while you type and returns when you reach for the mouse.
+
+  ## Lists
+
+  * Bulleted lists use stars and render as round bullets
+  - Dashed lists use hyphens and stay dashes
+
+  1. Ordered lists
+  2. Number themselves
+
+  - [ ] And todos have checkboxes
+
+  ## A few favorites
+
+  - **Focus mode** dims everything but the lines you're working on.
+  - **Typewriter scrolling** keeps the caret vertically centered (Settings → Editor).
+  - **Overlay mode** — press Option-backtick to summon any document as a floating panel over your other apps.
+  - **Accent colors** — pick yours in Settings (Command-comma).
+
+  ---
+
+  That rule above? Just three dashes. Enjoy the quiet.
+  """
 }
