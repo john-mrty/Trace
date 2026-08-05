@@ -16,7 +16,7 @@ import TextBundle
  https://developer.apple.com/documentation/appkit/nsdocument
  */
 final class EditorDocument: NSDocument {
-  var fileData: Data?
+  var fileData: Data?tra  
   var spellDocTag: Int?
   var stringValue = ""
   var formatCompleted = false // The result of format content is all good

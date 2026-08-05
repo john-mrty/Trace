@@ -65,7 +65,7 @@ enum AppPreferences {
       }
     }
 
-    @Storage(key: "editor.font-style", defaultValue: .systemMono)
+    @Storage(key: "editor.font-style", defaultValue: .systemDefault)
     static var fontStyle: FontStyle {
       didSet {
         performUpdates { $0.setFontFace(fontStyle.webFontFace) }
@@ -79,14 +79,14 @@ enum AppPreferences {
       }
     }
 
-    @Storage(key: "editor.show-line-numbers", defaultValue: true)
+    @Storage(key: "editor.show-line-numbers", defaultValue: false)
     static var showLineNumbers: Bool {
       didSet {
         performUpdates { $0.setShowLineNumbers(enabled: showLineNumbers) }
       }
     }
 
-    @Storage(key: "editor.show-active-line-indicator", defaultValue: true)
+    @Storage(key: "editor.show-active-line-indicator", defaultValue: false)
     static var showActiveLineIndicator: Bool {
       didSet {
         performUpdates { $0.setShowActiveLineIndicator(enabled: showActiveLineIndicator) }
