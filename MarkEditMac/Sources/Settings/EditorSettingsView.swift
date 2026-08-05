@@ -128,6 +128,7 @@ struct EditorSettingsView: View {
         .formLabel(alignment: .top, Localized.Settings.editBehavior)
 
         Picker(Localized.Settings.lineHeight, selection: $lineHeight) {
+          Text(Localized.Settings.tightHeight).tag(LineHeight.tight)
           Text(Localized.Settings.normalHeight).tag(LineHeight.normal)
           Text(Localized.Settings.relaxedHeight).tag(LineHeight.relaxed)
         }

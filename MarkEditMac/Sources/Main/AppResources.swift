@@ -53,7 +53,7 @@ enum Localized {
     static let toggleBold = String(localized: "Bold", comment: "Toolbar item to toggle bold")
     static let toggleItalic = String(localized: "Italic", comment: "Toolbar item to toggle italic")
     static let toggleList = String(localized: "Toggle List", comment: "Toolbar item to toggle bullet list")
-    static let hideSyntaxMarks = String(localized: "Hide Markdown", comment: "Toolbar item to hide Markdown syntax marks")
+    static let hideSyntaxMarks = String(localized: "Show Markdown", comment: "Toolbar item to toggle Markdown syntax marks; on means visible")
     static let dimInactiveLines = String(localized: "Dim Inactive Lines", comment: "Toolbar item to dim lines outside the current selection")
     static let textFormat = String(localized: "Text Format", comment: "Toolbar item to use text format menu")
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
@@ -127,6 +127,7 @@ enum Localized {
     static let typewriterModeTitle = String(localized: "Typewriter scrolling", comment: "Explanation for typewriter mode")
     static let focusModeTitle = String(localized: "Dim inactive lines", comment: "Explanation for focus mode")
     static let lineHeight = String(localized: "Line Height:", comment: "Label for line height option")
+    static let tightHeight = String(localized: "Tight", comment: "Tight line spacing")
     static let normalHeight = String(localized: "Normal", comment: "Normal line spacing")
     static let relaxedHeight = String(localized: "Relaxed", comment: "Relaxed line spacing")
 

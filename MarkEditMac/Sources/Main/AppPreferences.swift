@@ -355,11 +355,12 @@ enum LineHeight: String, CompactCodableEnum {
 
   var multiplier: Double {
     switch self {
-    // "tight" is retired from the UI; stored prefs map to the new normal
-    case .tight, .normal:
+    case .tight:
       return 1.8
-    case .relaxed:
+    case .normal:
       return 2.1
+    case .relaxed:
+      return 2.4
     }
   }
 }

@@ -257,6 +257,10 @@ extension EditorViewController {
 
   // MARK: - List
 
+  @IBAction func toggleBulleted(_ sender: Any?) {
+    bridge.format.toggleBulleted()
+  }
+
   @IBAction func toggleBullet(_ sender: Any?) {
     bridge.format.toggleBullet()
   }

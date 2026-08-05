@@ -787,8 +787,14 @@ Gw
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="e3G-Nt-QJa"/>
-                                        <menuItem title="List" keyEquivalent="l" id="ANX-uP-CA4">
+                                        <menuItem title="Bulleted List" keyEquivalent="l" id="bLD-st-Bu1">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="toggleBulleted:" target="Ady-hI-5gd" id="bLD-st-Ac1"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Dashed List" id="ANX-uP-CA4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="toggleBullet:" target="Ady-hI-5gd" id="bzg-QY-FFp"/>
                                             </connections>
@@ -993,6 +999,7 @@ Gw
                         <outlet property="fileNewTabItem" destination="dHZ-CH-KLC" id="nk0-fR-sju"/>
                         <outlet property="fileReopenClosedTabItem" destination="rct-Cm-ShT" id="q4P-gZ-qbI"/>
                         <outlet property="formatBulletItem" destination="ANX-uP-CA4" id="4cQ-3z-hPG"/>
+                        <outlet property="formatBulletedItem" destination="bLD-st-Bu1" id="bLD-st-Ou1"/>
                         <outlet property="formatCodeBlockItem" destination="QOM-rI-Bxj" id="4Dy-YC-z6y"/>
                         <outlet property="formatCodeItem" destination="Ibb-aP-jnQ" id="4kt-Sh-zOv"/>
                         <outlet property="formatHeadersMenu" destination="z5V-GU-gP0" id="Eyr-s8-i9J"/>

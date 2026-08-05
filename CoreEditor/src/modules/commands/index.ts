@@ -81,10 +81,17 @@ export function toggleBlockquote() {
 }
 
 /**
- * Toggle list markers like "- Item", "* Item", or "+ Item".
+ * Toggle list markers like "- Item", shown as a literal dash.
  */
 export function toggleBullet() {
-  toggleListStyle(() => /^([ \t]*[-*+] )(?! *\[[ xX]\]) */, (_, suggested) => suggested ?? '-');
+  toggleListStyle(() => /^([ \t]*- )(?! *\[[ xX]\]) */, () => '-');
+}
+
+/**
+ * Toggle list markers like "* Item", rendered as a round bullet when syntax is concealed.
+ */
+export function toggleBulleted() {
+  toggleListStyle(() => /^([ \t]*\* )(?! *\[[ xX]\]) */, () => '*');
 }
 
 /**

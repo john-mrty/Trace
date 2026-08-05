@@ -50,6 +50,10 @@ public final class WebBridgeFormat {
     webView?.invoke(path: "webModules.format.toggleBullet", completion: completion)
   }
 
+  public func toggleBulleted(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    webView?.invoke(path: "webModules.format.toggleBulleted", completion: completion)
+  }
+
   public func toggleNumbering(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     webView?.invoke(path: "webModules.format.toggleNumbering", completion: completion)
   }

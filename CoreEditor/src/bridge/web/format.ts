@@ -8,6 +8,7 @@ import {
   toggleStrikethrough,
   toggleHeading,
   toggleBullet,
+  toggleBulleted,
   toggleNumbering,
   toggleTodo,
   toggleBlockquote,
@@ -34,6 +35,7 @@ export interface WebModuleFormat extends WebModule {
   toggleStrikethrough(): void;
   toggleHeading({ level }: { level: CodeGen_Int }): void;
   toggleBullet(): void;
+  toggleBulleted(): void;
   toggleNumbering(): void;
   toggleTodo(): void;
   toggleBlockquote(): void;
@@ -71,6 +73,10 @@ export class WebModuleFormatImpl implements WebModuleFormat {
 
   toggleBullet(): void {
     toggleBullet();
+  }
+
+  toggleBulleted(): void {
+    toggleBulleted();
   }
 
   toggleNumbering(): void {

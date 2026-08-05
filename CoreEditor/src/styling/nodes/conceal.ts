@@ -1,9 +1,25 @@
-import { Decoration, EditorView } from '@codemirror/view';
+import { Decoration, EditorView, WidgetType } from '@codemirror/view';
 import { Range, RangeSet } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
 import { createDecoPlugin } from '../helper';
 
 const hiddenDeco = Decoration.replace({});
+
+class BulletWidget extends WidgetType {
+  toDOM() {
+    const span = document.createElement('span');
+    // Reuse the list mark class so the accent color applies
+    span.className = 'cm-md-listMark';
+    span.textContent = '•';
+    return span;
+  }
+
+  override eq() {
+    return true;
+  }
+}
+
+const bulletDeco = Decoration.replace({ widget: new BulletWidget() });
 
 function concealedRanges(view: EditorView) {
   const state = view.state;
@@ -33,6 +49,12 @@ function concealedRanges(view: EditorView) {
           case 'CodeMark':
             if (parent === 'InlineCode') {
               conceal(node.from, node.to);
+            }
+            break;
+          case 'ListMark':
+            // "* Item" reads as a round bullet; "-" and "+" keep their literal glyphs
+            if (state.sliceDoc(node.from, node.to) === '*') {
+              ranges.push(bulletDeco.range(node.from, node.to));
             }
             break;
           case 'LinkMark':

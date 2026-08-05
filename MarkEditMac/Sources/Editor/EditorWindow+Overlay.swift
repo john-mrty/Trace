@@ -283,6 +283,7 @@ private extension EditorWindow {
       ) { button in
         let menu = NSMenu()
         menu.items = [
+          NSApp.appDelegate?.formatBulletedItem,
           NSApp.appDelegate?.formatBulletItem,
           NSApp.appDelegate?.formatNumberingItem,
           NSApp.appDelegate?.formatTodoItem,
@@ -292,7 +293,8 @@ private extension EditorWindow {
       EditorOverlayToolbar.Action(
         symbolName: Icons.numberSign,
         accessibilityLabel: Localized.Toolbar.hideSyntaxMarks,
-        isActive: { AppPreferences.Editor.hideSyntaxMarks },
+        // "On" means syntax is visible; the concealed default reads as off
+        isActive: { !AppPreferences.Editor.hideSyntaxMarks },
         handler: { [weak viewController] _ in
           viewController?.toggleHideSyntaxMarks(nil)
         }
