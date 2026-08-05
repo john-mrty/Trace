@@ -776,6 +776,7 @@ Gw
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="pah-3W-3hF"/>
                                         <menuItem title="Insert Link" keyEquivalent="k" id="BLl-I2-80X">
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
                                                 <action selector="insertLink:" target="Ady-hI-5gd" id="DkV-Sp-TBi"/>
                                             </connections>
@@ -883,6 +884,12 @@ Gw
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="View" id="HyV-fh-RgO">
                                     <items>
+                                        <menuItem title="Command Palette…" keyEquivalent="k" id="cPa-Lt-Mi1">
+                                            <connections>
+                                                <action selector="showCommandPalette:" target="Ady-hI-5gd" id="cPa-Lt-Ac1"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="cPa-Lt-Sp1"/>
                                         <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
