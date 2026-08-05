@@ -19,7 +19,11 @@ export const listIndentStyle = createDecoPlugin(() => {
     // we need to find the position of the last whitespace before "H".
     //
     // As a result, we will use " 1.  " to calculate the indent.
-    return createLineIndentDeco(line, markNode.to - line.from);
+    //
+    // Nested items get extra visual indent (0.35em per leading whitespace char)
+    // so hierarchy reads clearly without touching the document text.
+    const nestingDepth = markNode.from - line.from;
+    return createLineIndentDeco(line, markNode.to - line.from, nestingDepth * 0.35);
   });
 });
 
@@ -50,7 +54,7 @@ export const lineIndentStyle = createDecoPlugin(() => {
   return Decoration.set(decos);
 });
 
-function createLineIndentDeco(line: Line, from: number) {
+function createLineIndentDeco(line: Line, from: number, extraIndentEm = 0) {
   // Fail fast if line wrapping is disabled
   if (!window.config.lineWrapping) {
     return null;
@@ -68,10 +72,11 @@ function createLineIndentDeco(line: Line, from: number) {
     }
 
     const indent = getTextIndent(text.substring(0, index));
+    const marginStart = extraIndentEm > 0 ? `calc(${indent} + ${extraIndentEm}em)` : indent;
     const deco = Decoration.line({
       class: className,
       attributes: {
-        style: `text-indent: -${indent}; margin-inline-start: ${indent};`,
+        style: `text-indent: -${indent}; margin-inline-start: ${marginStart};`,
       },
     });
 
