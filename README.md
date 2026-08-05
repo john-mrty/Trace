@@ -12,13 +12,17 @@ Markdown without the markup. Syntax marks fade away as you write, the toolbar fl
 
 ## What it does
 
-- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written; your document reads like the finished piece. Toggle them back from the floating toolbar when you need to see the plumbing.
-- **Floating toolbar** — a small capsule at the bottom of the window with the handful of actions prose actually needs: table of contents, headings, bold, italic, lists, syntax visibility, and focus mode. It recedes while you type and returns when you reach for the mouse. Active states glow amber.
-- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, in light and dark.
+- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written; your document reads like the finished piece. One toggle brings back the plumbing as a proper source mode: raw marks, line numbers on the bare canvas, and a live selection status.
+- **Floating toolbar** — a small capsule at the bottom of the window with the handful of actions prose actually needs: table of contents, headings, bold, italic, lists, syntax visibility, and focus mode. It recedes while you type and returns when you reach for the mouse. Active states glow in your accent color.
+- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop that stays alive even when the window is in the background, in light and dark.
 - **Focus mode** — dims everything except the lines you're working on.
+- **Typewriter scrolling** — the caret holds the vertical center of the screen; the text moves, you don't.
 - **Overlay mode** — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
 - **A caret with a pulse** — glides between positions and breathes at rest instead of blinking. (Respects Reduce Motion.)
-- **Four themes** — GitHub and Minimal, in light and dark pairs, unified by a warm amber accent.
+- **A welcome, not a blank stare** — launching without a document shows recent files and New/Open, then gets out of the way.
+- **Two kinds of list** — bulleted (`*`, rendered as round bullets) and dashed (`-`, rendered literally), plus ordered and todo. Bullets and numbers take the accent color.
+- **Accent colors** — Amber, Crimson, Fern, Teal, Azure, or Graphite; each tuned separately for light and dark so the caret, selection, bullets, and toolbar stay legible on both.
+- **One theme, done well** — GitHub in light and dark, following the system or pinned to either. Three line heights, from tight to relaxed.
 
 ## What it doesn't do
 
@@ -34,7 +38,7 @@ Everything that makes MarkEdit fast is still here:
 
 ## Requirements & building
 
-- macOS 15.0+
+- macOS 15.0+ (the full glass treatment needs macOS 26 Tahoe; earlier versions fall back gracefully)
 - Build with Xcode: open `MarkEdit.xcodeproj` and run the **MarkEditMac** scheme.
 - The editor core lives in `CoreEditor/` (TypeScript). After changing it: `cd CoreEditor && yarn install && yarn build`, then rebuild the app.
 
