@@ -26,10 +26,11 @@ extension EditorViewController {
       wrapper.addSubview(modernBackgroundView)
     }
 
-    // NSVisualEffectView already defaults to behindWindow blending and
-    // followsWindowActiveState, so only the material needs to be set.
-    // .popover is the lightest blur material; .underWindowBackground reads grey even over white
+    // .popover is the lightest blur material; .underWindowBackground reads grey even over white.
+    // .active keeps the blur alive when the window is in the background,
+    // instead of collapsing to a solid color (followsWindowActiveState default)
     backdropView.material = .popover
+    backdropView.state = .active
     backdropView.translatesAutoresizingMaskIntoConstraints = false
     backdropView.isHidden = AppDesign.reduceTransparency
     wrapper.addSubview(backdropView, positioned: .below, relativeTo: nil)

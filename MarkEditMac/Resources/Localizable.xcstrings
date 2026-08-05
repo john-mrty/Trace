@@ -162,6 +162,7 @@
     },
     "1 tab" : {
       "comment" : "Use 1 tab as the indent unit",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -179,6 +180,7 @@
     },
     "2 spaces" : {
       "comment" : "Use 2 spaces as the indent unit",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -196,6 +198,7 @@
     },
     "2 tabs" : {
       "comment" : "Use 2 tabs as the indent unit",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -213,6 +216,7 @@
     },
     "4 spaces" : {
       "comment" : "Use 4 spaces as the indent unit",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1437,6 +1441,9 @@
         }
       }
     },
+    "Font Size:" : {
+      "comment" : "Label for font size stepper"
+    },
     "Font:" : {
       "comment" : "Label for font settings",
       "localizations" : {
@@ -1751,6 +1758,7 @@
     },
     "Indents more" : {
       "comment" : "Press tab key to indent more",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1909,6 +1917,7 @@
     },
     "Inserts 2 spaces" : {
       "comment" : "Press tab key to insert 2 spaces",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1926,6 +1935,7 @@
     },
     "Inserts 4 spaces" : {
       "comment" : "Press tab key to insert 4 spaces",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -1943,6 +1953,7 @@
     },
     "Inserts tab character" : {
       "comment" : "Default tab key behavior",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2232,6 +2243,7 @@
     },
     "Line Wrapping:" : {
       "comment" : "Label for line wrapping option",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2354,6 +2366,7 @@
     },
     "More Fonts" : {
       "comment" : "Menu item to browse all fonts",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2672,6 +2685,7 @@
     },
     "Open Font Panel…" : {
       "comment" : "Menu item for selecting custom fonts",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2742,6 +2756,7 @@
     },
     "Prefer Indent Using:" : {
       "comment" : "Label for indent unit settings",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -2897,6 +2912,7 @@
     },
     "Recently Used" : {
       "comment" : "Menu item to show recently used fonts",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3314,6 +3330,7 @@
     },
     "Select…" : {
       "comment" : "Menu label for selecting fonts",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3679,6 +3696,7 @@
     },
     "Tab Key:" : {
       "comment" : "Label for tab key behavior settings",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3871,6 +3889,7 @@
     },
     "Tight" : {
       "comment" : "Tight line spacing",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4334,6 +4353,7 @@
     },
     "Window" : {
       "comment" : "Window title for window settings",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4420,6 +4440,7 @@
     },
     "Wrap lines to editor width" : {
       "comment" : "Explanation for line wrapping option",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
