@@ -141,9 +141,10 @@ extension EditorViewController {
     (view.window as? EditorWindow)?.prefersTintedToolbar = prefersTintedToolbar
 
     if AppDesign.modernTitleBar {
-      let isMainWindow = view.window?.isMainWindow ?? false
+      // Stay translucent even when the window isn't main; backdropView pins
+      // its blur with state = .active so the glass look survives deactivation
       let isFullscreen = view.window?.styleMask.contains(.fullScreen) ?? false
-      let reduceTransparency = !isMainWindow || AppDesign.reduceTransparency || isFullscreen
+      let reduceTransparency = AppDesign.reduceTransparency || isFullscreen
       let baseColor = backgroundColor.withAlphaComponent(reduceTransparency ? 1.0 : 0.01)
 
       view.window?.backgroundColor = baseColor
