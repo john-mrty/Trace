@@ -9,9 +9,9 @@ import AppKitExtensions
 
 public class NonBezelButton: NSButton {
   public var modernStyle = false
-  var focusRingRadius: Double?
-  var focusRingCorners: NSBezierPath.Corners?
-  var modernCornerRadius: Double = 0
+  public var focusRingRadius: Double?
+  public var focusRingCorners: NSBezierPath.Corners?
+  public var modernCornerRadius: Double = 0
   var modernStateChanged: ((_ isHighlighted: Bool) -> Void)?
 
   override init(frame: CGRect) {

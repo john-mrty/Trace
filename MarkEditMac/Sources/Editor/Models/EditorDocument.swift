@@ -12,7 +12,7 @@ import TextBundle
 
 /**
  Main document used to deal with markdown files and text bundles.
-
+ 
  https://developer.apple.com/documentation/appkit/nsdocument
  */
 final class EditorDocument: NSDocument {

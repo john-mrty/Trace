@@ -17,9 +17,26 @@ open class RoundedButtonGroup: NSView {
   }
 
   private let modernStyle: Bool
-  private let leftButton: NSButton
-  private let rightButton: NSButton
+  private let leftButton: NonBezelButton
+  private let rightButton: NonBezelButton
   private let dividerView = DividerView(color: .plainButtonBorder)
+
+  /// Overrides the default corner radius, e.g., a fully rounded capsule
+  public var cornerRadius: Double {
+    get {
+      layer?.cornerRadius ?? Constants.cornerRadius
+    }
+    set {
+      layer?.cornerRadius = newValue
+      leftButton.focusRingRadius = newValue
+      rightButton.focusRingRadius = newValue
+
+      if modernStyle {
+        leftButton.modernCornerRadius = newValue
+        rightButton.modernCornerRadius = newValue
+      }
+    }
+  }
 
   public init(modernStyle: Bool, leftButton: NonBezelButton, rightButton: NonBezelButton) {
     self.modernStyle = modernStyle

@@ -51,8 +51,11 @@ final class EditorFindPanel: EditorPanelView {
   )
 
   private(set) lazy var doneButton = {
-    let button = AquaFocusRingButton()
-    button.bezelStyle = AppDesign.modernStyle ? .accessoryBar : .accessoryBarAction
+    // Bezel-less pill matching the navigate buttons and the FAB
+    let button = NonBezelButton()
+    button.isBordered = false
+    button.modernStyle = AppDesign.modernStyle
+    button.focusRingCorners = .all
 
     button.attributedTitle = NSAttributedString(
       string: Localized.General.done,
@@ -65,6 +68,14 @@ final class EditorFindPanel: EditorPanelView {
   override init() {
     super.init()
     setUp()
+  }
+
+  override func layout() {
+    super.layout()
+    // Full-radius pills; heights resolve only at layout time
+    findButtons.cornerRadius = findButtons.frame.height * 0.5
+    doneButton.modernCornerRadius = doneButton.frame.height * 0.5
+    doneButton.focusRingRadius = doneButton.frame.height * 0.5
   }
 }
 

@@ -35,18 +35,19 @@ extension EditorViewController {
     backdropView.isHidden = AppDesign.reduceTransparency
     wrapper.addSubview(backdropView, positioned: .below, relativeTo: nil)
 
-    // Find floats as a rounded capsule matching the FAB, not a full-width bar
-    findPanel.layer?.cornerRadius = 12
+    // Find floats as a fully rounded capsule matching the FAB, not a full-width bar
+    findPanel.layer?.cornerRadius = findPanel.frame.height * 0.5
     findPanel.layer?.cornerCurve = .continuous
     findPanel.layer?.borderWidth = 1
     findPanel.layer?.shadowOpacity = 0.15
     findPanel.layer?.shadowRadius = 10
     findPanel.layer?.shadowOffset = CGSize(width: 0, height: -3)
 
-    wrapper.addSubview(findPanel)
-    wrapper.addSubview(replacePanel)
     wrapper.addSubview(webView)
     wrapper.addSubview(statusView)
+    // Panels come after webView: the capsule floats above the text
+    wrapper.addSubview(findPanel)
+    wrapper.addSubview(replacePanel)
 
     if AppDesign.modernTitleBar {
       wrapper.addSubview(modernEffectView)
@@ -543,7 +544,7 @@ private extension EditorViewController {
     let y = findPanel.mode == .hidden ? contentHeight : contentHeight - height - 12
 
     return CGRect(
-      x: view.bounds.width - width - 16,
+      x: (view.bounds.width - width) * 0.5,
       y: y,
       width: width,
       height: height

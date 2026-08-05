@@ -36,6 +36,9 @@ extension EditorFindPanel {
     NSLayoutConstraint.activate([
       doneButton.centerYAnchor.constraint(equalTo: centerYAnchor),
       doneButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.panelPadding),
+      // Bezel-less buttons have no built-in padding; give the pill some air
+      doneButton.heightAnchor.constraint(equalToConstant: 24),
+      doneButton.widthAnchor.constraint(equalToConstant: doneButton.intrinsicContentSize.width + 20),
 
       findButtons.centerYAnchor.constraint(equalTo: centerYAnchor),
       findButtons.heightAnchor.constraint(equalTo: doneButton.heightAnchor),
