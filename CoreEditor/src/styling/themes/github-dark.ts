@@ -32,7 +32,9 @@ function highlight() {
     { tag: [tags.className, tags.definition(tags.propertyName), tags.definition(tags.typeName), tags.listMark, tags.codeInfo], color: '#ffa657' },
     { tag: [tags.function(tags.variableName), tags.function(tags.propertyName)], color: '#d2a8ff' },
     { tag: [tags.meta, tags.comment], color: colors.comment, fontStyle: 'italic' },
-    { tag: [tags.link, tags.escape, tags.string, tags.regexp, tags.special(tags.string)], color: '#a5d6ff' },
+    // Links get GitHub's vivid link blue; strings keep the pale wash
+    { tag: [tags.link], color: '#58a6ff' },
+    { tag: [tags.escape, tags.string, tags.regexp, tags.special(tags.string)], color: '#a5d6ff' },
     { tag: [tags.url, tags.linkMark, tags.propertyName], color: colors.text },
     { tag: [tags.quote, tags.quoteMark], color: base.green, fontStyle: 'italic' },
   ], 'dark');
