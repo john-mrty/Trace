@@ -17,6 +17,8 @@ public class NonBezelButton: NSButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
     focusRingType = .exterior
+    // Default "Button" title used to be hidden by fills painting over it
+    title = ""
   }
 
   @available(*, unavailable)

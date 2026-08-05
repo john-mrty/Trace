@@ -56,6 +56,10 @@ final class EditorFindPanel: EditorPanelView {
     button.isBordered = false
     button.modernStyle = AppDesign.modernStyle
     button.focusRingCorners = .all
+    // Standalone pill: clip the square background fill, like RoundedButtonGroup does
+    button.wantsLayer = true
+    button.layer?.masksToBounds = true
+    button.layer?.cornerCurve = .continuous
 
     button.attributedTitle = NSAttributedString(
       string: Localized.General.done,
@@ -74,6 +78,7 @@ final class EditorFindPanel: EditorPanelView {
     super.layout()
     // Full-radius pills; heights resolve only at layout time
     findButtons.cornerRadius = findButtons.frame.height * 0.5
+    doneButton.layer?.cornerRadius = doneButton.frame.height * 0.5
     doneButton.modernCornerRadius = doneButton.frame.height * 0.5
     doneButton.focusRingRadius = doneButton.frame.height * 0.5
   }
