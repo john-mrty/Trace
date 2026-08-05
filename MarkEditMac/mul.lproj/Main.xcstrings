@@ -663,24 +663,24 @@
       }
     },
     "ANX-uP-CA4.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"List\"; ObjectID = \"ANX-uP-CA4\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Dashed List\"; ObjectID = \"ANX-uP-CA4\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "List"
+            "value" : "Dashed List"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "列表"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "列表"
           }
         }
@@ -898,6 +898,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "保留最多 100 個版本"
+          }
+        }
+      }
+    },
+    "bLD-st-Bu1.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Bulleted List\"; ObjectID = \"bLD-st-Bu1\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Bulleted List"
           }
         }
       }

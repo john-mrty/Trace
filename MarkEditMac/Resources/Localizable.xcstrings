@@ -1717,9 +1717,6 @@
         }
       }
     },
-    "Hide Markdown" : {
-      "comment" : "Toolbar item to hide Markdown syntax marks"
-    },
     "Homepage" : {
       "comment" : "Link to an extension's homepage",
       "extractionState" : "stale",
@@ -3468,6 +3465,9 @@
         }
       }
     },
+    "Show Markdown" : {
+      "comment" : "Toolbar item to toggle Markdown syntax marks; on means visible"
+    },
     "Show Writing Tools" : {
       "comment" : "Show Writing Tools",
       "localizations" : {
@@ -3889,7 +3889,6 @@
     },
     "Tight" : {
       "comment" : "Tight line spacing",
-      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {

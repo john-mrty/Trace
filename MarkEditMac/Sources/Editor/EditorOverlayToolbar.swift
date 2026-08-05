@@ -201,16 +201,21 @@ private extension EditorOverlayToolbar {
 
   func setDimmed(_ dimmed: Bool) {
     let target: CGFloat = dimmed ? 0.4 : 1
-    guard alphaValue != target else {
+    // The title and traffic lights recede fully while writing (iA Writer style)
+    let titlebar = window?.titlebarContainerView
+    let titlebarTarget: CGFloat = dimmed ? 0 : 1
+    guard alphaValue != target || titlebar?.alphaValue != titlebarTarget else {
       return
     }
 
     if AppDesign.reduceMotion {
       alphaValue = target
+      titlebar?.alphaValue = titlebarTarget
     } else {
       NSAnimationContext.runAnimationGroup { context in
         context.duration = 0.15
         animator().alphaValue = target
+        titlebar?.animator().alphaValue = titlebarTarget
       }
     }
   }
