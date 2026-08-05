@@ -2213,6 +2213,7 @@
     },
     "Line numbers" : {
       "comment" : "Option to show line numbers",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -3363,6 +3364,7 @@
     },
     "Selection status" : {
       "comment" : "Option to show selection status",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {

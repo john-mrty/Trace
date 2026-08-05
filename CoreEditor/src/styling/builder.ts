@@ -84,6 +84,9 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   },
   '.cm-lineNumbers .cm-gutterElement': {
     paddingRight: '14px',
+    // Smaller than body text; slight push-down to optically align with the line
+    fontSize: '0.8em',
+    paddingTop: '0.22em',
   },
   '.cm-activeLineGutter': {
     backgroundColor: 'inherit',

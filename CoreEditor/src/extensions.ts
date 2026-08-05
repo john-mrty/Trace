@@ -103,7 +103,8 @@ export function extensions(options: { lineBreak?: string }) {
 
     // Line behaviors
     lineEndings.of(options.lineBreak !== undefined ? EditorState.lineSeparator.of(options.lineBreak) : []),
-    gutters.of(window.config.showLineNumbers ? gutterExtensions : []),
+    // Always mounted so the left inset never changes; visibility is toggled via CSS
+    gutters.of(gutterExtensions),
     lineWrapping.of(window.config.lineWrapping ? EditorView.lineWrapping : []),
     indentBehaviorExtension(),
 

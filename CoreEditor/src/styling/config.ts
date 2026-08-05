@@ -4,7 +4,6 @@ import { Config, WebFontFace, InvisiblesBehavior } from '../config';
 import { globalState, editingState, styleSheets } from '../common/store';
 import { observeGuttersWidth, adjustGutterPositions } from '../modules/lines';
 import { refreshEditFocus } from '../modules/selection';
-import { gutterExtensions } from './nodes/gutter';
 import { invisiblesExtension } from './nodes/invisible';
 import { concealExtension } from './nodes/conceal';
 import { lineIndicatorLayer } from './nodes/line';
@@ -28,6 +27,7 @@ export default interface StyleSheets {
   focusMode?: HTMLStyleElement;
   lineHeight?: HTMLStyleElement;
   taskMarker?: HTMLStyleElement;
+  hiddenLineNumbers?: HTMLStyleElement;
 }
 
 export function setUp(config: Config, colors: EditorColors) {
@@ -43,6 +43,8 @@ export function setUp(config: Config, colors: EditorColors) {
     // Delay because when the window is resizing, the mouse can enter and leave gutters rapidly
     setTimeout(enableGutterHoverEffects, 500);
     enableGuttersObserver();
+  } else {
+    setShowLineNumbers(false);
   }
 }
 
@@ -112,9 +114,12 @@ export function setFontSize(fontSize: number) {
 }
 
 export function setShowLineNumbers(enabled: boolean) {
-  tryGetEditor()?.dispatch({
-    effects: window.dynamics.gutters?.reconfigure(enabled ? gutterExtensions : []),
-  });
+  // The gutter stays mounted to keep the layout stable; only the digits hide
+  if (styleSheets.hiddenLineNumbers === undefined) {
+    styleSheets.hiddenLineNumbers = createStyleSheet('.cm-gutters { visibility: hidden; }', false);
+  }
+
+  styleSheets.hiddenLineNumbers.disabled = enabled;
 
   if (enabled) {
     enableGutterHoverEffects();
