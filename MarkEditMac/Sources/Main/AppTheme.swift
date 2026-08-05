@@ -78,19 +78,19 @@ extension AppTheme: CaseIterable, Hashable, CustomStringConvertible {
 /// User-selectable accent, applied to the editor caret/selection and FAB states.
 enum AppAccentColor: String, Codable, CaseIterable, CustomStringConvertible {
   case amber
-  case ember
   case crimson
   case fern
   case teal
+  case azure
   case graphite
 
   var description: String {
     switch self {
     case .amber: return "Amber"
-    case .ember: return "Ember"
     case .crimson: return "Crimson"
     case .fern: return "Fern"
     case .teal: return "Teal"
+    case .azure: return "Azure"
     case .graphite: return "Graphite"
     }
   }
@@ -99,10 +99,10 @@ enum AppAccentColor: String, Codable, CaseIterable, CustomStringConvertible {
   func hexCode(isDark: Bool) -> UInt32 {
     switch self {
     case .amber: return isDark ? 0xfbbf24 : 0xb45309
-    case .ember: return isDark ? 0xfb923c : 0xc2410c
     case .crimson: return isDark ? 0xf87171 : 0xdc2626
     case .fern: return isDark ? 0x4ade80 : 0x15803d
     case .teal: return isDark ? 0x2dd4bf : 0x0f766e
+    case .azure: return isDark ? 0x58a6ff : 0x0969da
     case .graphite: return isDark ? 0xd0d0d0 : 0x3d3d3d
     }
   }
