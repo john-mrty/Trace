@@ -24,7 +24,7 @@ open class RoundedButtonGroup: NSView {
   /// Overrides the default corner radius, e.g., a fully rounded capsule
   public var cornerRadius: Double {
     get {
-      layer?.cornerRadius ?? Constants.cornerRadius
+      layer.map { Double($0.cornerRadius) } ?? Constants.cornerRadius
     }
     set {
       layer?.cornerRadius = newValue
