@@ -3161,6 +3161,18 @@
         }
       }
     },
+    "qOp-Mi-001.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Open Quickly…\"; ObjectID = \"qOp-Mi-001\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Open Quickly…"
+          }
+        }
+      }
+    },
     "QVA-GW-ruk.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Export to RTF\"; ObjectID = \"QVA-GW-ruk\";",
       "extractionState" : "stale",
