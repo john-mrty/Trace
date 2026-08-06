@@ -22,6 +22,7 @@ struct EditorSettingsView: View {
   @State private var fontStyle = AppPreferences.Editor.fontStyle
   @State private var fontSize = AppPreferences.Editor.fontSize
   @State private var accentColor = AppPreferences.Editor.accentColor
+  @State private var showLineNumbers = AppPreferences.Editor.showLineNumbers
   @State private var showActiveLineIndicator = AppPreferences.Editor.showActiveLineIndicator
   @State private var invisiblesBehavior = AppPreferences.Editor.invisiblesBehavior
   @State private var typewriterMode = AppPreferences.Editor.typewriterMode
@@ -88,6 +89,13 @@ struct EditorSettingsView: View {
 
       Section {
         VStack(alignment: .leading) {
+          Toggle(isOn: $showLineNumbers) {
+            Text(Localized.Settings.lineNumbers)
+          }
+          .onChange(of: showLineNumbers) {
+            AppPreferences.Editor.showLineNumbers = showLineNumbers
+          }
+
           Toggle(isOn: $showActiveLineIndicator) {
             Text(Localized.Settings.activeLineIndicator)
           }

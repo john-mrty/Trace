@@ -35,6 +35,69 @@ class RuleWidget extends WidgetType {
 
 const ruleDeco = Decoration.replace({ widget: new RuleWidget() });
 
+class TaskCheckboxWidget extends WidgetType {
+  constructor(private readonly checked: boolean) {
+    super();
+  }
+
+  override eq(other: TaskCheckboxWidget) {
+    return other.checked === this.checked;
+  }
+
+  toDOM() {
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.className = 'cm-md-taskCheckbox';
+    input.checked = this.checked;
+
+    input.onmousedown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    input.onclick = event => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const editor = window.editor;
+      const from = editor.posAtDOM(input);
+      const marker = editor.state.sliceDoc(from, from + 3);
+      editor.dispatch({
+        changes: { from, to: from + 3, insert: marker === '[ ]' ? '[x]' : '[ ]' },
+        userEvent: '@none',
+      });
+    };
+
+    return input;
+  }
+}
+
+function showLightbox(source: string) {
+  const overlay = document.createElement('div');
+  overlay.className = 'cm-md-lightbox';
+
+  const image = document.createElement('img');
+  image.src = source;
+  overlay.appendChild(image);
+
+  const dismiss = () => {
+    overlay.remove();
+    document.removeEventListener('keydown', onKeyDown, true);
+  };
+
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
+      dismiss();
+    }
+  };
+
+  overlay.onclick = dismiss;
+  document.addEventListener('keydown', onKeyDown, true);
+  document.body.appendChild(overlay);
+}
+
 class InlineImageWidget extends WidgetType {
   constructor(private readonly source: string, private readonly altText: string) {
     super();
@@ -60,6 +123,17 @@ class InlineImageWidget extends WidgetType {
     // scheme-task allowlist pattern ("image-loader://*/*").
     const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(this.source);
     img.src = hasScheme ? this.source : `image-loader://asset/img?src=${encodeURIComponent(this.source)}`;
+
+    img.onmousedown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    img.onclick = event => {
+      event.preventDefault();
+      event.stopPropagation();
+      showLightbox(img.src);
+    };
 
     img.onload = () => window.editor.requestMeasure();
     img.onerror = () => {
@@ -108,10 +182,19 @@ function concealedRanges(view: EditorView) {
             ranges.push(ruleDeco.range(node.from, node.to));
             break;
           case 'ListMark':
-            // "* Item" reads as a round bullet; "-" and "+" keep their literal glyphs
-            if (state.sliceDoc(node.from, node.to) === '*') {
+            // Task items render as a checkbox only — swallow the list mark and
+            // its trailing space so "- [ ] Item" reads as "☐ Item"
+            if (/^ \[[ xX]\]/.test(state.sliceDoc(node.to, node.to + 4))) {
+              conceal(node.from, node.to + 1);
+            } else if (state.sliceDoc(node.from, node.to) === '*') {
+              // "* Item" reads as a round bullet; "-" and "+" keep their literal glyphs
               ranges.push(bulletDeco.range(node.from, node.to));
             }
+            break;
+          case 'TaskMarker':
+            ranges.push(Decoration.replace({
+              widget: new TaskCheckboxWidget(state.sliceDoc(node.from, node.to) !== '[ ]'),
+            }).range(node.from, node.to));
             break;
           case 'LinkMark':
           case 'URL':

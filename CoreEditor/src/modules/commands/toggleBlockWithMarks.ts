@@ -1,5 +1,6 @@
 import { EditorSelection, SelectionRange } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
+import { SyntaxNode } from '@lezer/common';
 import selectedRanges from '../selection/selectedRanges';
 import selectWithRanges from '../selection/selectWithRanges';
 
@@ -16,6 +17,22 @@ export default function toggleBlockWithMarks(leftMark: string, rightMark: string
   const state = editor.state;
   const hasNodeNames = mainNodeName !== undefined && markNodeName !== undefined;
 
+  // A caret at the end boundary (right after "**text**|") resolves to the
+  // mark node or outside with side 0, which used to insert a stray mark pair
+  // instead of unwrapping — lean both ways and walk up to the main node
+  const resolveNode = (pos: number) => {
+    const tree = syntaxTree(state);
+    for (const side of [0, -1] as const) {
+      for (let node: SyntaxNode | null = tree.resolve(pos, side); node !== null; node = node.parent) {
+        if (node.name === mainNodeName) {
+          return node;
+        }
+      }
+    }
+
+    return tree.resolve(pos);
+  };
+
   if (hasNodeNames) {
     // Ideally this should be a Set, but we are not going have tons of carets
     const nodeRanges: SelectionRange[] = [];
@@ -23,8 +40,7 @@ export default function toggleBlockWithMarks(leftMark: string, rightMark: string
 
     // Go through all ranges, remove duplicate ones if we have multiple carets inside one node
     for (const range of selectedRanges()) {
-      const tree = syntaxTree(state);
-      const node = tree.resolve(range.from);
+      const node = resolveNode(range.from);
 
       if (node.name === mainNodeName && node.getChildren(markNodeName).length === 2) {
         if (nodeRanges.some(({ from, to }) => (node.from >= from && node.from <= to) || (node.to >= from && node.to <= to))) {
@@ -43,8 +59,7 @@ export default function toggleBlockWithMarks(leftMark: string, rightMark: string
   // Take care of all updates and merge them into a single one
   const updates = editor.state.changeByRange(({ from, to }) => {
     if (hasNodeNames) {
-      const tree = syntaxTree(state);
-      const node = tree.resolve(from);
+      const node = resolveNode(from);
 
       // Remove marks if the caret is inside a formatted node
       if (node.name === mainNodeName) {

@@ -117,6 +117,7 @@ enum Localized {
     static let systemSerif = String(localized: "System Serif", comment: "System serif font name")
     static let accentColor = String(localized: "Accent Color:", comment: "Accent color for the editor caret, selection, and toolbar")
     static let displayOptions = String(localized: "Show:", comment: "Label for display options")
+    static let lineNumbers = String(localized: "Line numbers (with syntax)", comment: "Option to show line numbers when syntax marks are visible")
     static let activeLineIndicator = String(localized: "Active line indicator", comment: "Option to show active line indicator")
     static let renderInvisibles = String(localized: "Render Invisibles:", comment: "Label for invisibles behavior setting")
     static let never = String(localized: "Never", comment: "Never show invisibles")
@@ -181,6 +182,7 @@ enum Icons {
   static let cupAndHeatWaves = "cup.and.heat.waves"
   static let ellipsisCircle = "ellipsis.circle"
   static let gearshape = "gearshape"
+  static let infoCircle = "info.circle"
   static let italic = "italic"
   static let moon = "moon"
   static let moonFill = "moon.fill"

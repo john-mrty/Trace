@@ -83,6 +83,28 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     maxHeight: '420px',
     borderRadius: '4px',
     verticalAlign: 'text-bottom',
+    cursor: 'zoom-in',
+  },
+  '.cm-md-lightbox': {
+    position: 'fixed',
+    inset: '0',
+    zIndex: '1000',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: 'rgba(0, 0, 0, 0.75)',
+    cursor: 'zoom-out',
+  },
+  '.cm-md-lightbox img': {
+    maxWidth: '94vw',
+    maxHeight: '94vh',
+    borderRadius: '4px',
+    boxShadow: '0 12px 48px rgba(0, 0, 0, 0.5)',
+  },
+  '.cm-md-taskCheckbox': {
+    margin: '0 2px 0 0',
+    verticalAlign: 'text-bottom',
+    cursor: 'pointer',
   },
   '.cm-md-brokenImage': {
     opacity: '0.5',

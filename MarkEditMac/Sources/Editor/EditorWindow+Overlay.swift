@@ -307,6 +307,12 @@ private extension EditorWindow {
           AppPreferences.Editor.focusMode.toggle()
         }
       ),
+      EditorOverlayToolbar.Action(
+        symbolName: Icons.infoCircle,
+        accessibilityLabel: Localized.Toolbar.statistics
+      ) { [weak viewController] button in
+        viewController?.toggleStatisticsPopover(sourceView: button)
+      },
     ]
   }
 }

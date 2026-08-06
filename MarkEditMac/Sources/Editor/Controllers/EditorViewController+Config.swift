@@ -94,7 +94,7 @@ extension EditorViewController {
     bridge.config.setHideSyntaxMarks(enabled: enabled)
     // Line numbers and selection status are part of "source mode":
     // visible only alongside syntax marks
-    bridge.config.setShowLineNumbers(enabled: !enabled)
+    bridge.config.setShowLineNumbers(enabled: !enabled && AppPreferences.Editor.showLineNumbers)
     setShowSelectionStatus(enabled: !enabled)
     (view.window as? EditorWindow)?.overlayFab?.refreshButtonImages()
   }

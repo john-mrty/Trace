@@ -107,6 +107,14 @@ enum AppPreferences {
       }
     }
 
+    @Storage(key: "editor.show-line-numbers", defaultValue: true)
+    static var showLineNumbers: Bool {
+      didSet {
+        // Gated on syntax visibility: line numbers belong to source mode
+        performUpdates { $0.setShowLineNumbers(enabled: showLineNumbers && !hideSyntaxMarks) }
+      }
+    }
+
     @Storage(key: "editor.focus-mode", defaultValue: false)
     static var focusMode: Bool {
       didSet {
@@ -236,7 +244,7 @@ extension AppPreferences {
       theme: theme,
       fontFace: Editor.fontStyle.webFontFace,
       fontSize: Editor.fontSize,
-      showLineNumbers: !Editor.hideSyntaxMarks,
+      showLineNumbers: Editor.showLineNumbers && !Editor.hideSyntaxMarks,
       showActiveLineIndicator: Editor.showActiveLineIndicator,
       invisiblesBehavior: {
       #if DEBUG
