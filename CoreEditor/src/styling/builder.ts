@@ -192,7 +192,8 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-md-quoteLine': {
     borderLeft: '2px solid rgba(140, 140, 140, 0.35)',
     paddingLeft: '16px',
-    color: 'rgb(110, 110, 110)',
+    // Derived from the theme's text color so it adapts to light/dark
+    color: 'color-mix(in srgb, currentColor 62%, transparent)',
     // Defeat the inline hanging-indent styles (set for the concealed "> "
     // prefix) so the bar starts exactly at the body text's left edge
     marginInlineStart: '6px !important',
