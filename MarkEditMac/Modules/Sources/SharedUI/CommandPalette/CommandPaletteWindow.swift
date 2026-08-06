@@ -24,6 +24,8 @@ public struct CommandPaletteItem {
 public final class CommandPaletteWindow: NSWindow {
   private enum Constants {
     static let width: Double = 560
+    // Transparent inset around the palette so the custom soft shadow has room to render
+    static let shadowMargin: Double = 48
   }
 
   public init(
@@ -35,11 +37,12 @@ public final class CommandPaletteWindow: NSWindow {
   ) {
     // Vertically centered at full height; the top edge stays put as the list filters down
     let initialHeight = CommandPaletteView.contentHeight(forItemCount: items.count)
+    let margin = Constants.shadowMargin
     let rect = CGRect(
-      x: parentRect.minX + (parentRect.width - Constants.width) * 0.5,
-      y: parentRect.midY - initialHeight * 0.5,
-      width: Constants.width,
-      height: initialHeight
+      x: parentRect.minX + (parentRect.width - Constants.width) * 0.5 - margin,
+      y: parentRect.midY - initialHeight * 0.5 - margin,
+      width: Constants.width + margin * 2,
+      height: initialHeight + margin * 2
     )
 
     super.init(
@@ -51,16 +54,22 @@ public final class CommandPaletteWindow: NSWindow {
 
     let paletteView = CommandPaletteView(
       effectViewType: effectViewType,
-      frame: CGRect(origin: .zero, size: rect.size),
+      frame: CGRect(x: margin, y: margin, width: Constants.width, height: initialHeight),
       placeholder: placeholder,
       font: font,
       items: items
     )
 
-    self.contentView = paletteView
+    // Fixed margins on all sides as the window resizes
+    paletteView.autoresizingMask = [.width, .height]
+
+    let containerView = NSView(frame: CGRect(origin: .zero, size: rect.size))
+    containerView.addSubview(paletteView)
+
+    self.contentView = containerView
     self.isMovableByWindowBackground = true
     self.isOpaque = false
-    self.hasShadow = true
+    self.hasShadow = false
     self.backgroundColor = .clear
 
     paletteView.updateWindowHeight = { [weak self] height in
@@ -69,8 +78,9 @@ public final class CommandPaletteWindow: NSWindow {
       }
 
       let frame = self.frame
+      let windowHeight = height + margin * 2
       self.setFrame(
-        CGRect(x: frame.minX, y: frame.maxY - height, width: frame.width, height: height),
+        CGRect(x: frame.minX, y: frame.maxY - windowHeight, width: frame.width, height: windowHeight),
         display: true
       )
     }
@@ -118,6 +128,12 @@ private final class CommandPaletteView: NSView {
   private lazy var effectView: NSView = {
     let effectView = effectViewType.init()
     (effectView as? NSVisualEffectView)?.material = .popover
+
+    // Rounding lives here so the container layer can carry an unclipped shadow
+    effectView.wantsLayer = true
+    effectView.layer?.cornerCurve = .continuous
+    effectView.layer?.cornerRadius = Constants.cornerRadius
+    effectView.layer?.masksToBounds = true
 
     return effectView
   }()
@@ -168,11 +184,15 @@ private final class CommandPaletteView: NSView {
     self.filteredItems = items
     super.init(frame: frame)
 
-    textField.font = scaledFont(delta: 6)
+    textField.font = scaledFont(delta: 1)
 
     wantsLayer = true
     layer?.cornerCurve = .continuous
     layer?.cornerRadius = Constants.cornerRadius
+    layer?.shadowColor = NSColor.black.cgColor
+    layer?.shadowOpacity = 0.22
+    layer?.shadowRadius = 24
+    layer?.shadowOffset = CGSize(width: 0, height: -10)
 
     effectView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(effectView)
@@ -223,6 +243,16 @@ private final class CommandPaletteView: NSView {
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
+  }
+
+  override func layout() {
+    super.layout()
+    layer?.shadowPath = CGPath(
+      roundedRect: bounds,
+      cornerWidth: Constants.cornerRadius,
+      cornerHeight: Constants.cornerRadius,
+      transform: nil
+    )
   }
 
   func applyContentHeight() {
@@ -410,12 +440,50 @@ private extension CommandPaletteView {
 }
 
 private final class RoundedRowView: NSTableRowView {
+  private var isHovered = false {
+    didSet {
+      needsDisplay = true
+    }
+  }
+
+  override func updateTrackingAreas() {
+    super.updateTrackingAreas()
+    trackingAreas.forEach(removeTrackingArea)
+
+    addTrackingArea(NSTrackingArea(
+      rect: bounds,
+      options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect],
+      owner: self,
+      userInfo: nil
+    ))
+  }
+
+  override func mouseEntered(with event: NSEvent) {
+    isHovered = true
+  }
+
+  override func mouseExited(with event: NSEvent) {
+    isHovered = false
+  }
+
+  override func drawBackground(in dirtyRect: NSRect) {
+    super.drawBackground(in: dirtyRect)
+
+    if isHovered && !isSelected {
+      fillRoundedRow(color: NSColor.labelColor.withAlphaComponent(0.045))
+    }
+  }
+
   override func drawSelection(in dirtyRect: NSRect) {
     guard selectionHighlightStyle != .none else {
       return
     }
 
-    NSColor.controlAccentColor.withAlphaComponent(0.2).setFill()
+    fillRoundedRow(color: NSColor.labelColor.withAlphaComponent(0.08))
+  }
+
+  private func fillRoundedRow(color: NSColor) {
+    color.setFill()
     NSBezierPath(roundedRect: bounds.insetBy(dx: 4, dy: 1), xRadius: 6, yRadius: 6).fill()
   }
 }

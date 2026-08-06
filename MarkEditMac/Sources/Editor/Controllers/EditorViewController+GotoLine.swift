@@ -60,8 +60,9 @@ extension EditorViewController {
       cancelCompletion()
     }
 
+    // Plain material, not NSGlassEffectView: glass draws a rim, the palette wants shadow only
     let window = CommandPaletteWindow(
-      effectViewType: AppDesign.modernEffectView,
+      effectViewType: NSVisualEffectView.self,
       relativeTo: parentRect,
       placeholder: "Type a command or file name",
       font: AppPreferences.Editor.fontStyle.fontWith(size: AppPreferences.Editor.fontSize),
