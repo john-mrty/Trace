@@ -40,8 +40,12 @@ xcodebuild -project MarkEdit.xcodeproj -scheme MarkEditMac -configuration Releas
   DEVELOPMENT_TEAM="$TEAM_ID" \
   MARKETING_VERSION="$VERSION" \
   OTHER_CODE_SIGN_FLAGS="--timestamp --options runtime" \
-  build | grep -E '^\*\* BUILD|error:' || true
-[[ -d "$APP" ]] || { echo "error: build failed, $APP missing" >&2; exit 1; }
+  build > "$OUT_DIR/xcodebuild.log" 2>&1 || true
+grep -E '^\*\* BUILD|error:' "$OUT_DIR/xcodebuild.log" || true
+grep -q '\*\* BUILD SUCCEEDED' "$OUT_DIR/xcodebuild.log" || {
+  echo "error: build failed — see $OUT_DIR/xcodebuild.log" >&2
+  exit 1
+}
 
 echo "==> Notarizing..."
 ditto -c -k --keepParent "$APP" "$ZIP"
