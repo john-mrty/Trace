@@ -121,7 +121,9 @@ function concealedRanges(view: EditorView) {
             }
             break;
           case 'Image': {
-            const urlNode = node.node.getChild('URL');
+            // Last URL child: "name@2x.png" in the alt text parses as an email
+            // autolink, adding a URL node before the real destination
+            const urlNode = node.node.getChildren('URL').pop() ?? null;
             const sameLine = state.doc.lineAt(node.from).number === state.doc.lineAt(node.to).number;
             if (urlNode !== null && sameLine) {
               const source = state.sliceDoc(urlNode.from, urlNode.to).replace(/^<|>$/g, '');

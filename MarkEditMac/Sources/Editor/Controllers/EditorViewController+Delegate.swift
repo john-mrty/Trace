@@ -120,12 +120,6 @@ extension EditorViewController: EditorWebViewActionDelegate {
       return true
     }
 
-    // Only intercept pure-image pasteboards (e.g. screenshots); anything with
-    // a text representation keeps the normal paste behavior
-    guard !pasteboard.hasText else {
-      return false
-    }
-
     let imageData: Data? = {
       if let pngData = pasteboard.data(forType: .png) {
         return pngData
@@ -140,6 +134,19 @@ extension EditorViewController: EditorWebViewActionDelegate {
 
     guard let imageData else {
       return false
+    }
+
+    // Browser "Copy Image" carries the image plus its source URL as text;
+    // link the URL instead of saving a copy. Non-URL text alongside an image
+    // (e.g. spreadsheet cells) keeps the normal text paste.
+    let pastedString = pasteboard.string(forType: .string)?.trimmingCharacters(in: .whitespacesAndNewlines)
+    if let pastedString, !pastedString.isEmpty {
+      guard pastedString.hasPrefix("http://") || pastedString.hasPrefix("https://") else {
+        return false
+      }
+
+      bridge.core.performTextDrop(text: "![](\(pastedString))")
+      return true
     }
 
     let formatter = DateFormatter()
