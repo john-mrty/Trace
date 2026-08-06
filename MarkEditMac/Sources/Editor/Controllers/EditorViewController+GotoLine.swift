@@ -80,7 +80,7 @@ private extension EditorViewController {
   /// and submenus that duplicate better palette sources (recents)
   static let paletteExcludedMenus: Set<String> = [
     "Open Recent", "Open In…", "Reopen with Encoding", "Line Endings", "Purge History Versions",
-    "Services", "Speech", "Substitutions", "Help",
+    "Services", "Speech", "Substitutions", "Window", "Help",
   ]
 
   static let paletteExcludedSelectors: Set<String> = [

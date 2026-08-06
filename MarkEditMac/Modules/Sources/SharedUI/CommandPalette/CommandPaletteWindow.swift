@@ -232,6 +232,16 @@ private final class CommandPaletteView: NSView {
     scrollView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(scrollView)
 
+    // Rows compute hover from the live cursor position; repaint them on
+    // scroll so the state stays in sync as rows move under the cursor
+    scrollView.contentView.postsBoundsChangedNotifications = true
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(scrollViewDidScroll(_:)),
+      name: NSView.boundsDidChangeNotification,
+      object: scrollView.contentView
+    )
+
     NSLayoutConstraint.activate([
       effectView.leadingAnchor.constraint(equalTo: leadingAnchor),
       effectView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -374,6 +384,12 @@ private extension CommandPaletteView {
     performSelectedItem()
   }
 
+  @objc func scrollViewDidScroll(_ notification: Notification) {
+    tableView.enumerateAvailableRowViews { rowView, _ in
+      rowView.needsDisplay = true
+    }
+  }
+
   func selectRow(_ row: Int) {
     guard !filteredItems.isEmpty else {
       return
@@ -483,10 +499,17 @@ private final class CanvasTintView: NSView {
 }
 
 private final class RoundedRowView: NSTableRowView {
-  private var isHovered = false {
-    didSet {
-      needsDisplay = true
+  // Hover is computed from the live cursor position at draw time instead of
+  // being latched by enter/exit events: rows are reused, and scrolling moves
+  // rows under a stationary cursor without firing mouseExited — both leave
+  // stale "hovered" rows behind
+  private var isMouseInside: Bool {
+    guard let window else {
+      return false
     }
+
+    let point = convert(window.mouseLocationOutsideOfEventStream, from: nil)
+    return visibleRect.contains(point)
   }
 
   override func updateTrackingAreas() {
@@ -502,17 +525,17 @@ private final class RoundedRowView: NSTableRowView {
   }
 
   override func mouseEntered(with event: NSEvent) {
-    isHovered = true
+    needsDisplay = true
   }
 
   override func mouseExited(with event: NSEvent) {
-    isHovered = false
+    needsDisplay = true
   }
 
   override func drawBackground(in dirtyRect: NSRect) {
     super.drawBackground(in: dirtyRect)
 
-    if isHovered && !isSelected {
+    if isMouseInside && !isSelected {
       fillRoundedRow(color: NSColor.labelColor.withAlphaComponent(0.045))
     }
   }
