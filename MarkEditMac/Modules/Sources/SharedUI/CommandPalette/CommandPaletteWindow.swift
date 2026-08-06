@@ -184,22 +184,28 @@ private final class CommandPaletteView: NSView {
     self.filteredItems = items
     super.init(frame: frame)
 
-    textField.font = scaledFont(delta: 1)
+    textField.font = baseFont
 
     wantsLayer = true
     layer?.cornerCurve = .continuous
     layer?.cornerRadius = Constants.cornerRadius
-    layer?.shadowColor = NSColor.black.cgColor
-    layer?.shadowOpacity = 0.22
-    layer?.shadowRadius = 24
-    layer?.shadowOffset = CGSize(width: 0, height: -10)
+
+    // NSShadow survives AppKit's layer management; raw layer?.shadow* gets clobbered
+    let dropShadow = NSShadow()
+    dropShadow.shadowColor = NSColor.black.withAlphaComponent(0.22)
+    dropShadow.shadowBlurRadius = 24
+    dropShadow.shadowOffset = CGSize(width: 0, height: -10)
+    shadow = dropShadow
 
     effectView.translatesAutoresizingMaskIntoConstraints = false
     addSubview(effectView)
 
-    let iconView = NSImageView(image: .with(symbolName: "command", pointSize: 20, weight: .light))
-    iconView.translatesAutoresizingMaskIntoConstraints = false
-    addSubview(iconView)
+    // Wash over the blur so the palette reads close to the canvas background
+    let tintView = NSView()
+    tintView.wantsLayer = true
+    tintView.layer?.backgroundColor = NSColor.textBackgroundColor.withAlphaComponent(0.65).cgColor
+    tintView.translatesAutoresizingMaskIntoConstraints = false
+    effectView.addSubview(tintView)
 
     textField.placeholderString = placeholder
     textField.delegate = self
@@ -221,13 +227,13 @@ private final class CommandPaletteView: NSView {
       effectView.topAnchor.constraint(equalTo: topAnchor),
       effectView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
-      iconView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding * 2),
-      iconView.topAnchor.constraint(equalTo: topAnchor, constant: (Constants.fieldHeight - 24) * 0.5),
-      iconView.heightAnchor.constraint(equalToConstant: iconView.frame.height),
-      iconView.widthAnchor.constraint(equalToConstant: iconView.frame.width),
+      tintView.leadingAnchor.constraint(equalTo: effectView.leadingAnchor),
+      tintView.trailingAnchor.constraint(equalTo: effectView.trailingAnchor),
+      tintView.topAnchor.constraint(equalTo: effectView.topAnchor),
+      tintView.bottomAnchor.constraint(equalTo: effectView.bottomAnchor),
 
-      textField.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: Constants.padding),
-      textField.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
+      textField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.padding * 2),
+      textField.centerYAnchor.constraint(equalTo: topAnchor, constant: Constants.fieldHeight * 0.5),
       textField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.padding),
 
       scrollView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.fieldHeight),
@@ -243,16 +249,6 @@ private final class CommandPaletteView: NSView {
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func layout() {
-    super.layout()
-    layer?.shadowPath = CGPath(
-      roundedRect: bounds,
-      cornerWidth: Constants.cornerRadius,
-      cornerHeight: Constants.cornerRadius,
-      transform: nil
-    )
   }
 
   func applyContentHeight() {
@@ -303,14 +299,14 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
 
     let titleLabel = LabelView(frame: .zero)
     titleLabel.stringValue = item.title
-    titleLabel.font = baseFont
+    titleLabel.font = scaledFont(delta: -1)
     titleLabel.lineBreakMode = .byTruncatingTail
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
     cellView.addSubview(titleLabel)
 
     let detailLabel = LabelView(frame: .zero)
     detailLabel.stringValue = item.subtitle
-    detailLabel.font = scaledFont(delta: -2)
+    detailLabel.font = scaledFont(delta: -3)
     detailLabel.textColor = .secondaryLabelColor
     detailLabel.lineBreakMode = .byTruncatingMiddle
     detailLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -318,7 +314,7 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
 
     let shortcutLabel = LabelView(frame: .zero)
     shortcutLabel.stringValue = item.shortcut
-    shortcutLabel.font = scaledFont(delta: -1)
+    shortcutLabel.font = scaledFont(delta: -2)
     shortcutLabel.textColor = .tertiaryLabelColor
     shortcutLabel.translatesAutoresizingMaskIntoConstraints = false
     cellView.addSubview(shortcutLabel)
