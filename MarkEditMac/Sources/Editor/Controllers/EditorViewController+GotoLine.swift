@@ -123,8 +123,9 @@ private extension EditorViewController {
     }
 
     // The app menu is skipped wholesale below; Settings earns its spot back
+    // Via the responder chain: the Swift method is fileprivate to AppDelegate
     items.append(CommandPaletteItem(title: "Settings…", subtitle: "Trace", shortcut: "⌘,") {
-      NSApp.appDelegate?.showPreferences(nil)
+      _ = NSApp.sendAction(Selector(("showPreferences:")), to: NSApp.appDelegate, from: nil)
     })
 
     // dropFirst skips the application menu (About, Settings, Hide, Quit…)
