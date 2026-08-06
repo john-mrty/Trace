@@ -25,9 +25,13 @@ public final class EditorImageLoader: NSObject, WKURLSchemeHandler {
       return assertionFailure("Invalid url scheme task")
     }
 
-    let rawPath = url.absoluteString
-      .replacingOccurrences(of: "\(Self.scheme)://asset/", with: "")
-      .replacingOccurrences(of: "\(Self.scheme)://", with: "")
+    // The path travels in ?src= because URL normalization would collapse
+    // "../" segments in the path slot; queryItems percent-decodes once,
+    // then the source's own Markdown-level encoding is decoded below
+    let rawPath = URLComponents(url: url, resolvingAgainstBaseURL: false)?
+      .queryItems?
+      .first { $0.name == "src" }?
+      .value ?? url.absoluteString.replacingOccurrences(of: "\(Self.scheme)://", with: "")
 
     let path = rawPath.removingPercentEncoding ?? rawPath
     let fileURL: URL? = {
@@ -50,6 +54,8 @@ public final class EditorImageLoader: NSObject, WKURLSchemeHandler {
       urlSchemeTask.didReceive(fileData)
       urlSchemeTask.didFinish()
     } else {
+      os_logger.log(level: .error, "Failed to load image: \(fileURL?.path ?? url.absoluteString, privacy: .public)")
+
       let response = HTTPURLResponse(
         url: url,
         statusCode: 404,

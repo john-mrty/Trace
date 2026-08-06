@@ -109,9 +109,20 @@ extension EditorViewController: EditorWebViewActionDelegate {
   func editorWebViewHandlesImagePaste(_ webView: EditorWebView) -> Bool {
     let pasteboard = NSPasteboard.general
 
+    // Image files copied in Finder arrive as file URLs (with a text form
+    // WebKit would paste as a path) — route them through the drop handler
+    if let fileURLs = pasteboard.fileURLs, !fileURLs.isEmpty {
+      guard fileURLs.allSatisfy(\.isImageFile) else {
+        return false
+      }
+
+      editorWebView(webView, didDrop: fileURLs)
+      return true
+    }
+
     // Only intercept pure-image pasteboards (e.g. screenshots); anything with
-    // a text or file representation keeps the normal paste behavior
-    guard !pasteboard.hasText, pasteboard.fileURLs?.isEmpty != false else {
+    // a text representation keeps the normal paste behavior
+    guard !pasteboard.hasText else {
       return false
     }
 

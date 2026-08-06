@@ -130,6 +130,18 @@ private extension EditorViewController {
       _ = NSApp.sendAction(Selector(("showPreferences:")), to: NSApp.appDelegate, from: nil)
     })
 
+    let appearances: [(Appearance, String)] = [(.system, "System"), (.light, "Light"), (.dark, "Dark")]
+    for (appearance, name) in appearances {
+      items.append(CommandPaletteItem(
+        title: "Appearance: \(name)",
+        subtitle: "View",
+        isOn: AppPreferences.General.appearance == appearance
+      ) {
+        NSApp.appearance = appearance.resolved()
+        AppPreferences.General.appearance = appearance
+      })
+    }
+
     // dropFirst skips the application menu (About, Settings, Hide, Quit…)
     for topItem in NSApp.mainMenu?.items.dropFirst() ?? [] {
       guard let submenu = topItem.submenu, !topItem.isHidden,
