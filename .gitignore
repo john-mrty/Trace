@@ -5,3 +5,4 @@
 xcuserdata/
 Local.xcconfig
 *.local.entitlements
+.release/
