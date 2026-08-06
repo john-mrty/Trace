@@ -857,7 +857,7 @@ Gw
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Extensions" id="mGH-Xd-vai">
+                            <menuItem title="Extensions" hidden="YES" id="mGH-Xd-vai">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Extensions" autoenablesItems="NO" id="nkD-z6-yjV">
                                     <items>

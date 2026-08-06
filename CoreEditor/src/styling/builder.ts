@@ -78,6 +78,25 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '0.15',
     verticalAlign: 'middle',
   },
+  '.cm-md-inlineImage': {
+    maxWidth: '100%',
+    maxHeight: '420px',
+    borderRadius: '4px',
+    verticalAlign: 'text-bottom',
+  },
+  '.cm-md-brokenImage': {
+    opacity: '0.5',
+    textDecoration: 'line-through',
+  },
+  '.cm-md-tablePreview': {
+    borderCollapse: 'collapse',
+    margin: '4px 0',
+  },
+  '.cm-md-tablePreview th, .cm-md-tablePreview td': {
+    border: '1px solid rgba(140, 140, 140, 0.4)',
+    padding: '4px 12px',
+    textAlign: 'left',
+  },
   // Numbers sit directly on the canvas: fixed width equal to the content's
   // left padding, which zeroes out below so the text never shifts
   '.cm-gutters': {

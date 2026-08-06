@@ -23,7 +23,14 @@ declare global {
   }
 }
 
-window._startLinkClickable = (event: MouseEvent) => startClickable(event.target as HTMLElement, event.metaKey);
+// When syntax marks are concealed the document reads as a preview,
+// links behave like rendered links: plain hover and click, no cmd needed
+const alwaysClickable = () => window.config.hideSyntaxMarks === true;
+
+window._startLinkClickable = (event: MouseEvent) => {
+  startClickable(event.target as HTMLElement, event.metaKey || alwaysClickable());
+};
+
 window._stopLinkClickable = (event: MouseEvent) => stopClickable(event.target as HTMLElement);
 
 // Fragile approach, but we only use it for link clicking, it should be fine.
@@ -110,7 +117,7 @@ export function startClickable(inputElement?: HTMLElement, metaKeyPressed = isMe
   // (or briefly tapping cmd) doesn't flash the clickable styling.
   clearActivationTimer();
   storage.activationTimer = setTimeout(() => {
-    if (storage.focusedElement !== linkElement || !isMetaKeyDown()) {
+    if (storage.focusedElement !== linkElement || !(isMetaKeyDown() || alwaysClickable())) {
       return;
     }
 
