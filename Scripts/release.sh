@@ -31,6 +31,7 @@ xcrun notarytool history --keychain-profile "$PROFILE" >/dev/null 2>&1 || {
 
 echo "==> Building Release..."
 rm -rf "$OUT_DIR"
+mkdir -p "$OUT_DIR"
 cd "$REPO_DIR/CoreEditor" && yarn install --immutable >/dev/null && yarn build
 cd "$REPO_DIR"
 xcodebuild -project MarkEdit.xcodeproj -scheme MarkEditMac -configuration Release \
