@@ -10,6 +10,7 @@ import WebKit
 import MarkEditCore
 import MarkEditKit
 import FileDrop
+import TextBundle
 
 // MARK: - WKUIDelegate
 
@@ -103,6 +104,64 @@ extension EditorViewController: EditorWebViewActionDelegate {
     if let textToDrop {
       bridge.core.performTextDrop(text: textToDrop)
     }
+  }
+
+  func editorWebViewHandlesImagePaste(_ webView: EditorWebView) -> Bool {
+    let pasteboard = NSPasteboard.general
+
+    // Only intercept pure-image pasteboards (e.g. screenshots); anything with
+    // a text or file representation keeps the normal paste behavior
+    guard !pasteboard.hasText, pasteboard.fileURLs?.isEmpty != false else {
+      return false
+    }
+
+    let imageData: Data? = {
+      if let pngData = pasteboard.data(forType: .png) {
+        return pngData
+      }
+
+      if let tiffData = pasteboard.data(forType: .tiff) {
+        return NSBitmapImageRep(data: tiffData)?.representation(using: .png, properties: [:])
+      }
+
+      return nil
+    }()
+
+    guard let imageData else {
+      return false
+    }
+
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd 'at' HH.mm.ss"
+    let fileName = "Pasted image \(formatter.string(from: .now)).png"
+
+    // Saved plain documents get the image as a sibling file; textbundles and
+    // untitled documents stage it in a temporary folder — FileDropHandler then
+    // copies it into assets/ or links the absolute path respectively
+    let folderURL: URL = {
+      if document?.fileType?.isTextBundle != true, let documentURL = document?.fileURL {
+        return documentURL.deletingLastPathComponent()
+      }
+
+      return FileManager.default.temporaryDirectory
+    }()
+
+    let fileURL = folderURL.appending(path: fileName, directoryHint: .notDirectory)
+    do {
+      try imageData.write(to: fileURL)
+    } catch {
+      Logger.log(.error, "Failed to save pasted image: \(error)")
+      NSSound.beep()
+      return true
+    }
+
+    bridge.core.performTextDrop(text: FileDropHandler.handle(
+      fileURL: fileURL,
+      documentURL: document?.fileURL,
+      documentType: document?.fileType
+    ))
+
+    return true
   }
 
   func editorWebView(

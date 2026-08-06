@@ -44,6 +44,7 @@ protocol EditorWebViewActionDelegate: AnyObject {
   func editorWebView(_ webView: EditorWebView, mouseDownWith event: NSEvent)
   func editorWebView(_ webView: EditorWebView, didSelect menuAction: EditorWebViewMenuAction)
   func editorWebView(_ webView: EditorWebView, didDrop fileURLs: [URL])
+  func editorWebViewHandlesImagePaste(_ webView: EditorWebView) -> Bool
 
   func editorWebView(
     _ webView: EditorWebView,
@@ -75,6 +76,15 @@ final class EditorWebView: WKWebView {
     if event.modifierFlags.contains([.control, .command]), arrowKeyCodes.contains(event.keyCode) {
       // Event will be handled in CoreEditor instead
       return false
+    }
+
+    // WebKit drops pure-image pasteboards (e.g. screenshots) in a plain-text
+    // editor, so ⌘V routes to the delegate, which saves the image to disk
+    // and inserts a Markdown link
+    if event.modifierFlags.intersection(.deviceIndependentFlagsMask) == .command,
+       event.charactersIgnoringModifiers == "v",
+       actionDelegate?.editorWebViewHandlesImagePaste(self) == true {
+      return true
     }
 
     return super.performKeyEquivalent(with: event)

@@ -54,10 +54,12 @@ class InlineImageWidget extends WidgetType {
     img.className = 'cm-md-inlineImage';
     img.alt = this.altText;
 
-    // Absolute URLs load directly; bare paths resolve
-    // against the document folder via the image-loader scheme
+    // Absolute URLs load directly; bare paths resolve against the document
+    // folder via the image-loader scheme. The "asset" host matters: the path
+    // can't live in the host slot (spaces/@ are illegal there), and WebKit's
+    // scheme-task allowlist pattern requires a host plus a path.
     const hasScheme = /^[a-z][a-z0-9+.-]*:/i.test(this.source);
-    img.src = hasScheme ? this.source : `image-loader://${encodeURI(this.source)}`;
+    img.src = hasScheme ? this.source : `image-loader://asset/${this.source}`;
 
     img.onload = () => window.editor.requestMeasure();
     img.onerror = () => {
