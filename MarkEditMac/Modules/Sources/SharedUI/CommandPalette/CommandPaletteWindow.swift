@@ -201,9 +201,7 @@ private final class CommandPaletteView: NSView {
     addSubview(effectView)
 
     // Wash over the blur so the palette reads close to the canvas background
-    let tintView = NSView()
-    tintView.wantsLayer = true
-    tintView.layer?.backgroundColor = NSColor.textBackgroundColor.withAlphaComponent(0.65).cgColor
+    let tintView = CanvasTintView()
     tintView.translatesAutoresizingMaskIntoConstraints = false
     effectView.addSubview(tintView)
 
@@ -432,6 +430,32 @@ private extension CommandPaletteView {
     }
 
     return score
+  }
+}
+
+// Resolved in updateLayer so the color follows the effective appearance,
+// a cgColor snapshot at init bakes in whichever appearance was current then
+private final class CanvasTintView: NSView {
+  override var wantsUpdateLayer: Bool {
+    true
+  }
+
+  init() {
+    super.init(frame: .zero)
+    wantsLayer = true
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func updateLayer() {
+    layer?.backgroundColor = NSColor.textBackgroundColor.withAlphaComponent(0.65).cgColor
+  }
+
+  override func hitTest(_ point: NSPoint) -> NSView? {
+    nil
   }
 }
 
