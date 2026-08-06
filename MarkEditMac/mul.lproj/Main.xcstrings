@@ -1143,6 +1143,18 @@
         }
       }
     },
+    "cPa-Lt-Mi1.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Command Palette…\"; ObjectID = \"cPa-Lt-Mi1\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Command Palette…"
+          }
+        }
+      }
+    },
     "crU-NP-BJu.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Smaller\"; ObjectID = \"crU-NP-BJu\";",
       "extractionState" : "extracted_with_value",

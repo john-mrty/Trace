@@ -50,7 +50,7 @@ import AppKitExtensions
     return nil
   }
 
-  func fontWith(size: Double, weight: NSFont.Weight = .regular) -> NSFont {
+  public func fontWith(size: Double, weight: NSFont.Weight = .regular) -> NSFont {
     switch self {
     case .systemDefault:
       return .systemFont(ofSize: size, weight: weight)

@@ -30,13 +30,16 @@ public final class CommandPaletteWindow: NSWindow {
     effectViewType: NSView.Type,
     relativeTo parentRect: CGRect,
     placeholder: String,
+    font: NSFont,
     items: [CommandPaletteItem]
   ) {
+    // Vertically centered at full height; the top edge stays put as the list filters down
+    let initialHeight = CommandPaletteView.contentHeight(forItemCount: items.count)
     let rect = CGRect(
       x: parentRect.minX + (parentRect.width - Constants.width) * 0.5,
-      y: parentRect.minY + parentRect.height - 150,
+      y: parentRect.midY - initialHeight * 0.5,
       width: Constants.width,
-      height: 0
+      height: initialHeight
     )
 
     super.init(
@@ -50,6 +53,7 @@ public final class CommandPaletteWindow: NSWindow {
       effectViewType: effectViewType,
       frame: CGRect(origin: .zero, size: rect.size),
       placeholder: placeholder,
+      font: font,
       items: items
     )
 
@@ -59,7 +63,6 @@ public final class CommandPaletteWindow: NSWindow {
     self.hasShadow = true
     self.backgroundColor = .clear
 
-    // The top edge stays anchored while the list grows and shrinks
     paletteView.updateWindowHeight = { [weak self] height in
       guard let self else {
         return
@@ -99,9 +102,16 @@ private final class CommandPaletteView: NSView {
     static let maxVisibleRows = 8
   }
 
+  static func contentHeight(forItemCount count: Int) -> Double {
+    let rowCount = min(count, Constants.maxVisibleRows)
+    let listHeight = count == 0 ? 0 : Double(rowCount) * Constants.rowHeight + Constants.padding
+    return Constants.fieldHeight + listHeight
+  }
+
   var updateWindowHeight: ((Double) -> Void)?
 
   private let effectViewType: NSView.Type
+  private let baseFont: NSFont
   private let allItems: [CommandPaletteItem]
   private var filteredItems: [CommandPaletteItem]
 
@@ -114,7 +124,6 @@ private final class CommandPaletteView: NSView {
 
   private let textField: NSTextField = {
     let textField = NSTextField()
-    textField.font = .systemFont(ofSize: 20, weight: .light)
     textField.focusRingType = .none
     textField.drawsBackground = false
     textField.isBezeled = false
@@ -150,12 +159,16 @@ private final class CommandPaletteView: NSView {
     effectViewType: NSView.Type,
     frame: CGRect,
     placeholder: String,
+    font: NSFont,
     items: [CommandPaletteItem]
   ) {
     self.effectViewType = effectViewType
+    self.baseFont = font
     self.allItems = items
     self.filteredItems = items
     super.init(frame: frame)
+
+    textField.font = scaledFont(delta: 6)
 
     wantsLayer = true
     layer?.cornerCurve = .continuous
@@ -213,9 +226,7 @@ private final class CommandPaletteView: NSView {
   }
 
   func applyContentHeight() {
-    let rowCount = min(filteredItems.count, Constants.maxVisibleRows)
-    let listHeight = filteredItems.isEmpty ? 0 : Double(rowCount) * Constants.rowHeight + Constants.padding
-    updateWindowHeight?(Constants.fieldHeight + listHeight)
+    updateWindowHeight?(Self.contentHeight(forItemCount: filteredItems.count))
   }
 }
 
@@ -262,14 +273,14 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
 
     let titleLabel = LabelView(frame: .zero)
     titleLabel.stringValue = item.title
-    titleLabel.font = .systemFont(ofSize: 14)
+    titleLabel.font = baseFont
     titleLabel.lineBreakMode = .byTruncatingTail
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
     cellView.addSubview(titleLabel)
 
     let detailLabel = LabelView(frame: .zero)
     detailLabel.stringValue = item.subtitle
-    detailLabel.font = .systemFont(ofSize: 12)
+    detailLabel.font = scaledFont(delta: -2)
     detailLabel.textColor = .secondaryLabelColor
     detailLabel.lineBreakMode = .byTruncatingMiddle
     detailLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -277,7 +288,7 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
 
     let shortcutLabel = LabelView(frame: .zero)
     shortcutLabel.stringValue = item.shortcut
-    shortcutLabel.font = .systemFont(ofSize: 13)
+    shortcutLabel.font = scaledFont(delta: -1)
     shortcutLabel.textColor = .tertiaryLabelColor
     shortcutLabel.translatesAutoresizingMaskIntoConstraints = false
     cellView.addSubview(shortcutLabel)
@@ -308,6 +319,10 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
 // MARK: - Private
 
 private extension CommandPaletteView {
+  func scaledFont(delta: Double) -> NSFont {
+    NSFont(descriptor: baseFont.fontDescriptor, size: baseFont.pointSize + delta) ?? baseFont
+  }
+
   @objc func didClickRow(_ sender: NSTableView) {
     performSelectedItem()
   }

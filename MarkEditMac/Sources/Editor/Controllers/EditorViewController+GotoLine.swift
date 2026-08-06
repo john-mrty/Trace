@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import FontPicker
 import SharedUI
 import MarkEditKit
 
@@ -63,6 +64,7 @@ extension EditorViewController {
       effectViewType: AppDesign.modernEffectView,
       relativeTo: parentRect,
       placeholder: "Type a command or file name",
+      font: AppPreferences.Editor.fontStyle.fontWith(size: AppPreferences.Editor.fontSize),
       items: Self.commandPaletteItems()
     )
 
@@ -90,7 +92,8 @@ private extension EditorViewController {
           continue
         }
 
-        guard action != #selector(Self.showCommandPalette(_:)) else {
+        guard action != #selector(Self.showCommandPalette(_:)),
+              NSStringFromSelector(action) != "showAboutPanel:" else {
           continue
         }
 
