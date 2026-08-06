@@ -15,7 +15,6 @@ public final class StatisticsController: NSViewController {
   private enum Constants {
     static let contentWidth: Double = 240
     static let contentHeight: Double = 288
-    static let maxExtraRows: Int = 3
   }
 
   private let modernStyle: Bool
@@ -90,10 +89,19 @@ public final class StatisticsController: NSViewController {
         spinner.stopAnimation(nil)
         spinner.removeFromSuperview()
 
-        // Visible rules are the ones initially shown, use fullRuleResults to determine sizing
-        let visibleRuleCount = fullRuleResults.count { !$0.isEmpty }
-        let extraRows = min(visibleRuleCount, Constants.maxExtraRows)
-        let contentHeight = Constants.contentHeight + Double(extraRows) * StatisticsCell.rowHeight
+        // Size to fit the tallest mode exactly — no trailing dead space
+        let rowCount = { (result: StatisticsResult, ruleResults: [StatisticsRuleResult], includeFileSize: Bool) -> Int in
+          var count = ruleResults.count { !$0.isEmpty } + 4
+          if result.comments > 0 { count += 1 }
+          if ReadTime.estimated(of: result.words) != nil { count += 1 }
+          if includeFileSize && FileSize.readableSize(of: self.fileURL) != nil { count += 1 }
+          return count
+        }
+
+        let documentRows = rowCount(fullResult, fullRuleResults, true)
+        let selectionRows = selectionResult.map { rowCount($0, selectionRuleResults ?? [], false) } ?? 0
+        let pickerHeight: Double = selectionResult == nil ? 0 : (self.modernStyle ? 40 : 36)
+        let contentHeight = Double(max(documentRows, selectionRows)) * StatisticsCell.rowHeight + pickerHeight + 12
 
         self.preferredContentSize = CGSize(
           width: Constants.contentWidth,

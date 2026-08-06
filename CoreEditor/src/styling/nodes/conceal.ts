@@ -148,20 +148,67 @@ class InlineImageWidget extends WidgetType {
   }
 }
 
-class LanguageBadgeWidget extends WidgetType {
-  constructor(private readonly language: string) {
+const copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+
+async function copyToClipboard(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  }
+}
+
+class CodeChromeWidget extends WidgetType {
+  constructor(private readonly language: string, private readonly code: string) {
     super();
   }
 
-  override eq(other: LanguageBadgeWidget) {
-    return other.language === this.language;
+  override eq(other: CodeChromeWidget) {
+    return other.language === this.language && other.code === this.code;
+  }
+
+  override ignoreEvent() {
+    return false;
   }
 
   toDOM() {
-    const span = document.createElement('span');
-    span.className = 'cm-md-codeLang';
-    span.textContent = this.language;
-    return span;
+    const chrome = document.createElement('span');
+    chrome.className = 'cm-md-codeChrome';
+
+    if (this.language.length > 0) {
+      const lang = document.createElement('span');
+      lang.className = 'cm-md-codeLang';
+      lang.textContent = this.language;
+      chrome.appendChild(lang);
+    }
+
+    const copy = document.createElement('span');
+    copy.className = 'cm-md-codeCopy';
+    copy.innerHTML = copyIcon;
+
+    copy.onmousedown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    copy.onclick = event => {
+      event.preventDefault();
+      event.stopPropagation();
+      void copyToClipboard(this.code);
+      copy.innerHTML = checkIcon;
+      setTimeout(() => { copy.innerHTML = copyIcon; }, 1200);
+    };
+
+    chrome.appendChild(copy);
+    return chrome;
   }
 }
 
@@ -243,7 +290,7 @@ function collectConcealed(view: EditorView) {
             extras.push(...lineDecoRanges(node.from, node.to, 'cm-md-quoteLine'));
             break;
           case 'FencedCode': {
-            // Fence lines conceal to empty lines, acting as the panel's padding
+            // Fence lines conceal to short empty lines, acting as the panel's padding
             const firstLine = state.doc.lineAt(node.from);
             const lastLine = state.doc.lineAt(node.to);
             for (let lineNumber = firstLine.number; lineNumber <= lastLine.number; ++lineNumber) {
@@ -251,12 +298,20 @@ function collectConcealed(view: EditorView) {
               const edges = `${lineNumber === firstLine.number ? ' cm-md-codePanelFirst' : ''}${lineNumber === lastLine.number ? ' cm-md-codePanelLast' : ''}`;
               extras.push(Decoration.line({ class: `cm-md-codePanel${edges}` }).range(line.from));
             }
+
+            const infoNode = node.node.getChild('CodeInfo');
+            const language = infoNode === null ? '' : state.sliceDoc(infoNode.from, infoNode.to);
+            const code = lastLine.number > firstLine.number + 1
+              ? state.sliceDoc(state.doc.line(firstLine.number + 1).from, state.doc.line(lastLine.number - 1).to)
+              : '';
+            extras.push(Decoration.widget({
+              widget: new CodeChromeWidget(language, code),
+              side: 1,
+            }).range(firstLine.to));
             break;
           }
           case 'CodeInfo':
-            ranges.push(Decoration.replace({
-              widget: new LanguageBadgeWidget(state.sliceDoc(node.from, node.to)),
-            }).range(node.from, node.to));
+            conceal(node.from, node.to);
             break;
           case 'Image': {
             // Last URL child: "name@2x.png" in the alt text parses as an email

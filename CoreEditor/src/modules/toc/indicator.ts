@@ -48,7 +48,7 @@ class TocIndicator {
     for (const info of toc) {
       const dash = document.createElement('span');
       dash.className = `cm-md-tocDash${info.selected ? ' cm-md-tocDashActive' : ''}`;
-      dash.style.width = `${Math.max(6, 18 - (info.level - 1) * 3)}px`;
+      dash.style.width = `${Math.max(5, 14 - (info.level - 1) * 2.5)}px`;
       this.dashes.appendChild(dash);
 
       const row = document.createElement('div');

@@ -7,28 +7,25 @@
 import SwiftUI
 
 struct StatisticsCell: View {
-  static let cellHeight: Double = 32
-  static let rowHeight: Double = cellHeight + 1 // 1pt divider
+  static let cellHeight: Double = 26
+  static let rowHeight: Double = cellHeight
 
-  let iconName: String
   let titleText: String
   let valueText: String
 
   var body: some View {
-    HStack(alignment: .center, spacing: 4) {
-      Image(systemName: iconName)
-        .frame(width: 28)
-        .foregroundColor(.gray)
+    HStack {
       Text(titleText)
         .fixedSize()
+      Spacer()
       Text(valueText)
-        .fontWeight(.semibold)
+        .foregroundStyle(.secondary)
         .lineLimit(1)
-        .frame(maxWidth: .infinity, alignment: .trailing)
     }
+    .font(.system(size: 13))
+    .padding(.horizontal, 10)
     .accessibilityElement()
     .accessibilityLabel([titleText, valueText].joined(separator: " "))
     .frame(height: Self.cellHeight)
-    Divider()
   }
 }

@@ -104,6 +104,8 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-md-taskCheckbox': {
     margin: '0 2px 0 0',
     verticalAlign: 'text-bottom',
+    // Optically center against the x-height; text-bottom alone sits too low
+    transform: 'translateY(-2px)',
     cursor: 'pointer',
   },
   '.cm-md-brokenImage': {
@@ -119,7 +121,7 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-md-tocDashes': {
     display: 'flex',
     flexDirection: 'column',
-    gap: '6px',
+    gap: '5px',
     padding: '6px 12px 6px 0',
     transition: 'opacity 0.15s ease',
   },
@@ -137,6 +139,7 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '0.7',
   },
   '.cm-md-tocPanel': {
+    fontFamily: '-apple-system, system-ui, sans-serif',
     position: 'absolute',
     top: '0',
     left: '0',
@@ -176,28 +179,53 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '1',
     fontWeight: '600',
   },
+  // Claude Code-style quotes: bar, indent, muted gray regardless of theme
   '.cm-md-quoteLine': {
     borderLeft: '3px solid rgba(140, 140, 140, 0.35)',
-    paddingLeft: '12px',
-    opacity: '0.85',
+    paddingLeft: '16px',
+    color: 'rgb(134, 134, 134)',
+  },
+  '.cm-md-quoteLine span': {
+    color: 'inherit !important',
+    fontStyle: 'normal !important',
   },
   '.cm-md-codePanel': {
     background: 'rgba(140, 140, 140, 0.1)',
+    paddingLeft: '16px',
+    paddingRight: '16px',
   },
+  // Concealed fence lines shrink to act as balanced vertical padding
   '.cm-md-codePanelFirst': {
-    borderRadius: '6px 6px 0 0',
+    borderRadius: '8px 8px 0 0',
     position: 'relative',
+    lineHeight: '12px',
+    fontSize: '8px',
   },
   '.cm-md-codePanelLast': {
-    borderRadius: '0 0 6px 6px',
+    borderRadius: '0 0 8px 8px',
+    lineHeight: '12px',
+    fontSize: '8px',
+  },
+  '.cm-md-codeChrome': {
+    position: 'absolute',
+    right: '10px',
+    top: '8px',
+    display: 'inline-flex',
+    alignItems: 'center',
+    gap: '8px',
+    userSelect: 'none',
   },
   '.cm-md-codeLang': {
-    position: 'absolute',
-    right: '8px',
-    top: '2px',
-    fontSize: '0.75em',
+    fontSize: '11px',
     opacity: '0.5',
-    userSelect: 'none',
+  },
+  '.cm-md-codeCopy': {
+    display: 'inline-flex',
+    cursor: 'pointer',
+    opacity: '0.45',
+  },
+  '.cm-md-codeCopy:hover': {
+    opacity: '0.9',
   },
   '.cm-md-frontMatter': {
     padding: '2px 0 6px 0',

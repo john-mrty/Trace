@@ -40,81 +40,68 @@ struct StatisticsView: View {
 
   var body: some View {
     VStack(spacing: 0) {
-      VStack {
-        if selectionResult != nil {
-          Picker(localizable.mainTitle, selection: $viewingMode) {
-            Text(localizable.selection).tag(ViewingMode.selection)
-            Text(localizable.document).tag(ViewingMode.document)
-          }
-          .labelsHidden() // Hide the label while keeping the accessibility
-          .pickerStyle(.segmented)
-          .padding()
-          .onAppear {
-            localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-              switch event.keyCode {
-              case .kVK_LeftArrow:
-                viewingMode = .selection
-                return nil
-              case .kVK_RightArrow:
-                viewingMode = .document
-                return nil
-              default:
-                return event
-              }
+      if selectionResult != nil {
+        Picker(localizable.mainTitle, selection: $viewingMode) {
+          Text(localizable.selection).tag(ViewingMode.selection)
+          Text(localizable.document).tag(ViewingMode.document)
+        }
+        .labelsHidden() // Hide the label while keeping the accessibility
+        .pickerStyle(.segmented)
+        .padding(.horizontal, 10)
+        .frame(height: modernStyle ? 40 : 36)
+        .onAppear {
+          localMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+            switch event.keyCode {
+            case .kVK_LeftArrow:
+              viewingMode = .selection
+              return nil
+            case .kVK_RightArrow:
+              viewingMode = .document
+              return nil
+            default:
+              return event
             }
           }
-          .onDisappear {
-            if let localMonitor {
-              NSEvent.removeMonitor(localMonitor)
-              self.localMonitor = nil
-            }
+        }
+        .onDisappear {
+          if let localMonitor {
+            NSEvent.removeMonitor(localMonitor)
+            self.localMonitor = nil
           }
-        } else {
-          Text(localizable.mainTitle)
-            .font(.system(size: modernStyle ? 14 : 13, weight: .semibold))
         }
       }
-      .frame(height: modernStyle ? 40 : 36)
-
-      Divider()
 
       ScrollView {
         VStack(spacing: 0) {
           ForEach(Array(currentRuleResults.filter { !$0.isEmpty }.enumerated()), id: \.offset) { _, ruleResult in
             StatisticsCell(
-              iconName: ruleResult.rule.icon,
               titleText: ruleResult.rule.title,
               valueText: "\(ruleResult.count)"
             )
           }
 
           StatisticsCell(
-            iconName: Icons.characters,
             titleText: localizable.characters,
             valueText: "\(currentResult.characters)"
           )
 
           StatisticsCell(
-            iconName: Icons.words,
             titleText: localizable.words,
             valueText: "\(currentResult.words)"
           )
 
           StatisticsCell(
-            iconName: Icons.sentences,
             titleText: localizable.sentences,
             valueText: "\(currentResult.sentences)"
           )
 
           StatisticsCell(
-            iconName: Icons.paragraphs,
             titleText: localizable.paragraphs,
             valueText: "\(currentResult.paragraphs)"
           )
 
           if currentResult.comments > 0 {
             StatisticsCell(
-              iconName: Icons.comments,
               titleText: localizable.comments,
               valueText: "\(currentResult.comments)"
             )
@@ -122,7 +109,6 @@ struct StatisticsView: View {
 
           if let readTime = ReadTime.estimated(of: currentResult.words) {
             StatisticsCell(
-              iconName: Icons.readTime,
               titleText: localizable.readTime,
               valueText: readTime
             )
@@ -131,17 +117,14 @@ struct StatisticsView: View {
           // The file size is shown only when we are viewing the full document
           if isViewingDocument, let fileSize = FileSize.readableSize(of: fileURL) {
             StatisticsCell(
-              iconName: Icons.fileSize,
               titleText: localizable.fileSize,
               valueText: fileSize
             )
           }
         }
-        .padding(.horizontal, 8)
+        .padding(.vertical, 6)
         .frame(maxWidth: .infinity)
       }
-
-      Spacer()
     }
   }
 }
@@ -152,16 +135,6 @@ private extension StatisticsView {
   enum ViewingMode: Int {
     case selection = 0
     case document = 1
-  }
-
-  enum Icons {
-    static let characters = "textformat"
-    static let words = "text.bubble"
-    static let sentences = "textformat.abc.dottedunderline"
-    static let paragraphs = "paragraphsign"
-    static let comments = "eye.slash"
-    static let readTime = "stopwatch"
-    static let fileSize = "doc.text.below.ecg"
   }
 
   var isViewingDocument: Bool {
