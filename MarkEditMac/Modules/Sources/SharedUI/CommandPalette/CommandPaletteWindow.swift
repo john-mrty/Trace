@@ -11,12 +11,14 @@ public struct CommandPaletteItem {
   public let title: String
   public let subtitle: String
   public let shortcut: String
+  public let isOn: Bool
   public let action: () -> Void
 
-  public init(title: String, subtitle: String = "", shortcut: String = "", action: @escaping () -> Void) {
+  public init(title: String, subtitle: String = "", shortcut: String = "", isOn: Bool = false, action: @escaping () -> Void) {
     self.title = title
     self.subtitle = subtitle
     self.shortcut = shortcut
+    self.isOn = isOn
     self.action = action
   }
 }
@@ -33,8 +35,10 @@ public final class CommandPaletteWindow: NSWindow {
     relativeTo parentRect: CGRect,
     placeholder: String,
     font: NSFont,
+    caretColor: NSColor? = nil,
     items: [CommandPaletteItem]
   ) {
+    self.caretColor = caretColor
     // Vertically centered at full height; the top edge stays put as the list filters down
     let initialHeight = CommandPaletteView.contentHeight(forItemCount: items.count)
     let margin = Constants.shadowMargin
@@ -86,6 +90,15 @@ public final class CommandPaletteWindow: NSWindow {
     }
 
     paletteView.applyContentHeight()
+    self.paletteView = paletteView
+  }
+
+  private let caretColor: NSColor?
+  private weak var paletteView: CommandPaletteView?
+
+  override public func makeKeyAndOrderFront(_ sender: Any?) {
+    super.makeKeyAndOrderFront(sender)
+    paletteView?.beginEditing(caretColor: caretColor)
   }
 
   override public var canBecomeKey: Bool {
@@ -237,7 +250,9 @@ private final class CommandPaletteView: NSView {
       scrollView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.fieldHeight),
       scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
       scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.padding),
+      // Flush to the bottom: the viewport keeps padding-worth of slack below the
+      // last row, so its rounded highlight never clips against the corner mask
+      scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
     ])
 
     tableView.reloadData()
@@ -251,6 +266,14 @@ private final class CommandPaletteView: NSView {
 
   func applyContentHeight() {
     updateWindowHeight?(Self.contentHeight(forItemCount: filteredItems.count))
+  }
+
+  func beginEditing(caretColor: NSColor?) {
+    window?.makeFirstResponder(textField)
+
+    if let caretColor, let editor = textField.currentEditor() as? NSTextView {
+      editor.insertionPointColor = caretColor
+    }
   }
 }
 
@@ -296,7 +319,7 @@ extension CommandPaletteView: NSTableViewDataSource, NSTableViewDelegate {
     let cellView = NSView()
 
     let titleLabel = LabelView(frame: .zero)
-    titleLabel.stringValue = item.title
+    titleLabel.stringValue = item.isOn ? "✓ \(item.title)" : item.title
     titleLabel.font = scaledFont(delta: -1)
     titleLabel.lineBreakMode = .byTruncatingTail
     titleLabel.translatesAutoresizingMaskIntoConstraints = false

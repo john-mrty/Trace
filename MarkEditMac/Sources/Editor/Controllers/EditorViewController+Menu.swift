@@ -141,6 +141,15 @@ extension EditorViewController: NSMenuItemValidation {
       return webView.magnification > Constants.minimumZoomLevel
     case #selector(toggleWindowFloating(_:)):
       return view.window?.isKeyWindow == true
+    case #selector(toggleHideSyntaxMarks(_:)):
+      menuItem.setOn(!AppPreferences.Editor.hideSyntaxMarks)
+      return true
+    case #selector(toggleFocusMode(_:)):
+      menuItem.setOn(AppPreferences.Editor.focusMode)
+      return true
+    case #selector(toggleTypewriterMode(_:)):
+      menuItem.setOn(AppPreferences.Editor.typewriterMode)
+      return true
     default:
       return true
     }

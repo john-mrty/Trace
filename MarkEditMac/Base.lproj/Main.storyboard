@@ -890,6 +890,19 @@ Gw
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="cPa-Lt-Sp1"/>
+                                        <menuItem title="Show Markdown Syntax" id="vSy-nt-Mi1">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="toggleHideSyntaxMarks:" target="Ady-hI-5gd" id="vSy-nt-Ac1"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Focus Mode" id="vFo-cs-Mi1">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="toggleFocusMode:" target="Ady-hI-5gd" id="vFo-cs-Ac1"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="vFo-cs-Sp1"/>
                                         <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

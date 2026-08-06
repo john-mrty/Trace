@@ -66,6 +66,7 @@ extension EditorViewController {
       relativeTo: parentRect,
       placeholder: "Type a command or file name",
       font: AppPreferences.Editor.fontStyle.fontWith(size: AppPreferences.Editor.fontSize),
+      caretColor: AppPreferences.Editor.accentColor.nsColor,
       items: Self.commandPaletteItems()
     )
 
@@ -79,6 +80,9 @@ private extension EditorViewController {
     var items = [CommandPaletteItem]()
 
     func walk(_ menu: NSMenu, path: String) {
+      // Runs validation so toggle items carry their current on/off state
+      menu.update()
+
       for menuItem in menu.items {
         if menuItem.isSeparatorItem || menuItem.isHidden {
           continue
@@ -102,7 +106,8 @@ private extension EditorViewController {
         items.append(CommandPaletteItem(
           title: menuItem.title,
           subtitle: path,
-          shortcut: shortcutDescription(of: menuItem)
+          shortcut: shortcutDescription(of: menuItem),
+          isOn: menuItem.state == .on
         ) {
           _ = NSApp.sendAction(action, to: target, from: menuItem)
         })

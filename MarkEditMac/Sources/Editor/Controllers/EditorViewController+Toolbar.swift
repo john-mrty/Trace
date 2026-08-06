@@ -70,6 +70,10 @@ extension EditorViewController {
   @objc func toggleHideSyntaxMarks(_ sender: Any?) {
     AppPreferences.Editor.hideSyntaxMarks.toggle()
   }
+
+  @objc func toggleFocusMode(_ sender: Any?) {
+    AppPreferences.Editor.focusMode.toggle()
+  }
 }
 
 // MARK: - Private
