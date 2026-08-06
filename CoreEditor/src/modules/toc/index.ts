@@ -1,5 +1,5 @@
 import { KeyBinding } from '@codemirror/view';
-import { EditorSelection } from '@codemirror/state';
+import { EditorSelection, EditorState } from '@codemirror/state';
 import { HeadingInfo } from './types';
 import { getSyntaxTree } from '../lezer';
 import { scrollToSelection } from '../selection';
@@ -26,9 +26,8 @@ export const tocKeymap: KeyBinding[] = [
   },
 ];
 
-export function getTableOfContents() {
-  const editor = window.editor;
-  const state = editor.state;
+export function getTableOfContents(sourceState?: EditorState) {
+  const state = sourceState ?? window.editor.state;
   const results: HeadingInfo[] = [];
 
   getSyntaxTree(state).iterate({

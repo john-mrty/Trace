@@ -954,6 +954,7 @@
     },
     "Dim inactive lines" : {
       "comment" : "Explanation for focus mode",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -971,6 +972,9 @@
     },
     "Dim Inactive Lines" : {
       "comment" : "Toolbar item to dim lines outside the current selection"
+    },
+    "Dim inactive lines (focus mode)" : {
+      "comment" : "Explanation for focus mode"
     },
     "Disable Update Checks" : {
       "comment" : "Title for the \"Disable Update Checks\" button",

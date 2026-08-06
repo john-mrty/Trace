@@ -154,9 +154,28 @@ export function setTypewriterMode(enabled: boolean) {
 }
 
 export function setHideSyntaxMarks(enabled: boolean) {
-  tryGetEditor()?.dispatch({
+  const editor = tryGetEditor();
+  const reconfigure = () => editor?.dispatch({
     effects: window.dynamics.conceal?.reconfigure(enabled ? concealExtension : []),
   });
+
+  const content = editor?.contentDOM;
+  if (content === undefined || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return reconfigure();
+  }
+
+  // Dissolve through the layout jump: fade out, swap decorations, fade back
+  content.style.transition = 'opacity 0.12s ease-in-out';
+  content.style.opacity = '0.2';
+
+  setTimeout(() => {
+    reconfigure();
+    content.style.opacity = '1';
+    setTimeout(() => {
+      content.style.transition = '';
+      content.style.opacity = '';
+    }, 150);
+  }, 120);
 }
 
 /**

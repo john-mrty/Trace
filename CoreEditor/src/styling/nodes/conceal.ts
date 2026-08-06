@@ -1,7 +1,8 @@
 import { Decoration, DecorationSet, EditorView, WidgetType } from '@codemirror/view';
 import { EditorState, Range, RangeSet, StateField } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
-import { createDecoPlugin } from '../helper';
+import { createDecoPlugin, lineDecoRanges } from '../helper';
+import { frontMatterRange } from '../../modules/frontMatter';
 
 const hiddenDeco = Decoration.replace({});
 
@@ -147,10 +148,30 @@ class InlineImageWidget extends WidgetType {
   }
 }
 
-function concealedRanges(view: EditorView) {
+class LanguageBadgeWidget extends WidgetType {
+  constructor(private readonly language: string) {
+    super();
+  }
+
+  override eq(other: LanguageBadgeWidget) {
+    return other.language === this.language;
+  }
+
+  toDOM() {
+    const span = document.createElement('span');
+    span.className = 'cm-md-codeLang';
+    span.textContent = this.language;
+    return span;
+  }
+}
+
+// Extras are display-only (line styles, tooltips, badges); they must never
+// feed atomicRanges or the caret would skip entire lines
+function collectConcealed(view: EditorView) {
   const state = view.state;
 
   const ranges: Range<Decoration>[] = [];
+  const extras: Range<Decoration>[] = [];
   const conceal = (from: number, to: number) => {
     ranges.push(hiddenDeco.range(from, to));
   };
@@ -173,7 +194,7 @@ function concealedRanges(view: EditorView) {
             conceal(node.from, node.to);
             break;
           case 'CodeMark':
-            if (parent === 'InlineCode') {
+            if (parent === 'InlineCode' || parent === 'FencedCode') {
               conceal(node.from, node.to);
             }
             break;
@@ -203,6 +224,40 @@ function concealedRanges(view: EditorView) {
               conceal(node.from, node.to);
             }
             break;
+          case 'Link': {
+            // Destination is invisible in concealed mode; surface it on hover
+            const urlNode = node.node.getChildren('URL').pop();
+            if (urlNode !== undefined) {
+              const url = state.sliceDoc(urlNode.from, urlNode.to).replace(/^<|>$/g, '');
+              extras.push(Decoration.mark({ attributes: { title: url } }).range(node.from, node.to));
+            }
+            break;
+          }
+          case 'QuoteMark': {
+            // "> " vanishes; the quote bar comes from the Blockquote line style
+            const next = state.sliceDoc(node.to, node.to + 1);
+            conceal(node.from, next === ' ' ? node.to + 1 : node.to);
+            break;
+          }
+          case 'Blockquote':
+            extras.push(...lineDecoRanges(node.from, node.to, 'cm-md-quoteLine'));
+            break;
+          case 'FencedCode': {
+            // Fence lines conceal to empty lines, acting as the panel's padding
+            const firstLine = state.doc.lineAt(node.from);
+            const lastLine = state.doc.lineAt(node.to);
+            for (let lineNumber = firstLine.number; lineNumber <= lastLine.number; ++lineNumber) {
+              const line = state.doc.line(lineNumber);
+              const edges = `${lineNumber === firstLine.number ? ' cm-md-codePanelFirst' : ''}${lineNumber === lastLine.number ? ' cm-md-codePanelLast' : ''}`;
+              extras.push(Decoration.line({ class: `cm-md-codePanel${edges}` }).range(line.from));
+            }
+            break;
+          }
+          case 'CodeInfo':
+            ranges.push(Decoration.replace({
+              widget: new LanguageBadgeWidget(state.sliceDoc(node.from, node.to)),
+            }).range(node.from, node.to));
+            break;
           case 'Image': {
             // Last URL child: "name@2x.png" in the alt text parses as an email
             // autolink, adding a URL node before the real destination
@@ -225,7 +280,17 @@ function concealedRanges(view: EditorView) {
     });
   }
 
-  return Decoration.set(ranges, true);
+  return { conceal: ranges, extras };
+}
+
+// Atomic ranges: only true concealments, so the caret skips hidden marks
+function concealedRanges(view: EditorView) {
+  return Decoration.set(collectConcealed(view).conceal, true);
+}
+
+function concealedDecorations(view: EditorView) {
+  const { conceal, extras } = collectConcealed(view);
+  return Decoration.set([...conceal, ...extras], true);
 }
 
 /**
@@ -317,8 +382,103 @@ const tablePreviewField = StateField.define<DecorationSet>({
   provide: field => EditorView.decorations.from(field),
 });
 
+class FrontMatterChipWidget extends WidgetType {
+  constructor(private readonly yaml: string) {
+    super();
+  }
+
+  override eq(other: FrontMatterChipWidget) {
+    return other.yaml === this.yaml;
+  }
+
+  override ignoreEvent() {
+    return false;
+  }
+
+  toDOM() {
+    const container = document.createElement('div');
+    container.className = 'cm-md-frontMatter';
+
+    const entries = this.yaml.split('\n')
+      .map(line => /^(\S[^:]*):\s*(.*)$/.exec(line))
+      .filter((match): match is RegExpExecArray => match !== null)
+      .map(match => [match[1].trim(), match[2].trim()] as const);
+
+    const chip = document.createElement('span');
+    chip.className = 'cm-md-frontMatterChip';
+    chip.textContent = `Properties · ${entries.length}`;
+    container.appendChild(chip);
+
+    const table = document.createElement('div');
+    table.className = 'cm-md-frontMatterTable';
+    table.style.display = 'none';
+
+    for (const [key, value] of entries) {
+      const row = document.createElement('div');
+      const keySpan = document.createElement('span');
+      keySpan.className = 'cm-md-frontMatterKey';
+      keySpan.textContent = key;
+
+      const valueSpan = document.createElement('span');
+      valueSpan.textContent = value;
+
+      row.appendChild(keySpan);
+      row.appendChild(valueSpan);
+      table.appendChild(row);
+    }
+
+    container.appendChild(table);
+
+    chip.onmousedown = event => {
+      event.preventDefault();
+      event.stopPropagation();
+    };
+
+    chip.onclick = event => {
+      event.preventDefault();
+      event.stopPropagation();
+      const expanded = table.style.display !== 'none';
+      table.style.display = expanded ? 'none' : 'block';
+      chip.classList.toggle('cm-md-frontMatterChipOpen', !expanded);
+      window.editor.requestMeasure();
+    };
+
+    return container;
+  }
+}
+
+function frontMatterDecorations(state: EditorState): DecorationSet {
+  // Pass the text explicitly: this runs during editor creation,
+  // before window.editor (which the argless overload reads) exists
+  const range = frontMatterRange(state.doc.toString());
+  if (range === undefined) {
+    return Decoration.set([]);
+  }
+
+  // Strip the "---" fences; the widget parses only the inner YAML lines
+  const yaml = state.sliceDoc(range.from, range.to).replace(/^---[ \t]*\r?\n?|\r?\n?---[ \t]*$/g, '');
+  return Decoration.set([
+    Decoration.replace({
+      widget: new FrontMatterChipWidget(yaml),
+      block: true,
+    }).range(range.from, range.to),
+  ]);
+}
+
+const frontMatterField = StateField.define<DecorationSet>({
+  create: state => frontMatterDecorations(state),
+  update: (value, tr) => {
+    if (tr.docChanged || syntaxTree(tr.state) !== syntaxTree(tr.startState)) {
+      return frontMatterDecorations(tr.state);
+    }
+
+    return value;
+  },
+  provide: field => EditorView.decorations.from(field),
+});
+
 export const concealExtension = [
-  createDecoPlugin(() => concealedRanges(window.editor)),
+  createDecoPlugin(() => concealedDecorations(window.editor)),
   EditorView.atomicRanges.of(view => {
     try {
       return concealedRanges(view);
@@ -328,4 +488,6 @@ export const concealExtension = [
   }),
   tablePreviewField,
   EditorView.atomicRanges.of(view => view.state.field(tablePreviewField)),
+  frontMatterField,
+  EditorView.atomicRanges.of(view => view.state.field(frontMatterField)),
 ];

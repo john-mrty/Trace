@@ -40,6 +40,7 @@ import { filterTransaction, wordTokenizer, observeChanges, interceptInputs } fro
 import { customizedCommandsKeymap } from './modules/commands';
 import { autocompleteExtensions, standardLinkCompletion, referenceLinkCompletion } from './modules/completion';
 import { tocKeymap } from './modules/toc';
+import { tocIndicatorExtension } from './modules/toc/indicator';
 import { userExtensions, userMarkdownConfigs, userCodeLanguages, userHTMLLanguage } from './api/methods';
 
 const theme = new Compartment;
@@ -165,6 +166,7 @@ export function extensions(options: { lineBreak?: string }) {
     linkStyles, // Must after invisibles because whitespaces can break this
     selectedLines.of(window.config.focusMode ? selectedLinesDecoration : []),
     conceal.of(window.config.hideSyntaxMarks ? concealExtension : []),
+    tocIndicatorExtension,
     placeholder('Start writing\u2026'),
 
     // Input handling

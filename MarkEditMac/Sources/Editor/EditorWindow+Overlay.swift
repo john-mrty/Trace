@@ -239,16 +239,11 @@ private extension EditorWindow {
     static let headingGlyphPointSize: Double = 12
   }
 
-  /// The most useful writing actions: table of contents, headers, bold,
-  /// italic, list, hide syntax marks, dim inactive lines.
+  /// The most useful writing actions: headers, bold, italic, list,
+  /// hide syntax marks, dim inactive lines. (TOC lives in the editor's
+  /// hover indicator, not here.)
   func overlayFabActions(for viewController: EditorViewController) -> [EditorOverlayToolbar.Action] {
     [
-      EditorOverlayToolbar.Action(
-        symbolName: Icons.listBulletRectangle,
-        accessibilityLabel: Localized.Toolbar.tableOfContents
-      ) { [weak viewController] button in
-        viewController?.showTableOfContentsMenu(from: button)
-      },
       EditorOverlayToolbar.Action(
         accessibilityLabel: Localized.Toolbar.formatHeaders,
         // SF Symbols has no bare "H"; render one to match the FontAwesome heading icon
