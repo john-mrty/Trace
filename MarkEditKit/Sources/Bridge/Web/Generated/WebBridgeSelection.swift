@@ -61,4 +61,8 @@ public final class WebBridgeSelection {
   public func navigateGoBack(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
     webView?.invoke(path: "webModules.selection.navigateGoBack", completion: completion)
   }
+
+  public func copyAsRichText(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    webView?.invoke(path: "webModules.selection.copyAsRichText", completion: completion)
+  }
 }

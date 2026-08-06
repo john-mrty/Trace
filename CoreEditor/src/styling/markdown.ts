@@ -58,6 +58,9 @@ export const markdownExtensions: MarkdownConfig[] = [
   },
   linkDefinitionConfig,
   markdownMathConfig,
+  // Setext headings make typing "-" under a paragraph restyle it as a heading,
+  // which reads as a bug when writing prose; ATX (#) headings cover everything
+  { remove: ['SetextHeading'] },
 ];
 
 // https://codemirror.net/docs/ref/#state.EditorState.languageDataAt

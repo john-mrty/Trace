@@ -214,6 +214,12 @@ extension EditorViewController {
 
 extension EditorViewController {
 
+  // MARK: - Clipboard
+
+  @IBAction func copyAsRichText(_ sender: Any?) {
+    bridge.selection.copyAsRichText()
+  }
+
   // MARK: - Headers
 
   @IBAction func toggleH1(_ sender: Any?) {

@@ -2,6 +2,7 @@ import { WebModule } from '../webModule';
 import { WebRect } from '../../@types/WebRect';
 import { selectWholeDocument, selectedMainText, scrollToSelection, getRect, gotoLine, refreshEditFocus } from '../../modules/selection';
 import { navigateGoBack } from '../../modules/selection/navigate';
+import { copyAsRichText } from '../../modules/selection/html';
 
 /**
  * @shouldExport true
@@ -16,6 +17,7 @@ export interface WebModuleSelection extends WebModule {
   gotoLine({ lineNumber }: { lineNumber: CodeGen_Int }): void;
   refreshEditFocus(): void;
   navigateGoBack(): void;
+  copyAsRichText(): void;
 }
 
 export class WebModuleSelectionImpl implements WebModuleSelection {
@@ -45,5 +47,9 @@ export class WebModuleSelectionImpl implements WebModuleSelection {
 
   navigateGoBack(): void {
     navigateGoBack();
+  }
+
+  copyAsRichText(): void {
+    void copyAsRichText();
   }
 }

@@ -54,7 +54,7 @@ enum Localized {
     static let toggleItalic = String(localized: "Italic", comment: "Toolbar item to toggle italic")
     static let toggleList = String(localized: "Toggle List", comment: "Toolbar item to toggle bullet list")
     static let hideSyntaxMarks = String(localized: "Show Markdown", comment: "Toolbar item to toggle Markdown syntax marks; on means visible")
-    static let dimInactiveLines = String(localized: "Dim Inactive Lines", comment: "Toolbar item to dim lines outside the current selection")
+    static let dimInactiveLines = String(localized: "Focus Mode", comment: "Toolbar item to dim lines outside the current selection")
     static let textFormat = String(localized: "Text Format", comment: "Toolbar item to use text format menu")
     static let statistics = String(localized: "Statistics", comment: "Toolbar item to show statistics")
   }
