@@ -41,6 +41,7 @@ xcodebuild -project MarkEdit.xcodeproj -scheme MarkEditMac -configuration Releas
   DEVELOPMENT_TEAM="$TEAM_ID" \
   MARKETING_VERSION="$VERSION" \
   OTHER_CODE_SIGN_FLAGS="--timestamp --options runtime" \
+  CODE_SIGN_INJECT_BASE_ENTITLEMENTS=NO \
   build > "$OUT_DIR/xcodebuild.log" 2>&1 || true
 grep -E '^\*\* BUILD|error:' "$OUT_DIR/xcodebuild.log" || true
 grep -q '\*\* BUILD SUCCEEDED' "$OUT_DIR/xcodebuild.log" || {
@@ -50,7 +51,13 @@ grep -q '\*\* BUILD SUCCEEDED' "$OUT_DIR/xcodebuild.log" || {
 
 echo "==> Notarizing..."
 ditto -c -k --keepParent "$APP" "$ZIP"
-xcrun notarytool submit "$ZIP" --keychain-profile "$PROFILE" --wait
+xcrun notarytool submit "$ZIP" --keychain-profile "$PROFILE" --wait | tee "$OUT_DIR/notary.log"
+grep -q "status: Accepted" "$OUT_DIR/notary.log" || {
+  SUBMISSION_ID="$(sed -nE 's/^ *id: ([a-f0-9-]{36})$/\1/p' "$OUT_DIR/notary.log" | head -1)"
+  [[ -n "$SUBMISSION_ID" ]] && xcrun notarytool log "$SUBMISSION_ID" --keychain-profile "$PROFILE"
+  echo "error: notarization was not accepted" >&2
+  exit 1
+}
 
 echo "==> Stapling..."
 xcrun stapler staple "$APP"
