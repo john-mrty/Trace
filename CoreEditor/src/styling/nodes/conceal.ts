@@ -259,11 +259,17 @@ function collectConcealed(view: EditorView) {
               ranges.push(bulletDeco.range(node.from, node.to));
             }
             break;
-          case 'TaskMarker':
+          case 'TaskMarker': {
+            const checked = state.sliceDoc(node.from, node.to) !== '[ ]';
             ranges.push(Decoration.replace({
-              widget: new TaskCheckboxWidget(state.sliceDoc(node.from, node.to) !== '[ ]'),
+              widget: new TaskCheckboxWidget(checked),
             }).range(node.from, node.to));
+
+            if (checked) {
+              extras.push(Decoration.line({ class: 'cm-md-taskDone' }).range(state.doc.lineAt(node.from).from));
+            }
             break;
+          }
           case 'LinkMark':
           case 'URL':
             // Link only: images and autolinks keep their syntax

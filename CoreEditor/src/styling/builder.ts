@@ -108,6 +108,15 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     transform: 'translateY(-2px)',
     cursor: 'pointer',
   },
+  // Completed tasks: struck and muted; inner spans inherit so theme
+  // token colors don't reassert themselves
+  '.cm-md-taskDone': {
+    color: 'rgb(150, 150, 150)',
+    textDecoration: 'line-through',
+  },
+  '.cm-md-taskDone span': {
+    color: 'inherit !important',
+  },
   '.cm-md-brokenImage': {
     opacity: '0.5',
     textDecoration: 'line-through',
@@ -181,9 +190,13 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   },
   // Claude Code-style quotes: bar, indent, muted gray regardless of theme
   '.cm-md-quoteLine': {
-    borderLeft: '3px solid rgba(140, 140, 140, 0.35)',
+    borderLeft: '2px solid rgba(140, 140, 140, 0.35)',
     paddingLeft: '16px',
-    color: 'rgb(134, 134, 134)',
+    color: 'rgb(110, 110, 110)',
+    // Defeat the inline hanging-indent styles (set for the concealed "> "
+    // prefix) so the bar starts exactly at the body text's left edge
+    marginInlineStart: '6px !important',
+    textIndent: '0 !important',
   },
   '.cm-md-quoteLine span': {
     color: 'inherit !important',

@@ -12,8 +12,12 @@ class TocIndicator {
   private readonly container: HTMLElement;
   private readonly dashes: HTMLElement;
   private readonly panel: HTMLElement;
+  private readonly view: EditorView;
+  private pending = false;
+  private destroyed = false;
 
   constructor(view: EditorView) {
+    this.view = view;
     this.container = document.createElement('div');
     this.container.className = 'cm-md-tocIndicator';
 
@@ -26,17 +30,35 @@ class TocIndicator {
     this.container.appendChild(this.dashes);
     this.container.appendChild(this.panel);
     view.dom.appendChild(this.container);
-    this.rebuild(view.state);
+    this.scheduleRebuild();
   }
 
   update(update: ViewUpdate) {
     if (update.docChanged || update.selectionSet) {
-      this.rebuild(update.state);
+      this.scheduleRebuild();
     }
   }
 
   destroy() {
+    this.destroyed = true;
     this.container.remove();
+  }
+
+  // getTableOfContents forces a full syntax parse; doing that inside an
+  // update cycle desyncs the highlighter's decorations from the view and
+  // leaves ghost characters in the DOM. Always rebuild after the update.
+  private scheduleRebuild() {
+    if (this.pending) {
+      return;
+    }
+
+    this.pending = true;
+    setTimeout(() => {
+      this.pending = false;
+      if (!this.destroyed) {
+        this.rebuild(this.view.state);
+      }
+    }, 0);
   }
 
   private rebuild(state: EditorState) {
