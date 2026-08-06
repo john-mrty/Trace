@@ -79,11 +79,13 @@ private extension EditorViewController {
   /// Noise excluded from the palette: system input panels, the palette itself,
   /// and submenus that duplicate better palette sources (recents)
   static let paletteExcludedMenus: Set<String> = [
-    "Open Recent", "Services", "Speech", "Substitutions", "Help",
+    "Open Recent", "Open In…", "Reopen with Encoding", "Line Endings", "Purge History Versions",
+    "Services", "Speech", "Substitutions", "Help",
   ]
 
   static let paletteExcludedSelectors: Set<String> = [
     "showCommandPalette:", "startDictation:", "orderFrontCharacterPalette:", "runToolbarCustomizationPalette:",
+    "grantFolderAccess:",
   ]
 
   static func commandPaletteItems() -> [CommandPaletteItem] {
