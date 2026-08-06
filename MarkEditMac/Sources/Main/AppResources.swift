@@ -126,7 +126,7 @@ enum Localized {
     static let always = String(localized: "Always", comment: "Always show invisibles")
     static let editBehavior = String(localized: "Edit Behavior:", comment: "Editor behavior like focus mode and typewriter mode")
     static let typewriterModeTitle = String(localized: "Typewriter scrolling", comment: "Explanation for typewriter mode")
-    static let focusModeTitle = String(localized: "Dim inactive lines", comment: "Explanation for focus mode")
+    static let focusModeTitle = String(localized: "Dim inactive lines (focus mode)", comment: "Explanation for focus mode")
     static let lineHeight = String(localized: "Line Height:", comment: "Label for line height option")
     static let tightHeight = String(localized: "Tight", comment: "Tight line spacing")
     static let normalHeight = String(localized: "Normal", comment: "Normal line spacing")

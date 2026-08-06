@@ -2238,6 +2238,9 @@
         }
       }
     },
+    "Line numbers (with syntax)" : {
+      "comment" : "Option to show line numbers when syntax marks are visible"
+    },
     "Line Wrapping:" : {
       "comment" : "Label for line wrapping option",
       "extractionState" : "stale",
