@@ -76,6 +76,16 @@ extension EditorViewController {
 }
 
 private extension EditorViewController {
+  /// Noise excluded from the palette: system input panels, the palette itself,
+  /// and submenus that duplicate better palette sources (recents)
+  static let paletteExcludedMenus: Set<String> = [
+    "Open Recent", "Services", "Speech", "Substitutions", "Help",
+  ]
+
+  static let paletteExcludedSelectors: Set<String> = [
+    "showCommandPalette:", "startDictation:", "orderFrontCharacterPalette:", "runToolbarCustomizationPalette:",
+  ]
+
   static func commandPaletteItems() -> [CommandPaletteItem] {
     var items = [CommandPaletteItem]()
 
@@ -89,16 +99,14 @@ private extension EditorViewController {
         }
 
         if let submenu = menuItem.submenu {
-          walk(submenu, path: path.isEmpty ? menuItem.title : "\(path) › \(menuItem.title)")
+          if !paletteExcludedMenus.contains(menuItem.title) {
+            walk(submenu, path: path.isEmpty ? menuItem.title : "\(path) › \(menuItem.title)")
+          }
           continue
         }
 
-        guard let action = menuItem.action, !menuItem.title.isEmpty else {
-          continue
-        }
-
-        guard action != #selector(Self.showCommandPalette(_:)),
-              NSStringFromSelector(action) != "showAboutPanel:" else {
+        guard let action = menuItem.action, !menuItem.title.isEmpty,
+              !paletteExcludedSelectors.contains(NSStringFromSelector(action)) else {
           continue
         }
 
@@ -114,8 +122,14 @@ private extension EditorViewController {
       }
     }
 
-    if let mainMenu = NSApp.mainMenu {
-      walk(mainMenu, path: "")
+    // dropFirst skips the application menu (About, Settings, Hide, Quit…)
+    for topItem in NSApp.mainMenu?.items.dropFirst() ?? [] {
+      guard let submenu = topItem.submenu, !topItem.isHidden,
+            !paletteExcludedMenus.contains(topItem.title) else {
+        continue
+      }
+
+      walk(submenu, path: topItem.title)
     }
 
     for url in NSDocumentController.shared.recentDocumentURLs {

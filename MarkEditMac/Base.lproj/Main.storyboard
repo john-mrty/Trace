@@ -903,13 +903,13 @@ Gw
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="vFo-cs-Sp1"/>
-                                        <menuItem title="Customize Toolbar…" id="1UK-8n-QPP">
+                                        <menuItem title="Customize Toolbar…" hidden="YES" id="1UK-8n-QPP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="PIb-KM-OZU"/>
+                                        <menuItem isSeparatorItem="YES" hidden="YES" id="PIb-KM-OZU"/>
                                         <menuItem title="Actual Size" keyEquivalent="0" id="Sqh-CT-2fi">
                                             <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>

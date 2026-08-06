@@ -3893,6 +3893,18 @@
         }
       }
     },
+    "vFo-cs-Mi1.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Focus Mode\"; ObjectID = \"vFo-cs-Mi1\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Focus Mode"
+          }
+        }
+      }
+    },
     "vhv-qY-5Gc.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Ordered List\"; ObjectID = \"vhv-qY-5Gc\";",
       "extractionState" : "extracted_with_value",
@@ -3985,6 +3997,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "清除選單"
+          }
+        }
+      }
+    },
+    "vSy-nt-Mi1.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Show Markdown Syntax\"; ObjectID = \"vSy-nt-Mi1\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Show Markdown Syntax"
           }
         }
       }
