@@ -1155,6 +1155,18 @@
         }
       }
     },
+    "crt-Mi-001.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Copy as Rich Text\"; ObjectID = \"crt-Mi-001\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Copy as Rich Text"
+          }
+        }
+      }
+    },
     "crU-NP-BJu.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Smaller\"; ObjectID = \"crU-NP-BJu\";",
       "extractionState" : "extracted_with_value",

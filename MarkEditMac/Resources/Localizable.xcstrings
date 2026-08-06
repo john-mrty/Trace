@@ -970,9 +970,6 @@
         }
       }
     },
-    "Dim Inactive Lines" : {
-      "comment" : "Toolbar item to dim lines outside the current selection"
-    },
     "Dim inactive lines (focus mode)" : {
       "comment" : "Explanation for focus mode"
     },
@@ -1393,6 +1390,9 @@
           }
         }
       }
+    },
+    "Focus Mode" : {
+      "comment" : "Toolbar item to dim lines outside the current selection"
     },
     "Fold Line" : {
       "comment" : "Phrase used in CodeMirror fold a line",

@@ -75,6 +75,105 @@ extension EditorViewController {
   }
 }
 
+// MARK: - Quick Open
+
+extension EditorViewController {
+  @IBAction func showQuickOpen(_ sender: Any?) {
+    guard let parentRect = view.window?.frame else {
+      Logger.assertFail("Failed to retrieve window.frame to proceed")
+      return
+    }
+
+    if completionContext.isPanelVisible {
+      cancelCompletion()
+    }
+
+    let window = CommandPaletteWindow(
+      effectViewType: NSVisualEffectView.self,
+      relativeTo: parentRect,
+      placeholder: "Open a file…",
+      font: AppPreferences.Editor.fontStyle.fontWith(size: AppPreferences.Editor.fontSize),
+      caretColor: AppPreferences.Editor.accentColor.nsColor,
+      items: quickOpenItems()
+    )
+
+    window.appearance = view.effectiveAppearance
+    window.makeKeyAndOrderFront(sender)
+  }
+}
+
+private extension EditorViewController {
+  static let quickOpenExtensions: Set<String> = ["md", "markdown", "mdown", "txt", "text"]
+
+  func quickOpenItems() -> [CommandPaletteItem] {
+    var urls = [URL]()
+    var seen = Set<String>()
+    let currentPath = document?.fileURL?.standardizedFileURL.path
+    let root = document?.fileURL?.deletingLastPathComponent()
+
+    func append(_ url: URL) {
+      let path = url.standardizedFileURL.path
+      if path != currentPath && seen.insert(path).inserted {
+        urls.append(url)
+      }
+    }
+
+    NSDocumentController.shared.recentDocumentURLs.forEach(append)
+    (root.map(Self.markdownFiles(in:)) ?? []).forEach(append)
+
+    return urls.map { url in
+      let folder = url.deletingLastPathComponent().path
+      let subtitle: String
+      if let rootPath = root?.path, folder.hasPrefix(rootPath) {
+        subtitle = String(folder.dropFirst(rootPath.count).drop { $0 == "/" })
+      } else {
+        subtitle = (folder as NSString).abbreviatingWithTildeInPath
+      }
+
+      return CommandPaletteItem(title: url.lastPathComponent, subtitle: subtitle) {
+        NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, _ in }
+      }
+    }
+  }
+
+  /// Recursively collects Markdown-ish files under root, most recently modified first.
+  /// Capped so a palette opened from a huge folder stays instant.
+  static func markdownFiles(in root: URL) -> [URL] {
+    let keys: Set<URLResourceKey> = [.isDirectoryKey, .contentModificationDateKey]
+    guard let enumerator = FileManager.default.enumerator(
+      at: root,
+      includingPropertiesForKeys: Array(keys),
+      options: [.skipsHiddenFiles, .skipsPackageDescendants]
+    ) else {
+      return []
+    }
+
+    var found = [(url: URL, date: Date)]()
+    for case let url as URL in enumerator {
+      let values = try? url.resourceValues(forKeys: keys)
+      if values?.isDirectory == true {
+        if url.lastPathComponent == "node_modules" {
+          enumerator.skipDescendants()
+        }
+        continue
+      }
+
+      guard quickOpenExtensions.contains(url.pathExtension.lowercased()) else {
+        continue
+      }
+
+      found.append((url, values?.contentModificationDate ?? .distantPast))
+      if found.count >= 500 {
+        break
+      }
+    }
+
+    return found.sorted { $0.date > $1.date }.map { $0.url }
+  }
+}
+
+// MARK: - Command Palette Items
+
 private extension EditorViewController {
   /// Noise excluded from the palette: system input panels, the palette itself,
   /// and submenus that duplicate better palette sources (recents)
