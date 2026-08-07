@@ -18,9 +18,8 @@ Markdown without the markup. Syntax marks fade away as you write, the toolbar fl
 - **Focus mode** — dims everything except the lines you're working on.
 - **Typewriter scrolling** — the caret holds the vertical center of the screen; the text moves, you don't.
 - **Overlay mode** — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
-- **A caret with a pulse** — glides between positions and breathes at rest instead of blinking. (Respects Reduce Motion.)
 - **A welcome, not a blank stare** — launching without a document shows recent files and New/Open, then gets out of the way.
-- **Two kinds of list** — bulleted (`*`, rendered as round bullets) and dashed (`-`, rendered literally), plus ordered and todo. Bullets and numbers take the accent color.
+- **CMD+K Palette** — Quick access to all commqnde and recent files.  
 - **Accent colors** — Amber, Crimson, Fern, Teal, Azure, or Graphite; each tuned separately for light and dark so the caret, selection, bullets, and toolbar stay legible on both.
 - **One theme, done well** — GitHub in light and dark, following the system or pinned to either. Three line heights, from tight to relaxed.
 
