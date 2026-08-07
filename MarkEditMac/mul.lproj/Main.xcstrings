@@ -4277,6 +4277,18 @@
         }
       }
     },
+    "wTm-Mi-001.title" : {
+      "comment" : "Class = \"NSMenuItem\"; title = \"Welcome to Trace\"; ObjectID = \"wTm-Mi-001\";",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Welcome to Trace"
+          }
+        }
+      }
+    },
     "x3v-GG-iWU.title" : {
       "comment" : "Class = \"NSMenuItem\"; title = \"Copy\"; ObjectID = \"x3v-GG-iWU\";",
       "extractionState" : "extracted_with_value",

@@ -359,25 +359,23 @@ private extension AppDelegate {
 
   static let welcomeManual = """
   # Welcome to Trace
-
+  ---
   *A quiet place to write.*
 
   This document is the quickstart. It's also just a Markdown file — edit it, save it, or close it and never see it again. Reopen it anytime from **Help → Welcome to Trace**.
 
+  ---
   ## The idea
-
   Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make an editable heading. Links become clickable text, checkboxes become real checkboxes, code fences become panels. The words are the interface.
 
   ## Five things to try first
-
   1. **⇧⌘H** — show the plumbing. Syntax marks, line numbers, and a selection counter appear; it doubles as a source mode. Press again to write.
   2. **⇧⌘F** — focus mode. Everything dims except the lines you're working on, and typewriter scrolling holds the caret at the center of the screen. The text moves, you don't.
   3. **⌘K** — the command palette. Every action, searchable: type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
-  4. **Hover the dashes in the top-left** — that's the table of contents. It marks your place; click any entry to jump.
-  5. **⌥`** — overlay mode. This document floats over your other apps as a right-edge panel, for notes alongside your work.
+  4. **Hover the page anchors in the top-left** — that's the table of contents. It marks your place; click any entry to jump.
+  5. **Opt(⌥)`** — overlay mode. This document floats over your other apps as a right-edge panel, for notes alongside your work.
 
   ## Where everything lives
-
   | Shortcut | Does |
   | --- | --- |
   | ⌘K | Command palette — every action, searchable |
@@ -388,10 +386,10 @@ private extension AppDelegate {
   | ⌥` | Overlay mode — float this document over your other apps |
   | ⌘, | Settings — accent colors, line height, appearance |
 
-  The small capsule at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.
+  The FAB at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.
 
+  ---
   ## Lists
-
   * Bulleted lists use stars and render as round bullets
   - Dashed lists use hyphens and stay dashes
 
@@ -402,11 +400,10 @@ private extension AppDelegate {
   - [x] That strike through when done
 
   ## When the writing leaves Trace
-
   **⌥⌘C** copies the selection — or the whole document — as rich text: real headings, links, and emphasis land intact in Mail, Google Docs, Slack, or Notes. A plain paste still gives you the Markdown source. And your file is just plain text on disk — no library, no lock-in.
 
   ---
 
-  That rule above? Just three dashes. Enjoy the quiet.
+  *That rule above? Just three dashes. Enjoy the quiet.*
   """
 }
