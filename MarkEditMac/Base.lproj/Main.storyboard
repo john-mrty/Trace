@@ -136,7 +136,7 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
-                                        <menuItem title="Open Quickly…" keyEquivalent="O" id="qOp-Mi-001">
+                                        <menuItem title="Open Document…" keyEquivalent="O" id="qOp-Mi-001">
                                             <connections>
                                                 <action selector="showQuickOpen:" target="Ady-hI-5gd" id="qOp-Ac-001"/>
                                             </connections>
@@ -716,7 +716,7 @@ Gw
                                                 <action selector="toggleStatistics:" target="Ady-hI-5gd" id="aCq-vt-CmH"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Typewriter Mode" keyEquivalent="D" id="Cvo-jv-iDg">
+                                        <menuItem title="Typewriter in Focus Mode" keyEquivalent="D" id="Cvo-jv-iDg">
                                             <connections>
                                                 <action selector="toggleTypewriterMode:" target="Ady-hI-5gd" id="ucN-oH-iJs"/>
                                             </connections>

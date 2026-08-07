@@ -125,8 +125,8 @@ enum Localized {
     static let trailing = String(localized: "Trailing", comment: "Show trailing invisibles")
     static let always = String(localized: "Always", comment: "Always show invisibles")
     static let editBehavior = String(localized: "Edit Behavior:", comment: "Editor behavior like focus mode and typewriter mode")
-    static let typewriterModeTitle = String(localized: "Typewriter scrolling", comment: "Explanation for typewriter mode")
-    static let focusModeTitle = String(localized: "Dim inactive lines (focus mode)", comment: "Explanation for focus mode")
+    static let typewriterModeTitle = String(localized: "Typewriter enabled in focus mode", comment: "Explanation for typewriter mode")
+    static let focusModeTitle = String(localized: "Focus mode (dim inactive lines)", comment: "Explanation for focus mode")
     static let lineHeight = String(localized: "Line Height:", comment: "Label for line height option")
     static let tightHeight = String(localized: "Tight", comment: "Tight line spacing")
     static let normalHeight = String(localized: "Normal", comment: "Normal line spacing")
@@ -154,7 +154,7 @@ enum Localized {
     static let preferred = String(localized: "Preferred", comment: "Preferred window tabbing mode")
     static let disallowed = String(localized: "Disallowed", comment: "Disallowed window tabbing mode")
     static let reduceTransparencyLabel = String(localized: "Reduce Transparency:", comment: "Label for the option to reduce window transparency")
-    static let reduceTransparencyDescription = String(localized: "Remove the toolbar blur", comment: "Explanation for the option to reduce window transparency")
+    static let reduceTransparencyDescription = String(localized: "Remove background blur", comment: "Explanation for the option to reduce window transparency")
   }
 
   enum FileVersion {

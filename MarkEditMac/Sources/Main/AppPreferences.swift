@@ -93,10 +93,11 @@ enum AppPreferences {
       }
     }
 
-    @Storage(key: "editor.typewriter-mode", defaultValue: false)
+    // Typewriter scrolling only applies while focus mode is active
+    @Storage(key: "editor.typewriter-mode", defaultValue: true)
     static var typewriterMode: Bool {
       didSet {
-        performUpdates { $0.setTypewriterMode(enabled: typewriterMode) }
+        performUpdates { $0.setTypewriterMode(enabled: typewriterMode && focusMode) }
       }
     }
 
@@ -118,7 +119,10 @@ enum AppPreferences {
     @Storage(key: "editor.focus-mode", defaultValue: false)
     static var focusMode: Bool {
       didSet {
-        performUpdates { $0.setFocusMode(enabled: focusMode) }
+        performUpdates {
+          $0.setFocusMode(enabled: focusMode)
+          $0.setTypewriterMode(enabled: typewriterMode && focusMode)
+        }
       }
     }
 
@@ -258,7 +262,7 @@ extension AppPreferences {
       #endif
       }(),
       readOnlyMode: false,
-      typewriterMode: Editor.typewriterMode,
+      typewriterMode: Editor.typewriterMode && Editor.focusMode,
       hideSyntaxMarks: Editor.hideSyntaxMarks,
       focusMode: Editor.focusMode,
       lineWrapping: Editor.lineWrapping,

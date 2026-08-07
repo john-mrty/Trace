@@ -119,18 +119,18 @@ struct EditorSettingsView: View {
 
       Section {
         VStack(alignment: .leading) {
-          Toggle(isOn: $typewriterMode) {
-            Text(Localized.Settings.typewriterModeTitle)
-          }
-          .onChange(of: typewriterMode) {
-            AppPreferences.Editor.typewriterMode = typewriterMode
-          }
-
           Toggle(isOn: $focusMode) {
             Text(Localized.Settings.focusModeTitle)
           }
           .onChange(of: focusMode) {
             AppPreferences.Editor.focusMode = focusMode
+          }
+
+          Toggle(isOn: $typewriterMode) {
+            Text(Localized.Settings.typewriterModeTitle)
+          }
+          .onChange(of: typewriterMode) {
+            AppPreferences.Editor.typewriterMode = typewriterMode
           }
         }
         .formLabel(alignment: .top, Localized.Settings.editBehavior)

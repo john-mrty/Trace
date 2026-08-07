@@ -382,8 +382,7 @@ private extension AppDelegate {
 
   ## A few favorites
 
-  - **Focus mode** dims everything but the lines you're working on.
-  - **Typewriter scrolling** keeps the caret vertically centered (Settings → Editor).
+  - **Focus mode** dims everything but the lines you're working on, and keeps the caret vertically centered while you type.
   - **Overlay mode** — press Option-backtick to summon any document as a floating panel over your other apps.
   - **Accent colors** — pick yours in Settings (Command-comma).
 

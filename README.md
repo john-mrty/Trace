@@ -18,14 +18,12 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 
 - **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written. Links become clickable text with a hover preview, checkboxes become real checkboxes that strike through when done, code blocks sit in panels with a copy button, images and tables render in place, and frontmatter tucks itself into a Properties chip. One toggle (⇧⌘H) brings back the plumbing as a proper source mode: raw marks, line numbers, live selection status.
 - **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, in light and dark.
-- **Focus mode** (⇧⌘F) — dims everything except the lines you're working on.
-- **Typewriter scrolling** — the caret holds the vertical center of the screen; the text moves, you don't.
-- **A caret with a pulse** — glides between positions and breathes at rest instead of blinking. (Respects Reduce Motion.)
+- **Focus mode** (⇧⌘F) — dims everything except the lines you're working on, with typewriter scrolling holding the caret at the vertical center of the screen. The text moves, you don't.
 
 ## Everything within reach, nothing in view
 
 - **Command palette** (⌘K) — every menu action, searchable, with fuzzy matching. Type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
-- **Open Quickly** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
+- **Open Document** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
 - **Floating toolbar** — a small capsule at the bottom with the handful of actions prose actually needs: headings, emphasis, lists, syntax visibility, focus mode, and word-count statistics. It recedes while you type and returns when you reach for the mouse.
 - **Hover table of contents** — quiet dashes in the top-left mark your place in the document. Hover for the full outline; click to jump.
 - **Overlay mode** (⌥`) — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
@@ -37,10 +35,8 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 
 ## The small print that isn't small
 
-- **Two kinds of list** — bulleted (`*`, rendered as round bullets) and dashed (`-`, rendered literally), plus ordered and todo. Bullets and numbers take the accent color.
 - **Accent colors** — Amber, Crimson, Fern, Teal, Azure, or Graphite; each tuned separately for light and dark.
 - **One theme, done well** — GitHub in light and dark, following the system or pinned to either. Three line heights, from tight to relaxed.
-- **No surprise headings** — typing `-` under a paragraph doesn't restyle it as a heading mid-thought (setext headings are disabled; `#` headings cover everything).
 - **A welcome, not a blank stare** — launching without a document shows recent files and New/Open, then gets out of the way.
 
 ## What it doesn't do
