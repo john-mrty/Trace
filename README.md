@@ -8,20 +8,40 @@
 
 Trace is a minimal Markdown writer for macOS, built for prose rather than code. It's a heavily reworked fork of the excellent [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — same fast, native CodeMirror core, reshaped around one idea: **the words are the interface**.
 
-Markdown without the markup. Syntax marks fade away as you write, the toolbar floats out of reach until you need it, and the page runs edge to edge under a soft glass surface.
+Most Markdown editors make you choose: stare at raw syntax while you write, or split the screen with a preview pane. Trace does neither. The marks fade as you type, what remains reads like the finished piece, and everything else — toolbar, navigation, commands — stays out of sight until you reach for it.
 
-## What it does
+## Download
 
-- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written; your document reads like the finished piece. One toggle brings back the plumbing as a proper source mode: raw marks, line numbers on the bare canvas, and a live selection status.
-- **Floating toolbar** — a small capsule at the bottom of the window with the handful of actions prose actually needs: table of contents, headings, bold, italic, lists, syntax visibility, and focus mode. It recedes while you type and returns when you reach for the mouse. Active states glow in your accent color.
-- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop that stays alive even when the window is in the background, in light and dark.
-- **Focus mode** — dims everything except the lines you're working on.
+[**Download Trace**](https://github.com/john-mrty/Trace/releases/latest) — signed and notarized. Unzip, drag to Applications, open.
+
+## Writing without the noise
+
+- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written. Links become clickable text with a hover preview, checkboxes become real checkboxes that strike through when done, code blocks sit in panels with a copy button, images and tables render in place, and frontmatter tucks itself into a Properties chip. One toggle (⇧⌘H) brings back the plumbing as a proper source mode: raw marks, line numbers, live selection status.
+- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, in light and dark.
+- **Focus mode** (⇧⌘F) — dims everything except the lines you're working on.
 - **Typewriter scrolling** — the caret holds the vertical center of the screen; the text moves, you don't.
-- **Overlay mode** — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
-- **A welcome, not a blank stare** — launching without a document shows recent files and New/Open, then gets out of the way.
-- **CMD+K Palette** — Quick access to all commqnde and recent files.  
-- **Accent colors** — Amber, Crimson, Fern, Teal, Azure, or Graphite; each tuned separately for light and dark so the caret, selection, bullets, and toolbar stay legible on both.
+- **A caret with a pulse** — glides between positions and breathes at rest instead of blinking. (Respects Reduce Motion.)
+
+## Everything within reach, nothing in view
+
+- **Command palette** (⌘K) — every menu action, searchable, with fuzzy matching. Type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
+- **Open Quickly** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
+- **Floating toolbar** — a small capsule at the bottom with the handful of actions prose actually needs: headings, emphasis, lists, syntax visibility, focus mode, and word-count statistics. It recedes while you type and returns when you reach for the mouse.
+- **Hover table of contents** — quiet dashes in the top-left mark your place in the document. Hover for the full outline; click to jump.
+- **Overlay mode** (⌥`) — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
+
+## When the writing leaves Trace
+
+- **Copy as Rich Text** (⌥⌘C) — paste into Mail, Google Docs, Slack, or Notes with real headings, links, and formatting intact. Plain-text paste still gives you the Markdown source.
+- **Plain text files on disk** — no library, no lock-in, no cloud, no data collection. Your documents are `.md` files that outlive any app.
+
+## The small print that isn't small
+
+- **Two kinds of list** — bulleted (`*`, rendered as round bullets) and dashed (`-`, rendered literally), plus ordered and todo. Bullets and numbers take the accent color.
+- **Accent colors** — Amber, Crimson, Fern, Teal, Azure, or Graphite; each tuned separately for light and dark.
 - **One theme, done well** — GitHub in light and dark, following the system or pinned to either. Three line heights, from tight to relaxed.
+- **No surprise headings** — typing `-` under a paragraph doesn't restyle it as a heading mid-thought (setext headings are disabled; `#` headings cover everything).
+- **A welcome, not a blank stare** — launching without a document shows recent files and New/Open, then gets out of the way.
 
 ## What it doesn't do
 
@@ -33,13 +53,13 @@ Everything that makes MarkEdit fast is still here:
 
 - Native AppKit shell with a CodeMirror 6 core — a small app that opens instantly and handles very large documents without breaking a sweat.
 - Real Markdown parsing (Lezer, following the GFM spec), not regex.
-- Plain text files on disk. No library, no lock-in, no cloud, no data collection.
 
 ## Requirements & building
 
 - macOS 15.0+ (the full glass treatment needs macOS 26 Tahoe; earlier versions fall back gracefully)
 - Build with Xcode: open `MarkEdit.xcodeproj` and run the **MarkEditMac** scheme.
 - The editor core lives in `CoreEditor/` (TypeScript). After changing it: `cd CoreEditor && yarn install && yarn build`, then rebuild the app.
+- Release builds: `Scripts/release.sh <version>` signs, notarizes, and publishes.
 
 ## Credits
 
