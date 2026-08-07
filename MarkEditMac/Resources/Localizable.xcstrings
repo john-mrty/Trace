@@ -970,9 +970,6 @@
         }
       }
     },
-    "Dim inactive lines (focus mode)" : {
-      "comment" : "Explanation for focus mode"
-    },
     "Disable Update Checks" : {
       "comment" : "Title for the \"Disable Update Checks\" button",
       "extractionState" : "stale",
@@ -1393,6 +1390,9 @@
     },
     "Focus Mode" : {
       "comment" : "Toolbar item to dim lines outside the current selection"
+    },
+    "Focus mode (dim inactive lines)" : {
+      "comment" : "Explanation for focus mode"
     },
     "Fold Line" : {
       "comment" : "Phrase used in CodeMirror fold a line",
@@ -3109,8 +3109,12 @@
         }
       }
     },
+    "Remove background blur" : {
+      "comment" : "Explanation for the option to reduce window transparency"
+    },
     "Remove the toolbar blur" : {
       "comment" : "Explanation for the option to reduce window transparency",
+      "extractionState" : "stale",
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
@@ -4016,7 +4020,7 @@
         }
       }
     },
-    "Typewriter scrolling" : {
+    "Typewriter enabled in focus mode" : {
       "comment" : "Explanation for typewriter mode"
     },
     "Unfold" : {

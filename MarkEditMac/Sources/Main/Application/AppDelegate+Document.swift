@@ -33,6 +33,10 @@ extension AppDelegate {
     return false
   }
 
+  @IBAction func openWelcomeManual(_ sender: Any?) {
+    createNewFile(fileName: "Welcome to Trace", initialContent: Self.welcomeManual)
+  }
+
   func showWelcomeWindow() {
     if welcomeWindowController == nil {
       welcomeWindowController = WelcomeWindowController()

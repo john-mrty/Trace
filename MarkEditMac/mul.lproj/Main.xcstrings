@@ -1192,24 +1192,24 @@
       }
     },
     "Cvo-jv-iDg.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Typewriter Mode\"; ObjectID = \"Cvo-jv-iDg\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Typewriter in Focus Mode\"; ObjectID = \"Cvo-jv-iDg\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Typewriter Mode"
+            "value" : "Typewriter in Focus Mode"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "打字机模式"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "translated",
+            "state" : "needs_review",
             "value" : "打字機模式"
           }
         }
@@ -3162,13 +3162,13 @@
       }
     },
     "qOp-Mi-001.title" : {
-      "comment" : "Class = \"NSMenuItem\"; title = \"Open Quickly…\"; ObjectID = \"qOp-Mi-001\";",
+      "comment" : "Class = \"NSMenuItem\"; title = \"Open Document…\"; ObjectID = \"qOp-Mi-001\";",
       "extractionState" : "extracted_with_value",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Open Quickly…"
+            "value" : "Open Document…"
           }
         }
       }

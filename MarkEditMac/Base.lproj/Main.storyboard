@@ -987,6 +987,12 @@ Gw
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Help" systemMenu="help" id="F2S-fz-NVQ">
                                     <items>
+                                        <menuItem title="Welcome to Trace" id="wTm-Mi-001">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="openWelcomeManual:" target="Voe-Tx-rLC" id="wTm-Ac-001"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem title="Trace Help" keyEquivalent="?" id="FKE-Sm-Kum">
                                             <connections>
                                                 <action selector="showHelp:" target="Voe-Tx-rLC" id="ba9-aC-ghc"/>
