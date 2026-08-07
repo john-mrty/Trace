@@ -362,17 +362,33 @@ private extension AppDelegate {
 
   *A quiet place to write.*
 
-  This document is the manual. It's also just a Markdown file — edit it, save it somewhere, or close it and never see it again.
+  This document is the quickstart. It's also just a Markdown file — edit it, save it, or close it and never see it again. Reopen it anytime from **Help → Welcome to Trace**.
 
   ## The idea
 
-  Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make this an editable heading. The words are the interface.
+  Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make an editable heading. Links become clickable text, checkboxes become real checkboxes, code fences become panels. The words are the interface.
 
-  When you want to see the plumbing, press the `#` button in the toolbar below — syntax marks, line numbers, and a selection counter appear. Press it again to write.
+  ## Five things to try first
 
-  ## The floating toolbar
+  1. **⇧⌘H** — show the plumbing. Syntax marks, line numbers, and a selection counter appear; it doubles as a source mode. Press again to write.
+  2. **⇧⌘F** — focus mode. Everything dims except the lines you're working on, and typewriter scrolling holds the caret at the center of the screen. The text moves, you don't.
+  3. **⌘K** — the command palette. Every action, searchable: type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
+  4. **Hover the dashes in the top-left** — that's the table of contents. It marks your place; click any entry to jump.
+  5. **⌥`** — overlay mode. This document floats over your other apps as a right-edge panel, for notes alongside your work.
 
-  The small capsule at the bottom holds everything prose needs: table of contents, headings, bold, italic, lists, syntax, and focus mode. It fades while you type and returns when you reach for the mouse.
+  ## Where everything lives
+
+  | Shortcut | Does |
+  | --- | --- |
+  | ⌘K | Command palette — every action, searchable |
+  | ⇧⌘O | Open Document — fuzzy-find any Markdown file nearby, or a recent one |
+  | ⇧⌘H | Show or hide Markdown syntax |
+  | ⇧⌘F | Focus mode, with typewriter scrolling |
+  | ⌥⌘C | Copy as Rich Text — paste into Mail, Docs, or Slack with formatting intact |
+  | ⌥` | Overlay mode — float this document over your other apps |
+  | ⌘, | Settings — accent colors, line height, appearance |
+
+  The small capsule at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.
 
   ## Lists
 
@@ -383,12 +399,11 @@ private extension AppDelegate {
   2. Number themselves
 
   - [ ] And todos have checkboxes
+  - [x] That strike through when done
 
-  ## A few favorites
+  ## When the writing leaves Trace
 
-  - **Focus mode** dims everything but the lines you're working on, and keeps the caret vertically centered while you type.
-  - **Overlay mode** — press Option-backtick to summon any document as a floating panel over your other apps.
-  - **Accent colors** — pick yours in Settings (Command-comma).
+  **⌥⌘C** copies the selection — or the whole document — as rich text: real headings, links, and emphasis land intact in Mail, Google Docs, Slack, or Notes. A plain paste still gives you the Markdown source. And your file is just plain text on disk — no library, no lock-in.
 
   ---
 
