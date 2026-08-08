@@ -26,21 +26,21 @@
         {
           "target": "config",
           "template": "swift-config.mustache",
-          "outputPath": "../../../MarkEditCore/Sources"
+          "outputPath": "../../../TraceCore/Sources"
         },
         {
           "target": "native",
           "template": "swift-native-module.mustache",
-          "outputPath": "../../../MarkEditKit/Sources/Bridge/Native/Generated"
+          "outputPath": "../../../TraceKit/Sources/Bridge/Native/Generated"
         },
         {
           "target": "web",
           "template": "swift-web-module.mustache",
-          "outputPath": "../../../MarkEditKit/Sources/Bridge/Web/Generated"
+          "outputPath": "../../../TraceKit/Sources/Bridge/Web/Generated"
         }
       ],
       "namedTypesTemplatePath": "swift-shared-types.mustache",
-      "namedTypesOutputPath": "../../../MarkEditCore/Sources/EditorSharedTypes.swift",
+      "namedTypesOutputPath": "../../../TraceCore/Sources/EditorSharedTypes.swift",
       "typeNameMap": {
         "CodeGen_Int": "Int",
         "CodeGen_UInt64": "UInt64",

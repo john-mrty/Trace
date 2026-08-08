@@ -34,7 +34,7 @@ rm -rf "$OUT_DIR"
 mkdir -p "$OUT_DIR"
 cd "$REPO_DIR/CoreEditor" && yarn install --immutable >/dev/null && yarn build
 cd "$REPO_DIR"
-xcodebuild -project MarkEdit.xcodeproj -scheme MarkEditMac -configuration Release \
+xcodebuild -project Trace.xcodeproj -scheme Trace -configuration Release \
   -derivedDataPath "$OUT_DIR" \
   CODE_SIGN_STYLE=Manual \
   CODE_SIGN_IDENTITY="Developer ID Application" \

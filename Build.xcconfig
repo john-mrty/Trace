@@ -1,13 +1,13 @@
 //
 //  Build.xcconfig
-//  MarkEditMac
+//  TraceApp
 //
 //  Created by cyan on 12/26/22.
 //
 //  https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
 
 ENTITLEMENTS_VARIANT =
-MARKEDITMAC_ENTITLEMENTS = MarkEditMac/Info$(ENTITLEMENTS_VARIANT).entitlements
+MARKEDITMAC_ENTITLEMENTS = TraceApp/Info$(ENTITLEMENTS_VARIANT).entitlements
 QUICKLOOKMAC_ENTITLEMENTS = QuickLookMac/Info$(ENTITLEMENTS_VARIANT).entitlements
 
 CODE_SIGN_IDENTITY = -

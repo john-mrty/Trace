@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="MarkEditMac/Resources/AppIcon.icon/Assets/Trace.png" width="96">
+  <img src="TraceApp/Resources/AppIcon.icon/Assets/Trace.png" width="96">
 </p>
 
 <h1 align="center">Trace</h1>
@@ -55,7 +55,7 @@ Everything that makes MarkEdit fast is still here:
 ## Requirements & building
 
 - macOS 15.0+ (the full glass treatment needs macOS 26 Tahoe; earlier versions fall back gracefully)
-- Build with Xcode: open `MarkEdit.xcodeproj` and run the **MarkEditMac** scheme.
+- Build with Xcode: open `Trace.xcodeproj` and run the **Trace** scheme.
 - The editor core lives in `CoreEditor/` (TypeScript). After changing it: `cd CoreEditor && yarn install && yarn build`, then rebuild the app.
 - Release builds: `Scripts/release.sh <version>` signs, notarizes, and publishes.
 

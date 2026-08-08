@@ -16,19 +16,19 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(path: "../MarkEditCore"),
-    .package(path: "../MarkEditTools"),
+    .package(path: "../TraceCore"),
+    .package(path: "../TraceTools"),
   ],
   targets: [
     .target(
       name: "MarkEditKit",
-      dependencies: ["MarkEditCore"],
+      dependencies: [.product(name: "MarkEditCore", package: "TraceCore")],
       path: "Sources",
       swiftSettings: [
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
   ]

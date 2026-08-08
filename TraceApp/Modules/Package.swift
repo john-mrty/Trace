@@ -59,9 +59,9 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(path: "../MarkEditCore"),
-    .package(path: "../MarkEditKit"),
-    .package(path: "../MarkEditTools"),
+    .package(path: "../TraceCore"),
+    .package(path: "../TraceKit"),
+    .package(path: "../TraceTools"),
   ],
   targets: [
     .target(
@@ -72,7 +72,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -82,7 +82,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -95,40 +95,40 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
       name: "ExtensionCore",
-      dependencies: ["AppKitExtensions", "MarkEditCore", "MarkEditKit"],
+      dependencies: ["AppKitExtensions", .product(name: "MarkEditCore", package: "TraceCore"), .product(name: "MarkEditKit", package: "TraceKit")],
       path: "Sources/ExtensionCore",
       swiftSettings: [
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
       name: "FileDrop",
-      dependencies: ["AppKitExtensions", "MarkEditKit", "TextBundle"],
+      dependencies: ["AppKitExtensions", .product(name: "MarkEditKit", package: "TraceKit"), "TextBundle"],
       path: "Sources/FileDrop",
       swiftSettings: [
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
       name: "FileVersion",
-      dependencies: ["SharedUI", "MarkEditKit", "DiffKit"],
+      dependencies: ["SharedUI", .product(name: "MarkEditKit", package: "TraceKit"), "DiffKit"],
       path: "Sources/FileVersion",
       swiftSettings: [
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -139,12 +139,12 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
       name: "Previewer",
-      dependencies: ["AppKitExtensions", "MarkEditCore", "MarkEditKit"],
+      dependencies: ["AppKitExtensions", .product(name: "MarkEditCore", package: "TraceCore"), .product(name: "MarkEditKit", package: "TraceKit")],
       path: "Sources/Previewer",
       resources: [
         .process("Resources"),
@@ -153,7 +153,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -164,18 +164,18 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
       name: "Statistics",
-      dependencies: ["AppKitExtensions", "MarkEditKit"],
+      dependencies: ["AppKitExtensions", .product(name: "MarkEditKit", package: "TraceKit")],
       path: "Sources/Statistics",
       swiftSettings: [
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -185,7 +185,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
     .target(
@@ -195,7 +195,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
 
@@ -208,14 +208,14 @@ let package = Package(
         "FileDrop",
         "Statistics",
         "TextBundle",
-        "MarkEditKit",
+        .product(name: "MarkEditKit", package: "TraceKit"),
       ],
       path: "Tests",
       resources: [
         .copy("Files/sample.textbundle"),
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
   ]

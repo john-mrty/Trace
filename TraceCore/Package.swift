@@ -16,7 +16,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(path: "../MarkEditTools"),
+    .package(path: "../TraceTools"),
   ],
   targets: [
     .target(
@@ -26,7 +26,7 @@ let package = Package(
         .enableExperimentalFeature("StrictConcurrency")
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
 
@@ -38,7 +38,7 @@ let package = Package(
         .process("Files"),
       ],
       plugins: [
-        .plugin(name: "SwiftLint", package: "MarkEditTools"),
+        .plugin(name: "SwiftLint", package: "TraceTools"),
       ]
     ),
   ]

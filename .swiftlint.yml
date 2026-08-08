@@ -1,7 +1,7 @@
 excluded:
   - .release
-  - MarkEditMac/Modules/.build
-  - MarkEditKit/Sources/Bridge/Native/Generated
+  - TraceApp/Modules/.build
+  - TraceKit/Sources/Bridge/Native/Generated
   - "**/resource_bundle_accessor.swift"
 
 disabled_rules:

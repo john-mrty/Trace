@@ -140,7 +140,7 @@
 		870A51C8294752530095C7EB /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = index.html; path = CoreEditor/dist/index.html; sourceTree = SOURCE_ROOT; };
 		870F17652984D2C000003DA7 /* EditorViewController+LineEndings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+LineEndings.swift"; sourceTree = "<group>"; };
 		870F17672985285B00003DA7 /* EditorViewController+Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Config.swift"; sourceTree = "<group>"; };
-		870F17752985546500003DA7 /* MarkEditCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MarkEditCore; sourceTree = "<group>"; };
+		870F17752985546500003DA7 /* MarkEditCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TraceCore; sourceTree = "<group>"; };
 		870F178C2985774D00003DA7 /* Modules */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Modules; sourceTree = "<group>"; };
 		871C995A2973F1E6003FF3A7 /* AppDelegate+Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Document.swift"; sourceTree = "<group>"; };
 		871C995C2973F20E003FF3A7 /* AppDelegate+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Menu.swift"; sourceTree = "<group>"; };
@@ -200,8 +200,8 @@
 		87BD071129699A290053EF5F /* EditorViewController+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Preview.swift"; sourceTree = "<group>"; };
 		87BDF6E32976C97100548079 /* EditorViewController+GotoLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+GotoLine.swift"; sourceTree = "<group>"; };
 		87BEF30029A88F6800596E17 /* AppCustomization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCustomization.swift; sourceTree = "<group>"; };
-		87BFF238298AAC75006C31E4 /* MarkEditTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MarkEditTools; sourceTree = "<group>"; };
-		87C3CBFA29545944002A3436 /* MarkEditKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MarkEditKit; sourceTree = "<group>"; };
+		87BFF238298AAC75006C31E4 /* MarkEditTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TraceTools; sourceTree = "<group>"; };
+		87C3CBFA29545944002A3436 /* MarkEditKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = TraceKit; sourceTree = "<group>"; };
 		87D9322D2A925C6700B20D84 /* EditorReplaceTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorReplaceTextField.swift; sourceTree = "<group>"; };
 		87DCB61F2B284AAD00A3056F /* AppHacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHacks.swift; sourceTree = "<group>"; };
 		87DE081A294DDA49004AD33A /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
@@ -283,7 +283,7 @@
 				870A51C229470D5C0095C7EB /* Resources */,
 				870A51C129470CAB0095C7EB /* Supporting Files */,
 			);
-			path = MarkEditMac;
+			path = TraceApp;
 			sourceTree = "<group>";
 		};
 		870A51C129470CAB0095C7EB /* Supporting Files */ = {
@@ -639,8 +639,8 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/MarkEditMac/Info.entitlements",
-				"$(SRCROOT)/MarkEditMac/Info.local.entitlements",
+				"$(SRCROOT)/TraceApp/Info.entitlements",
+				"$(SRCROOT)/TraceApp/Info.local.entitlements",
 			);
 			name = "Check Entitlements Drift";
 			outputFileListPaths = (
@@ -947,7 +947,7 @@
 				DEVELOPMENT_TEAM = "$(inherited)";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MarkEditMac/Info.plist;
+				INFOPLIST_FILE = TraceApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Trace;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -985,7 +985,7 @@
 				DEVELOPMENT_TEAM = "$(inherited)";
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = MarkEditMac/Info.plist;
+				INFOPLIST_FILE = TraceApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Trace;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
