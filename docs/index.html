@@ -215,13 +215,20 @@ section{margin-bottom:clamp(3rem,8vw,4.5rem)}
 
 /* Shortcuts hang in the margin: the keys are the structure */
 .features{margin:0;display:grid;gap:1.6rem}
-.feature{display:grid;grid-template-columns:5.4rem 1fr;gap:1.25rem;align-items:baseline}
-.feature dt{
-  font-family:var(--mono);
-  font-size:.85rem;
-  color:var(--accent);
-  white-space:nowrap;
-  padding-top:.12rem;
+.feature{display:grid;grid-template-columns:6.5rem 1fr;gap:1.25rem;align-items:baseline}
+.feature dt{display:flex;gap:.3rem;white-space:nowrap}
+.feature dt kbd{
+  font-family:var(--sans);
+  font-size:.82rem;
+  line-height:1;
+  color:var(--ink-soft);
+  background:var(--paper-warm);
+  border:1px solid var(--rule);
+  border-bottom-width:2px;
+  border-radius:6px;
+  padding:.28rem .42rem;
+  min-width:1.7em;
+  text-align:center;
 }
 .feature dd{margin:0}
 .feature dd b{display:block;font-weight:600;letter-spacing:-.012em;margin-bottom:.15rem}
@@ -301,31 +308,31 @@ footer a{color:var(--ink-soft)}
     <h2 class="eyebrow">Everything is a keystroke away</h2>
     <dl class="features">
       <div class="feature">
-        <dt>⇧⌘H</dt>
+        <dt><kbd>⇧</kbd><kbd>⌘</kbd><kbd>H</kbd></dt>
         <dd><b>Concealed syntax</b><span>Links become clickable text, checkboxes become real checkboxes, code sits in panels with a copy button, and frontmatter tucks into a Properties chip. One toggle brings the plumbing back as a proper source mode.</span></dd>
       </div>
       <div class="feature">
-        <dt>⇧⌘F</dt>
+        <dt><kbd>⇧</kbd><kbd>⌘</kbd><kbd>F</kbd></dt>
         <dd><b>Focus mode</b><span>Dims everything except the lines you are working on, with typewriter scrolling. The text moves, you do not.</span></dd>
       </div>
       <div class="feature">
-        <dt>⌘\</dt>
+        <dt><kbd>⌘</kbd><kbd>\</kbd></dt>
         <dd><b>File sidebar</b><span>A tree of the writing around your document, or rooted at a folder you choose. Fully keyboard-driven. Hidden by default.</span></dd>
       </div>
       <div class="feature">
-        <dt>⌘K</dt>
+        <dt><kbd>⌘</kbd><kbd>K</kbd></dt>
         <dd><b>Command palette</b><span>Every action, searchable with fuzzy matching. Type "dark" to switch appearance, "focus" to dim the page. Recent files live here too.</span></dd>
       </div>
       <div class="feature">
-        <dt>⇧⌘O</dt>
+        <dt><kbd>⇧</kbd><kbd>⌘</kbd><kbd>O</kbd></dt>
         <dd><b>Open document</b><span>Jump to any Markdown file near the one you have open, by typing a few letters of its name. No file browser, no library to maintain.</span></dd>
       </div>
       <div class="feature">
-        <dt>⌥`</dt>
+        <dt><kbd>⌥</kbd><kbd>`</kbd></dt>
         <dd><b>Overlay mode</b><span>Summon a document as a floating panel at the right edge, above whatever else you are doing.</span></dd>
       </div>
       <div class="feature">
-        <dt>⌥⌘C</dt>
+        <dt><kbd>⌥</kbd><kbd>⌘</kbd><kbd>C</kbd></dt>
         <dd><b>Copy as rich text</b><span>Paste into Mail, Slack or Google Docs with headings, links and formatting intact. A plain paste still gives you the Markdown.</span></dd>
       </div>
     </dl>
