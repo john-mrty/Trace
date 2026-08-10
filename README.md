@@ -73,4 +73,4 @@ Everything that makes MarkEdit fast is still here:
 
 ## Credits
 
-Trace is made by [John Moriarty](https://www.johnmoriarty.me). It's built on [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) by [cyanzhong](https://github.com/cyanzhong) and contributors, released under the MIT license, with [CodeMirror 6](https://codemirror.net/) at its core and [ts-gyb](https://github.com/microsoft/ts-gyb) for code generation. The heart of this app is their work — this fork just gives it a quieter voice.
+Made by [John Moriarty](https://www.johnmoriarty.me). Built on the engine of [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) by [cyanzhong](https://github.com/cyanzhong) and contributors, with [CodeMirror 6](https://codemirror.net/) at its core and [ts-gyb](https://github.com/microsoft/ts-gyb) for code generation. MIT licensed, with gratitude.
