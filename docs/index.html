@@ -219,16 +219,21 @@ section{margin-bottom:clamp(3rem,8vw,4.5rem)}
 .feature dt{display:flex;gap:.3rem;white-space:nowrap}
 .feature dt kbd{
   font-family:var(--sans);
-  font-size:.82rem;
+  font-size:.74rem;
   line-height:1;
   color:var(--ink-soft);
-  background:var(--paper-warm);
+  background:rgba(255,255,255,.38);
+  backdrop-filter:blur(10px) saturate(1.4);
+  -webkit-backdrop-filter:blur(10px) saturate(1.4);
   border:1px solid var(--rule);
   border-bottom-width:2px;
-  border-radius:6px;
-  padding:.28rem .42rem;
+  border-radius:5px;
+  padding:.24rem .38rem;
   min-width:1.7em;
   text-align:center;
+}
+@media (prefers-color-scheme:dark){
+  .feature dt kbd{background:rgba(255,255,255,.07)}
 }
 .feature dd{margin:0}
 .feature dd b{display:block;font-weight:600;letter-spacing:-.012em;margin-bottom:.15rem}
