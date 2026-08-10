@@ -6,7 +6,7 @@
 
 <p align="center"><em>A quiet place to write.</em></p>
 
-https://github.com/user-attachments/assets/e47361cf-471e-4e56-abca-56188583b6d3
+https://github.com/user-attachments/assets/dec29b29-f5f9-489a-a8e9-a56bba712419
 
 Trace is a minimal Markdown writer for macOS, built for prose rather than code. It's built on the engine of the excellent [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — the same fast, native CodeMirror core — with the product designed around one idea: **the words are the interface**.
 
