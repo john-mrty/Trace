@@ -8,7 +8,7 @@
 
 https://github.com/user-attachments/assets/e47361cf-471e-4e56-abca-56188583b6d3
 
-Trace is a minimal Markdown writer for macOS, built for prose rather than code. It's a heavily reworked fork of the excellent [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — same fast, native CodeMirror core, reshaped around one idea: **the words are the interface**.
+Trace is a minimal Markdown writer for macOS, built for prose rather than code. It's built on the engine of the excellent [MarkEdit](https://github.com/MarkEdit-app/MarkEdit) — the same fast, native CodeMirror core — with the product designed around one idea: **the words are the interface**.
 
 Most Markdown editors make you choose: stare at raw syntax while you write, or split the screen with a preview pane. Trace does neither. The marks fade as you type, what remains reads like the finished piece, and everything else — toolbar, navigation, commands — stays out of sight until you reach for it.
 
