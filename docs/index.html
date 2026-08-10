@@ -20,7 +20,7 @@
 <meta name="twitter:description" content="A minimal Markdown writer for macOS. The marks fade as you type.">
 <meta name="twitter:image" content="https://john-mrty.github.io/Trace/trace-social.png">
 
-<link rel="icon" href="trace-social.png">
+<link rel="icon" href="img/app-icon.png">
 
 <style>
 :root{
@@ -106,12 +106,12 @@ body{
   gap:.7rem;
   margin-bottom:clamp(3.5rem,9vw,6rem);
 }
-.toc-dashes{display:grid;gap:3px;flex:none}
-.toc-dashes i{display:block;height:1.5px;background:var(--ink-faint);border-radius:1px}
-.toc-dashes i:nth-child(1){width:13px}
-.toc-dashes i:nth-child(2){width:8px}
-.toc-dashes i:nth-child(3){width:11px}
-.toc-dashes i:nth-child(4){width:6px}
+.app-icon{
+  width:48px;
+  height:48px;
+  flex:none;
+  filter:drop-shadow(0 2px 5px rgba(27,31,34,.18));
+}
 .wordmark{
   font-family:var(--mono);
   font-size:.8rem;
@@ -272,7 +272,7 @@ footer a{color:var(--ink-soft)}
 <main class="sheet">
 
   <div class="masthead col">
-    <span class="toc-dashes" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <img class="app-icon" src="img/app-icon.png" alt="" width="48" height="48">
     <span class="wordmark">trace</span>
   </div>
 
