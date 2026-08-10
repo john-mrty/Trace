@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trace — a quiet place to write</title>
+<meta name="description" content="A minimal Markdown writer for macOS. The marks fade as you type. Plain files, no chrome, no lock-in.">
+<meta name="theme-color" content="#cddfd9" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14171a" media="(prefers-color-scheme: dark)">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Trace — a quiet place to write">
+<meta property="og:description" content="A minimal Markdown writer for macOS. The marks fade as you type. Plain files, no chrome, no lock-in.">
+<meta property="og:url" content="https://john-mrty.github.io/Trace/">
+<meta property="og:image" content="https://john-mrty.github.io/Trace/trace-social.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Trace — a quiet place to write">
+<meta name="twitter:description" content="A minimal Markdown writer for macOS. The marks fade as you type.">
+<meta name="twitter:image" content="https://john-mrty.github.io/Trace/trace-social.png">
+
+<link rel="icon" href="trace-social.png">
+
+<style>
+:root{
+  /* Sampled from Trace's own window gradient */
+  --mist:#aec8cc;
+  --sage:#cddfd9;
+  --peach:#f1c2a8;
+  --paper:#fbfaf8;
+  --paper-warm:#f9f2ee;
+  --ink:#1b1f22;
+  --ink-soft:#4a5259;
+  --ink-faint:#8b949b;
+  --rule:rgba(27,31,34,.10);
+  --accent:#3f6f72;
+  --shadow:rgba(27,31,34,.22);
+
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,monospace;
+
+  --measure:41rem;
+  --bleed:53rem;
+}
+
+@media (prefers-color-scheme:dark){
+  :root{
+    --mist:#2b3a3d;
+    --sage:#243033;
+    --peach:#3d2c25;
+    --paper:#15181a;
+    --paper-warm:#191b1c;
+    --ink:#e9eaea;
+    --ink-soft:#a3abb0;
+    --ink-faint:#6b7378;
+    --rule:rgba(233,234,234,.12);
+    --accent:#8fc0c2;
+    --shadow:rgba(0,0,0,.55);
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  color:var(--ink);
+  background:var(--paper);
+  -webkit-font-smoothing:antialiased;
+}
+
+.wash{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+  background:
+    radial-gradient(58rem 40rem at 8% 2%, var(--mist) 0%, transparent 62%),
+    radial-gradient(52rem 38rem at 96% 40%, var(--peach) 0%, transparent 60%),
+    radial-gradient(46rem 34rem at 14% 74%, var(--sage) 0%, transparent 58%),
+    var(--paper);
+}
+.wash::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  backdrop-filter:blur(80px);
+  -webkit-backdrop-filter:blur(80px);
+}
+
+.sheet{
+  max-width:var(--bleed);
+  margin:0 auto;
+  padding:clamp(2.5rem,7vw,6rem) clamp(1.4rem,5vw,2rem) 5rem;
+}
+/* Text sits on a narrow measure; figures are allowed to breathe wider. */
+.col{max-width:var(--measure);margin-left:auto;margin-right:auto}
+
+/* ---- masthead ---- */
+.masthead{
+  display:flex;
+  align-items:center;
+  gap:.7rem;
+  margin-bottom:clamp(3.5rem,9vw,6rem);
+}
+.toc-dashes{display:grid;gap:3px;flex:none}
+.toc-dashes i{display:block;height:1.5px;background:var(--ink-faint);border-radius:1px}
+.toc-dashes i:nth-child(1){width:13px}
+.toc-dashes i:nth-child(2){width:8px}
+.toc-dashes i:nth-child(3){width:11px}
+.toc-dashes i:nth-child(4){width:6px}
+.wordmark{
+  font-family:var(--mono);
+  font-size:.8rem;
+  letter-spacing:.14em;
+  color:var(--ink-soft);
+}
+
+/* ---- hero ---- */
+h1{
+  font-size:clamp(2.4rem,7.5vw,3.75rem);
+  line-height:1.05;
+  letter-spacing:-.032em;
+  font-weight:600;
+  margin:0 0 1.5rem;
+  text-wrap:balance;
+}
+.hash{
+  display:inline-block;
+  width:1.05em;
+  overflow:hidden;
+  font-family:var(--mono);
+  font-weight:400;
+  color:var(--accent);
+  opacity:.85;
+  transition:width .55s cubic-bezier(.2,.7,.2,1), opacity .3s ease .05s;
+}
+.resolved .hash{width:0;opacity:0}
+
+.standfirst{
+  font-size:1.2rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+  margin:0 0 2.5rem;
+  max-width:33rem;
+}
+.standfirst strong{color:var(--ink);font-weight:600}
+
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:1.25rem;margin-bottom:.9rem}
+.btn{
+  display:inline-block;
+  padding:.72rem 1.4rem;
+  border-radius:11px;
+  background:var(--ink);
+  color:var(--paper);
+  text-decoration:none;
+  font-size:1rem;
+  font-weight:550;
+  letter-spacing:-.01em;
+  transition:transform .18s ease, opacity .18s ease;
+}
+.btn:hover{transform:translateY(-1px);opacity:.9}
+.btn-quiet{
+  color:var(--ink-soft);
+  text-decoration:none;
+  font-size:.95rem;
+  border-bottom:1px solid var(--rule);
+  padding-bottom:1px;
+  transition:color .18s ease,border-color .18s ease;
+}
+.btn-quiet:hover{color:var(--ink);border-color:var(--ink-faint)}
+.fineprint{
+  font-family:var(--mono);
+  font-size:.76rem;
+  color:var(--ink-faint);
+  margin:0;
+}
+
+/* ---- figures ---- */
+figure{
+  margin:clamp(2.75rem,7vw,4rem) 0;
+}
+figure img{
+  display:block;
+  width:100%;
+  height:auto;
+  border-radius:13px;
+  box-shadow:0 1px 2px rgba(27,31,34,.08), 0 20px 48px -14px var(--shadow);
+}
+figcaption{
+  font-family:var(--mono);
+  font-size:.75rem;
+  line-height:1.55;
+  color:var(--ink-faint);
+  margin-top:.85rem;
+  max-width:34rem;
+}
+
+/* ---- sections ---- */
+section{margin-bottom:clamp(3rem,8vw,4.5rem)}
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.73rem;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  font-weight:400;
+  margin:0 0 1.5rem;
+  padding-bottom:.7rem;
+  border-bottom:1px solid var(--rule);
+}
+
+/* Shortcuts hang in the margin: the keys are the structure */
+.features{margin:0;display:grid;gap:1.6rem}
+.feature{display:grid;grid-template-columns:5.4rem 1fr;gap:1.25rem;align-items:baseline}
+.feature dt{
+  font-family:var(--mono);
+  font-size:.85rem;
+  color:var(--accent);
+  white-space:nowrap;
+  padding-top:.12rem;
+}
+.feature dd{margin:0}
+.feature dd b{display:block;font-weight:600;letter-spacing:-.012em;margin-bottom:.15rem}
+.feature dd span{display:block;color:var(--ink-soft);font-size:.97rem;line-height:1.6}
+
+p{margin:0 0 1.1rem;color:var(--ink-soft)}
+p:last-child{margin-bottom:0}
+p strong{color:var(--ink);font-weight:600}
+a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink-faint);text-underline-offset:3px}
+a:hover{text-decoration-color:var(--ink)}
+code{font-family:var(--mono);font-size:.88em;color:var(--ink)}
+
+.plain{
+  padding:1.5rem 1.6rem;
+  background:var(--paper-warm);
+  border:1px solid var(--rule);
+  border-radius:12px;
+}
+
+footer{
+  border-top:1px solid var(--rule);
+  padding-top:1.6rem;
+  font-size:.9rem;
+  color:var(--ink-faint);
+}
+footer a{color:var(--ink-soft)}
+
+@media (max-width:560px){
+  .feature{grid-template-columns:1fr;gap:.35rem}
+  .feature dt{padding-top:0}
+}
+@media (prefers-reduced-motion:reduce){
+  .hash,.btn{transition:none}
+}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+</style>
+</head>
+<body>
+<div class="wash" aria-hidden="true"></div>
+
+<main class="sheet">
+
+  <div class="masthead col">
+    <span class="toc-dashes" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    <span class="wordmark">trace</span>
+  </div>
+
+  <div class="col">
+    <h1><span class="hash" aria-hidden="true">#</span>A quiet place to write</h1>
+
+    <p class="standfirst">Trace is a Markdown writer for macOS, built for prose rather than code. The marks fade as you type, so <strong>the words are the interface</strong>.</p>
+
+    <div class="actions">
+      <a class="btn" href="https://github.com/john-mrty/Trace/releases/latest">Download for macOS</a>
+      <a class="btn-quiet" href="https://github.com/john-mrty/Trace">View the source</a>
+    </div>
+    <p class="fineprint">Free and open source. Signed and notarised. macOS 15 or later.</p>
+  </div>
+
+  <figure>
+    <img src="img/syntax.webp" alt="A document in Trace with concealed Markdown syntax, shown beside the same document in source mode." width="1600" height="900" fetchpriority="high" decoding="async">
+    <figcaption class="col">The same document, written and revealed. Hashes, asterisks and link brackets disappear once typed.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="eyebrow">Writing without the noise</h2>
+    <p>Most Markdown editors make you choose: stare at raw syntax while you write, or split the screen with a preview pane. Trace does neither. The marks disappear once written, what remains reads like the finished piece, and everything else stays out of sight until you reach for it.</p>
+    <p>There is no title bar band and no toolbar chrome. The document runs to the edge of the window over a blurred backdrop, and scrolled text dissolves before it reaches the traffic lights.</p>
+  </section>
+
+  <figure>
+    <img src="img/focus-mode.webp" alt="Focus mode dimming every line except the paragraph being edited." width="1600" height="900" loading="lazy" decoding="async">
+    <figcaption class="col">Focus mode. Everything dims but the lines you are working on, and the caret holds at the centre of the screen.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="eyebrow">Everything is a keystroke away</h2>
+    <dl class="features">
+      <div class="feature">
+        <dt>⇧⌘H</dt>
+        <dd><b>Concealed syntax</b><span>Links become clickable text, checkboxes become real checkboxes, code sits in panels with a copy button, and frontmatter tucks into a Properties chip. One toggle brings the plumbing back as a proper source mode.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⇧⌘F</dt>
+        <dd><b>Focus mode</b><span>Dims everything except the lines you are working on, with typewriter scrolling. The text moves, you do not.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⌘\</dt>
+        <dd><b>File sidebar</b><span>A tree of the writing around your document, or rooted at a folder you choose. Fully keyboard-driven. Hidden by default.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⌘K</dt>
+        <dd><b>Command palette</b><span>Every action, searchable with fuzzy matching. Type "dark" to switch appearance, "focus" to dim the page. Recent files live here too.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⇧⌘O</dt>
+        <dd><b>Open document</b><span>Jump to any Markdown file near the one you have open, by typing a few letters of its name. No file browser, no library to maintain.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⌥`</dt>
+        <dd><b>Overlay mode</b><span>Summon a document as a floating panel at the right edge, above whatever else you are doing.</span></dd>
+      </div>
+      <div class="feature">
+        <dt>⌥⌘C</dt>
+        <dd><b>Copy as rich text</b><span>Paste into Mail, Slack or Google Docs with headings, links and formatting intact. A plain paste still gives you the Markdown.</span></dd>
+      </div>
+    </dl>
+  </section>
+
+  <figure>
+    <img src="img/sidebar.webp" alt="The file sidebar showing a tree of Markdown documents next to the editor." width="1600" height="900" loading="lazy" decoding="async">
+    <figcaption class="col">The sidebar stays hidden until a quiet icon by the traffic lights slides it in.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="img/command-palette.webp" alt="The command palette open over a document, showing fuzzy-matched actions." width="1600" height="900" loading="lazy" decoding="async">
+    <figcaption class="col">Every menu action, a few keystrokes away.</figcaption>
+  </figure>
+
+  <figure>
+    <img src="img/overlay-mode.webp" alt="Trace floating as a narrow panel at the right edge of the screen, above a browser window." width="1600" height="1005" loading="lazy" decoding="async">
+    <figcaption class="col">Overlay mode, for notes alongside whatever else you are doing.</figcaption>
+  </figure>
+
+  <section class="col">
+    <h2 class="eyebrow">Your files stay yours</h2>
+    <div class="plain">
+      <p>Documents are plain <code>.md</code> files on disk. <strong>No library, no account, no cloud, no data collection.</strong> Your writing outlives the app that made it.</p>
+    </div>
+  </section>
+
+  <section class="col">
+    <h2 class="eyebrow">What it does not do</h2>
+    <p>Trace is deliberately smaller than the editor it is built on. No updater, no AppleScript, no extensions manager, no assistant pane, no Pandoc export. If you want the full-featured version, use <a href="https://github.com/MarkEdit-app/MarkEdit">MarkEdit</a>. It is great.</p>
+  </section>
+
+  <footer class="col">
+    <p>Built on the engine of <a href="https://github.com/MarkEdit-app/MarkEdit">MarkEdit</a> by <a href="https://github.com/cyanzhong">cyanzhong</a> and contributors, with <a href="https://codemirror.net/">CodeMirror 6</a> at its core. MIT licensed. The heart of this app is their work. This one just gives it a quieter voice.</p>
+  </footer>
+
+</main>
+
+<script>
+  // The hash resolves once, on load. The page does what the app does.
+  (function(){
+    var h1 = document.querySelector('h1');
+    if (!h1) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      h1.classList.add('resolved');
+      return;
+    }
+    setTimeout(function(){ h1.classList.add('resolved'); }, 850);
+  })();
+</script>
+</body>
+</html>
