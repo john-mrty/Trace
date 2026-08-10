@@ -316,8 +316,10 @@ function enableGuttersObserver() {
 
 function updateFocusModeStyle(enabled: boolean) {
   if (styleSheets.focusMode === undefined) {
+    // Rendered tables are block widgets, not .cm-line elements; the caret can
+    // never be inside one (atomicRanges skips over), so they always dim
     styleSheets.focusMode = createStyleSheet(`
-      .cm-line:not(.cm-selectedLineRange), .cm-gutterElement:not(.cm-activeLineGutter) {
+      .cm-line:not(.cm-selectedLineRange), .cm-gutterElement:not(.cm-activeLineGutter), .cm-content > .cm-md-tablePreview {
         opacity: 0.25;
       }
     `, false);

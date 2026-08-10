@@ -12,6 +12,8 @@ Trace is a minimal Markdown writer for macOS, built for prose rather than code. 
 
 Most Markdown editors make you choose: stare at raw syntax while you write, or split the screen with a preview pane. Trace does neither. The marks fade as you type, what remains reads like the finished piece, and everything else — toolbar, navigation, commands — stays out of sight until you reach for it.
 
+![Concealed syntax — the rendered document next to its raw source](.github/assets/syntax.png)
+
 ## Download
 
 [**Download Trace**](https://github.com/john-mrty/Trace/releases/latest) — signed and notarized. Unzip, drag to Applications, open.
@@ -22,14 +24,23 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 - **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, and scrolled text dissolves into a progressive blur before it reaches the traffic lights, in light and dark.
 - **Focus mode** (⇧⌘F) — dims everything except the lines you're working on, with typewriter scrolling holding the caret at the vertical center of the screen. The text moves, you don't.
 
+![Focus mode — everything dims except the active lines](.github/assets/focus-mode.png)
+
 ## Everything within reach, nothing in view
 
 - **File sidebar** (⌘\\) — Tree of the writing files around your document, or rooted at a folder you pick in Settings. Fully keyboard-driven: ↑/↓ to browse, →/← to open folders and files, Obsidian-style. Sort by name, created, or modified. Hidden by default; a quiet icon by the traffic lights slides it in.
+
+![File sidebar — browse the writing files around your document](.github/assets/sidebar.png)
+
 - **Command palette** (⌘K) — every menu action, searchable, with fuzzy matching. Type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
+
+![Command palette — every action a few keystrokes away](.github/assets/command-palette.png)
 - **Open Document** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
 - **Floating toolbar** — a small capsule at the bottom with the handful of actions prose actually needs: headings, emphasis, lists, syntax visibility, focus mode, and word-count statistics. It recedes while you type and returns when you reach for the mouse.
 - **Hover table of contents** — quiet dashes in the top-left mark your place in the document. Hover for the full outline; click to jump.
 - **Overlay mode** (⌥`) — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
+
+![Overlay mode — Trace floating at the right edge over a browser](.github/assets/overlay-mode.png)
 
 ## When the writing leaves Trace
 

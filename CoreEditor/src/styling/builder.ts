@@ -280,6 +280,10 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     border: '1px solid rgba(140, 140, 140, 0.4)',
     padding: '4px 12px',
     textAlign: 'left',
+    // The editor content sets overflow-wrap: anywhere, which breaks words
+    // mid-word inside narrow cells; keep each cell on one line instead
+    whiteSpace: 'nowrap',
+    overflowWrap: 'normal',
   },
   // Numbers sit directly on the canvas: fixed width equal to the content's
   // left padding, which zeroes out below so the text never shifts

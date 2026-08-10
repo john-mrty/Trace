@@ -824,14 +824,14 @@ Gw
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="lnj-xb-YDh"/>
-                                        <menuItem title="Quote" id="8CK-gi-aLX">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Quote" keyEquivalent="9" id="8CK-gi-aLX">
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
                                                 <action selector="toggleBlockquote:" target="Ady-hI-5gd" id="oh9-i4-Pcw"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Horizontal Rule" id="P3N-ql-hAd">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        <menuItem title="Horizontal Rule" keyEquivalent="-" id="P3N-ql-hAd">
+                                            <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
                                                 <action selector="insertHorizontalRule:" target="Ady-hI-5gd" id="FGW-Ne-0Qv"/>
                                             </connections>
