@@ -183,7 +183,7 @@ h1{
 figure{
   margin:clamp(2.75rem,7vw,4rem) 0;
 }
-figure img{
+figure img,figure video{
   display:block;
   width:100%;
   height:auto;
@@ -282,8 +282,8 @@ footer a{color:var(--ink-soft)}
   </div>
 
   <figure>
-    <img src="img/syntax.webp" alt="A document in Trace with concealed Markdown syntax, shown beside the same document in source mode." width="1600" height="900" fetchpriority="high" decoding="async">
-    <figcaption class="col">The same document, written and revealed. Hashes, asterisks and link brackets disappear once typed.</figcaption>
+    <video src="trace-overview.mp4" poster="img/syntax.webp" controls playsinline preload="metadata" width="1796" height="1080" aria-label="A short overview of writing in Trace: syntax concealing, focus mode, the sidebar and the command palette."></video>
+    <figcaption class="col">Forty seconds in Trace. Hashes, asterisks and link brackets disappear once typed — the words are what remain.</figcaption>
   </figure>
 
   <section class="col">
