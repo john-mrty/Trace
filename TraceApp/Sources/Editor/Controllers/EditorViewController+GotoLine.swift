@@ -6,6 +6,7 @@
 //
 
 import AppKit
+import SwiftUI
 import FontPicker
 import SharedUI
 import MarkEditKit
@@ -292,6 +293,153 @@ private extension EditorViewController {
       text += "⌘"
     }
 
-    return text + key.uppercased()
+    guard let glyph = keyGlyph(for: key) else {
+      return ""
+    }
+
+    return text + glyph
+  }
+
+  /// Arrow/function key equivalents are private-use characters that render as
+  /// empty boxes; map the common ones and hide anything else unmappable
+  static let specialKeyGlyphs: [UInt32: String] = [
+    UInt32(NSUpArrowFunctionKey): "↑",
+    UInt32(NSDownArrowFunctionKey): "↓",
+    UInt32(NSLeftArrowFunctionKey): "←",
+    UInt32(NSRightArrowFunctionKey): "→",
+    UInt32(NSHomeFunctionKey): "↖",
+    UInt32(NSEndFunctionKey): "↘",
+    UInt32(NSPageUpFunctionKey): "⇞",
+    UInt32(NSPageDownFunctionKey): "⇟",
+    UInt32(NSDeleteFunctionKey): "⌦",
+    0x08: "⌫", 0x7F: "⌫",
+    0x0D: "↩", 0x0A: "↩",
+    0x09: "⇥", 0x1B: "⎋", 0x20: "Space",
+  ]
+
+  static func keyGlyph(for key: String) -> String? {
+    guard key.count == 1, let scalar = key.unicodeScalars.first else {
+      return key.uppercased()
+    }
+
+    if let glyph = specialKeyGlyphs[scalar.value] {
+      return glyph
+    }
+
+    return (0xF700...0xF8FF).contains(scalar.value) ? nil : key.uppercased()
+  }
+}
+
+// MARK: - Keyboard Shortcuts
+
+extension EditorViewController {
+  @objc func showKeyboardShortcuts(_ sender: Any?) {
+    guard presentedViewControllers?.contains(where: { $0 is NSHostingController<KeyboardShortcutsView> }) != true else {
+      return
+    }
+
+    final class Box { weak var controller: NSViewController? }
+    let box = Box()
+
+    let rootView = KeyboardShortcutsView(groups: Self.shortcutGroups()) { [weak self] in
+      if let controller = box.controller {
+        self?.dismiss(controller)
+      }
+    }
+
+    let controller = NSHostingController(rootView: rootView)
+    box.controller = controller
+    presentAsSheet(controller)
+  }
+}
+
+private extension EditorViewController {
+  static func shortcutGroups() -> [ShortcutGroup] {
+    var groups = [ShortcutGroup]()
+
+    // dropFirst skips the application menu (About, Hide, Quit…)
+    for topItem in NSApp.mainMenu?.items.dropFirst() ?? [] {
+      guard let submenu = topItem.submenu, !topItem.isHidden else {
+        continue
+      }
+
+      var rows = [ShortcutGroup.Row]()
+      func walk(_ menu: NSMenu) {
+        for item in menu.items {
+          if let sub = item.submenu {
+            walk(sub)
+            continue
+          }
+
+          let shortcut = shortcutDescription(of: item)
+          if !shortcut.isEmpty, !item.title.isEmpty, !item.isHidden {
+            rows.append(ShortcutGroup.Row(title: item.title, shortcut: shortcut))
+          }
+        }
+      }
+
+      walk(submenu)
+      if !rows.isEmpty {
+        groups.append(ShortcutGroup(title: topItem.title, rows: rows))
+      }
+    }
+
+    return groups
+  }
+}
+
+struct ShortcutGroup {
+  struct Row: Hashable {
+    let title: String
+    let shortcut: String
+  }
+
+  let title: String
+  let rows: [Row]
+}
+
+struct KeyboardShortcutsView: View {
+  let groups: [ShortcutGroup]
+  let dismiss: () -> Void
+
+  var body: some View {
+    VStack(spacing: 0) {
+      HStack {
+        Text("Keyboard Shortcuts")
+          .font(.headline)
+
+        Spacer()
+        Button("Done", action: dismiss)
+          .keyboardShortcut(.cancelAction)
+      }
+      .padding(16)
+
+      Divider()
+      ScrollView {
+        VStack(alignment: .leading, spacing: 22) {
+          ForEach(groups, id: \.title) { group in
+            VStack(alignment: .leading, spacing: 4) {
+              Text(group.title.uppercased())
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 4)
+
+              ForEach(group.rows, id: \.self) { row in
+                HStack {
+                  Text(row.title)
+                  Spacer()
+                  Text(row.shortcut)
+                    .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 2)
+              }
+            }
+          }
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+      }
+    }
+    .frame(width: 400, height: 480)
   }
 }

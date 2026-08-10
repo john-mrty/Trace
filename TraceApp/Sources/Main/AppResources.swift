@@ -185,8 +185,8 @@ enum Icons {
   static let gearshape = "gearshape"
   static let infoCircle = "info.circle"
   static let italic = "italic"
-  static let moon = "moon"
-  static let moonFill = "moon.fill"
+  static let scope = "scope"
+  static let dotScope = "dot.scope"
 
   static let interfaceWindowOnRectangle = if #available(macOS 27.0, *) {
     "interface.window.on.rectangle"

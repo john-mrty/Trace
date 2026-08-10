@@ -100,6 +100,8 @@ struct GeneralSettingsView: View {
             .foregroundStyle(.secondary)
             .lineLimit(1)
             .truncationMode(.middle)
+            // The form window sizes to its widest row; a long path must not win
+            .frame(maxWidth: 224, alignment: .leading)
 
           Button("Choose…") {
             Task {
@@ -125,6 +127,15 @@ struct GeneralSettingsView: View {
   }
 
   private static func resolvedSidebarRootPath() -> String? {
-    (AppDelegate.resolvedSidebarRootURL()?.path as NSString?)?.abbreviatingWithTildeInPath
+    guard var path = AppDelegate.resolvedSidebarRootURL()?.path else {
+      return nil
+    }
+
+    // abbreviatingWithTildeInPath resolves to the sandbox container, not the real home
+    if let home = NSHomeDirectoryForUser(NSUserName()), path.hasPrefix(home) {
+      path = "~" + path.dropFirst(home.count)
+    }
+
+    return path
   }
 }

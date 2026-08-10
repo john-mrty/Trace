@@ -133,6 +133,15 @@ private extension EditorViewController {
         .font: NSFont.systemFont(ofSize: fontSize, weight: .medium),
       ]))
 
+      // Breathing room between the highlight edge and the text
+      let paragraphStyle = NSMutableParagraphStyle()
+      paragraphStyle.firstLineHeadIndent = 6
+      attributedTitle.addAttribute(
+        .paragraphStyle,
+        value: paragraphStyle,
+        range: NSRange(location: 0, length: attributedTitle.length)
+      )
+
       item.attributedTitle = attributedTitle
       menu.addItem(.separator())
     }

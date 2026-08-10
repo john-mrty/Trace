@@ -123,10 +123,12 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '0.5',
     textDecoration: 'line-through',
   },
+  // Sits right-of-center in the page margin: 2-digit line numbers end at
+  // 26px, the longest dash spans 28-42px, text starts at 48px
   '.cm-md-tocIndicator': {
     position: 'fixed',
     top: '48px',
-    left: '16px',
+    left: '28px',
     zIndex: '900',
   },
   '.cm-md-tocDashes': {
@@ -158,7 +160,7 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     maxWidth: '320px',
     maxHeight: '60vh',
     overflow: 'auto',
-    padding: '6px',
+    padding: '6px 8px',
     borderRadius: '8px',
     border: '1px solid rgba(140, 140, 140, 0.3)',
     background: 'rgba(140, 140, 140, 0.08)',
@@ -173,7 +175,7 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     pointerEvents: 'auto',
   },
   '.cm-md-tocRow': {
-    padding: '3px 10px',
+    padding: '4px 12px',
     borderRadius: '5px',
     fontSize: '0.85em',
     whiteSpace: 'nowrap',
@@ -291,8 +293,15 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-gutters ~ .cm-content': {
     paddingLeft: '0px',
   },
+  // The wider margin kicks in only for 100+ line documents (3-digit numbers)
+  '.cm-md-wideGutters .cm-gutters': {
+    width: '64px',
+  },
+  '.cm-md-wideGutters .cm-md-tocIndicator': {
+    left: '44px',
+  },
   '.cm-lineNumbers .cm-gutterElement': {
-    paddingRight: '14px',
+    paddingRight: '22px',
     // Smaller than body text; slight push-down to optically align with the line
     fontSize: '0.8em',
     paddingTop: '0.22em',

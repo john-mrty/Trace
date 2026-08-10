@@ -300,6 +300,7 @@ private extension EditorWindow {
       EditorOverlayToolbar.Action(
         symbolName: Icons.numberSign,
         accessibilityLabel: Localized.Toolbar.hideSyntaxMarks,
+        shortcutHint: "⇧⌘H",
         // "On" means syntax is visible; the concealed default reads as off
         isActive: { !AppPreferences.Editor.hideSyntaxMarks },
         handler: { [weak viewController] _ in
@@ -307,9 +308,10 @@ private extension EditorWindow {
         }
       ),
       EditorOverlayToolbar.Action(
-        symbolName: Icons.moon,
+        symbolName: Icons.scope,
         accessibilityLabel: Localized.Toolbar.dimInactiveLines,
-        currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.moonFill : Icons.moon },
+        shortcutHint: "⇧⌘F",
+        currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.dotScope : Icons.scope },
         isActive: { AppPreferences.Editor.focusMode },
         handler: { _ in
           AppPreferences.Editor.focusMode.toggle()

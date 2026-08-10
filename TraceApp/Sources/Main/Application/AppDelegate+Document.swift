@@ -368,25 +368,17 @@ private extension AppDelegate {
   ## The idea
   Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make an editable heading. Links become clickable text, checkboxes become real checkboxes, code fences become panels. The words are the interface.
 
-  ## Five things to try first
-  1. **⇧⌘H** — show the plumbing. Syntax marks, line numbers, and a selection counter appear; it doubles as a source mode. Press again to write.
-  2. **⇧⌘F** — focus mode. Everything dims except the lines you're working on, and typewriter scrolling holds the caret at the center of the screen. The text moves, you don't.
-  3. **⌘K** — the command palette. Every action, searchable: type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
-  4. **Hover the page anchors in the top-left** — that's the table of contents. It marks your place; click any entry to jump.
-  5. **Opt(⌥)`** — overlay mode. This document floats over your other apps as a right-edge panel, for notes alongside your work.
-
   ## Where everything lives
-  | Shortcut | Does |
-  | --- | --- |
-  | ⌘K | Command palette — every action, searchable |
-  | ⇧⌘O | Open Document — fuzzy-find any Markdown file nearby, or a recent one |
-  | ⇧⌘H | Show or hide Markdown syntax |
-  | ⇧⌘F | Focus mode, with typewriter scrolling |
-  | ⌥⌘C | Copy as Rich Text — paste into Mail, Docs, or Slack with formatting intact |
-  | ⌥` | Overlay mode — float this document over your other apps |
-  | ⌘, | Settings — accent colors, line height, appearance |
+  1. **Show / hide syntax** (⇧⌘H) — show or hide Markdown syntax, line numbers, and a selection counter.
+  2. **Focus mode** (⇧⌘F) — everything dims except the lines you're working on, and typewriter scrolling holds the caret at the center of the screen. The text moves, you don't.
+  3. **Command palette** (⌘K) — every action, searchable: type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
+  4. **Toggle sidebar** (⌘\\\\) — a tree of the writing files around your document; browse with the arrow keys and press → to open one in place. Use ⇧⌘O to quickly open nearby or recent docs by name.
+  5. **Page anchors** — the lines in the top left mark your place; hover for the outline and click any entry to jump.
+  6. **Overlay mode** (⌥`) — the active document floats over other apps as a right-edge panel, for notes alongside your work.
+  7. **Copy as Rich Text** (⌥⌘C) — keep formatting when pasting into Mail, Docs, or Slack.
+  8. **Settings** (⌘,) — change accent colors, line height, appearance.
 
-  The FAB at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.
+  *The FAB at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.*
 
   ---
   ## Lists

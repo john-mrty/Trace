@@ -337,6 +337,8 @@ extension EditorViewController {
  Quiet titlebar icon (Claude Code-style placement): dimmed until hovered.
  */
 final class QuietIconButton: NSButton {
+  private var hoverArea: NSTrackingArea?
+
   init(symbolName: String, accessibilityLabel: String, pointSize: Double = 14) {
     super.init(frame: .zero)
     isBordered = false
@@ -356,12 +358,21 @@ final class QuietIconButton: NSButton {
 
   override func updateTrackingAreas() {
     super.updateTrackingAreas()
-    trackingAreas.forEach(removeTrackingArea)
-    addTrackingArea(NSTrackingArea(
+
+    // Removing ALL tracking areas kills AppKit's internal tooltip tracking;
+    // only replace the one we own
+    if let hoverArea {
+      removeTrackingArea(hoverArea)
+    }
+
+    let area = NSTrackingArea(
       rect: bounds,
       options: [.mouseEnteredAndExited, .activeInKeyWindow],
       owner: self
-    ))
+    )
+
+    hoverArea = area
+    addTrackingArea(area)
   }
 
   override func mouseEntered(with event: NSEvent) {

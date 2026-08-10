@@ -147,6 +147,28 @@ final class EditorWindow: NSWindow {
     titlebarDocumentButton?.alphaValue = prefersTintedToolbar ? 0.8 : 1.0
   }
 
+  // With a transparent titlebar the empty strip hit-tests through to the web
+  // view, which swallows drags; hand those clicks back to window dragging
+  override func sendEvent(_ event: NSEvent) {
+    if event.type == .leftMouseDown,
+       !styleMask.contains(.fullScreen),
+       event.locationInWindow.y >= contentLayoutRect.maxY,
+       let hit = contentView?.superview?.hitTest(event.locationInWindow),
+       !sequence(first: hit, next: { $0.superview }).contains(where: {
+         $0 is NSControl || $0.className.contains("Tab")
+       }) {
+      if event.clickCount == 2 {
+        performZoom(nil)
+      } else {
+        performDrag(with: event)
+      }
+
+      return
+    }
+
+    super.sendEvent(event)
+  }
+
   override func close() {
     // Unconditional: tears down the FAB's NSEvent monitor for non-overlay windows too
     hideOverlayFab()

@@ -18,6 +18,8 @@ final class EditorOverlayToolbar: NSView {
   struct Action {
     var symbolName: String?
     let accessibilityLabel: String
+    // Shown dimmed after the label in the tooltip, e.g. "⇧⌘F"
+    var shortcutHint: String?
     var currentSymbolName: (() -> String)?
     // For glyphs SF Symbols lacks; takes precedence over symbolName
     var customImage: NSImage?
@@ -28,10 +30,12 @@ final class EditorOverlayToolbar: NSView {
 
   private let background = MaterialView()
   private let bezel = BezelView(cornerRadius: Constants.height / 2)
+  private let tooltip = OverlayTooltip()
   private let actions: [Action]
   private var buttons: [NSButton] = []
   private var scrollMonitor: Any?
   private var settleWorkItem: DispatchWorkItem?
+  private var tooltipWorkItem: DispatchWorkItem?
 
   init(actions: [Action]) {
     self.actions = actions
@@ -100,6 +104,11 @@ final class EditorOverlayToolbar: NSView {
     applyTint()
   }
 
+  // The web view underneath keeps the I-beam otherwise
+  override func resetCursorRects() {
+    addCursorRect(bounds, cursor: .arrow)
+  }
+
   func refreshButtonImages() {
     for (index, action) in actions.enumerated() where buttons.indices.contains(index) {
       let button = buttons[index]
@@ -143,6 +152,8 @@ private extension EditorOverlayToolbar {
     static let restingShadowOpacity: Float = 0.18
     static let raisedShadowOpacity: Float = 0.32
     static let shadowSettleDelay: TimeInterval = 0.3
+    static let tooltipDelay: TimeInterval = 0.15
+    static let tooltipSpacing: CGFloat = 8
   }
 
   func setUpChrome() {
@@ -163,6 +174,9 @@ private extension EditorOverlayToolbar {
 
     addSubview(background)
     addSubview(bezel)
+
+    tooltip.isHidden = true
+    addSubview(tooltip)
   }
 
   // Layer colors don't track appearance changes, so resolve manually
@@ -274,26 +288,93 @@ private extension EditorOverlayToolbar {
       }
 
       button.setAccessibilityLabel(action.accessibilityLabel)
-      button.toolTip = action.accessibilityLabel
       button.tag = index
       button.target = self
       button.action = #selector(buttonTapped(_:))
+      button.onHoverChanged = { [weak self, weak button] hovered in
+        guard let self, let button else {
+          return
+        }
+
+        if hovered {
+          self.scheduleTooltip(for: button, text: action.accessibilityLabel, hint: action.shortcutHint)
+        } else {
+          self.hideTooltip()
+        }
+      }
+
       addSubview(button)
       return button
     }
   }
 
   @objc func buttonTapped(_ sender: NSButton) {
+    hideTooltip()
     guard actions.indices.contains(sender.tag) else {
       return
     }
 
     actions[sender.tag].handler(sender)
   }
+
+  func scheduleTooltip(for button: NSButton, text: String, hint: String?) {
+    tooltipWorkItem?.cancel()
+
+    // Already visible: retarget instantly so sweeping across buttons feels live
+    if !tooltip.isHidden {
+      return presentTooltip(for: button, text: text, hint: hint)
+    }
+
+    let workItem = DispatchWorkItem { [weak self, weak button] in
+      guard let self, let button else {
+        return
+      }
+
+      self.presentTooltip(for: button, text: text, hint: hint)
+    }
+
+    tooltipWorkItem = workItem
+    DispatchQueue.main.asyncAfter(deadline: .now() + Constants.tooltipDelay, execute: workItem)
+  }
+
+  func presentTooltip(for button: NSButton, text: String, hint: String?) {
+    let wasHidden = tooltip.isHidden
+    let size = tooltip.set(text: text, hint: hint)
+    tooltip.frame = NSRect(
+      x: (button.frame.midX - size.width / 2).rounded(),
+      y: bounds.height + Constants.tooltipSpacing,
+      width: size.width,
+      height: size.height
+    )
+
+    guard wasHidden else {
+      return
+    }
+
+    tooltip.isHidden = false
+    if AppDesign.reduceMotion {
+      tooltip.alphaValue = 1
+    } else {
+      tooltip.alphaValue = 0
+      NSAnimationContext.runAnimationGroup { context in
+        context.duration = 0.12
+        tooltip.animator().alphaValue = 1
+      }
+    }
+  }
+
+  func hideTooltip() {
+    tooltipWorkItem?.cancel()
+    tooltipWorkItem = nil
+    tooltip.isHidden = true
+  }
 }
 
 /// Borderless icon button with a cheap hover highlight via a tracking area.
 private final class OverlayIconButton: NSButton {
+  var onHoverChanged: ((Bool) -> Void)?
+  private var hoverArea: NSTrackingArea?
+
   override init(frame frameRect: NSRect) {
     super.init(frame: frameRect)
 
@@ -313,21 +394,103 @@ private final class OverlayIconButton: NSButton {
   override func updateTrackingAreas() {
     super.updateTrackingAreas()
 
-    trackingAreas.forEach(removeTrackingArea)
-    addTrackingArea(NSTrackingArea(
+    // Removing ALL tracking areas kills AppKit's internal tooltip tracking;
+    // only replace the one we own
+    if let hoverArea {
+      removeTrackingArea(hoverArea)
+    }
+
+    let area = NSTrackingArea(
       rect: bounds,
       options: [.mouseEnteredAndExited, .activeInKeyWindow],
       owner: self
-    ))
+    )
+
+    hoverArea = area
+    addTrackingArea(area)
   }
 
   override func mouseEntered(with event: NSEvent) {
     super.mouseEntered(with: event)
     layerBackgroundColor = AppPreferences.Editor.accentColor.nsColor.withAlphaComponent(0.16)
+    onHoverChanged?(true)
   }
 
   override func mouseExited(with event: NSEvent) {
     super.mouseExited(with: event)
     layerBackgroundColor = nil
+    onHoverChanged?(false)
+  }
+
+  override func resetCursorRects() {
+    addCursorRect(bounds, cursor: .arrow)
+  }
+}
+
+/// Small pill above the FAB echoing its chrome; replaces native NSToolTips,
+/// which can only appear at the pointer and can't be styled.
+private final class OverlayTooltip: NSView {
+  private let label: NSTextField = {
+    let label = NSTextField(labelWithString: "")
+    label.font = .systemFont(ofSize: 11, weight: .medium)
+    label.textColor = .secondaryLabelColor
+    return label
+  }()
+
+  init() {
+    super.init(frame: .zero)
+    wantsLayer = true
+    layer?.cornerCurve = .continuous
+    layer?.borderWidth = 1
+    layer?.shadowColor = NSColor.black.cgColor
+    layer?.shadowOpacity = 0.15
+    layer?.shadowRadius = 5
+    layer?.shadowOffset = CGSize(width: 0, height: -1)
+    addSubview(label)
+    applyColors()
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  /// Sets the text and returns the pill size that fits it.
+  func set(text: String, hint: String? = nil) -> CGSize {
+    let font = NSFont.systemFont(ofSize: 11, weight: .medium)
+    let string = NSMutableAttributedString(string: text, attributes: [
+      .font: font,
+      .foregroundColor: NSColor.secondaryLabelColor,
+    ])
+
+    if let hint {
+      string.append(NSAttributedString(string: "  \(hint)", attributes: [
+        .font: font,
+        .foregroundColor: NSColor.tertiaryLabelColor,
+      ]))
+    }
+
+    label.attributedStringValue = string
+    label.sizeToFit()
+
+    let size = CGSize(width: label.frame.width + 20, height: label.frame.height + 10)
+    label.setFrameOrigin(CGPoint(x: 10, y: 5))
+    layer?.cornerRadius = size.height / 2
+    return size
+  }
+
+  override func viewDidChangeEffectiveAppearance() {
+    super.viewDidChangeEffectiveAppearance()
+    applyColors()
+  }
+
+  override func hitTest(_ point: NSPoint) -> NSView? {
+    nil
+  }
+
+  private func applyColors() {
+    let isDark = effectiveAppearance.isDarkMode
+    layer?.backgroundColor = (isDark ? NSColor(white: 0.16, alpha: 1) : .white).cgColor
+    layer?.borderColor = NSColor.separatorColor.cgColor
   }
 }

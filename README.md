@@ -24,7 +24,7 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 
 ## Everything within reach, nothing in view
 
-- **File sidebar** (⌘\\) — an Obsidian-style tree of the writing files around your document, or rooted at a folder you pick in Settings. Fully keyboard-driven: ↑/↓ to browse, →/← to open folders and files, Obsidian-style. Click or press → on a file and it replaces the document in place — no new windows. Sort by name, created, or modified. Hidden by default; a quiet icon by the traffic lights brings it in with a slide.
+- **File sidebar** (⌘\\) — Tree of the writing files around your document, or rooted at a folder you pick in Settings. Fully keyboard-driven: ↑/↓ to browse, →/← to open folders and files, Obsidian-style. Sort by name, created, or modified. Hidden by default; a quiet icon by the traffic lights slides it in.
 - **Command palette** (⌘K) — every menu action, searchable, with fuzzy matching. Type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
 - **Open Document** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
 - **Floating toolbar** — a small capsule at the bottom with the handful of actions prose actually needs: headings, emphasis, lists, syntax visibility, focus mode, and word-count statistics. It recedes while you type and returns when you reach for the mouse.

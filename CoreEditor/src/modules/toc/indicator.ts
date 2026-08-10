@@ -75,7 +75,8 @@ class TocIndicator {
 
       const row = document.createElement('div');
       row.className = `cm-md-tocRow${info.selected ? ' cm-md-tocRowActive' : ''}`;
-      row.style.paddingLeft = `${(info.level - 1) * 12}px`;
+      // Inline style overrides the .cm-md-tocRow shorthand: keep its 12px base
+      row.style.paddingLeft = `${12 + (info.level - 1) * 12}px`;
       row.textContent = info.title;
 
       row.onmousedown = event => event.preventDefault();

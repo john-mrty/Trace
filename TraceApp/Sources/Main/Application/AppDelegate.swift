@@ -62,6 +62,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   func applicationDidFinishLaunching(_ notification: Notification) {
     AppDesign.migrateMainMenuIcons(delegate: self)
 
+    // ⇧⌘? opens the keyboard shortcuts sheet
+    if let helpMenu = NSApp.mainMenu?.items.last?.submenu {
+      let item = NSMenuItem(
+        title: "Keyboard Shortcuts",
+        action: #selector(EditorViewController.showKeyboardShortcuts(_:)),
+        keyEquivalent: "?"
+      )
+
+      item.keyEquivalentModifierMask = [.command, .shift]
+      helpMenu.insertItem(item, at: min(1, helpMenu.items.count))
+    }
+
     appearanceObservation = NSApp.observe(\.effectiveAppearance) { _, _ in
       Task { @MainActor in
         AppTheme.current.updateAppearance()
