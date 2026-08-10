@@ -18,12 +18,13 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 
 ## Writing without the noise
 
-- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written. Links become clickable text with a hover preview, checkboxes become real checkboxes that strike through when done, code blocks sit in panels with a copy button, images and tables render in place, and frontmatter tucks itself into a Properties chip. One toggle (⇧⌘H) brings back the plumbing as a proper source mode: raw marks, line numbers, live selection status.
-- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, in light and dark.
+- **Concealed syntax** — `**`, `#`, `[]()` and friends disappear once written. Links become clickable text with a hover preview, checkboxes become real checkboxes that strike through when done, code blocks sit in panels with a copy button, images and tables render in place (click an image to view it full-size), and frontmatter tucks itself into a Properties chip. One toggle (⇧⌘H) brings back the plumbing as a proper source mode: raw marks, line numbers, live selection status.
+- **Seamless glass window** — no title bar band, no toolbar chrome. The document bleeds to the window edge over a subtly blurred backdrop, and scrolled text dissolves into a progressive blur before it reaches the traffic lights, in light and dark.
 - **Focus mode** (⇧⌘F) — dims everything except the lines you're working on, with typewriter scrolling holding the caret at the vertical center of the screen. The text moves, you don't.
 
 ## Everything within reach, nothing in view
 
+- **File sidebar** (⌘\\) — an Obsidian-style tree of the writing files around your document, or rooted at a folder you pick in Settings. Fully keyboard-driven: ↑/↓ to browse, →/← to open folders and files, Obsidian-style. Click or press → on a file and it replaces the document in place — no new windows. Sort by name, created, or modified. Hidden by default; a quiet icon by the traffic lights brings it in with a slide.
 - **Command palette** (⌘K) — every menu action, searchable, with fuzzy matching. Type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
 - **Open Document** (⇧⌘O) — jump to any Markdown file near your current document, or any recent file, by typing a few letters of its name. No file browser, no library to maintain.
 - **Floating toolbar** — a small capsule at the bottom with the handful of actions prose actually needs: headings, emphasis, lists, syntax visibility, focus mode, and word-count statistics. It recedes while you type and returns when you reach for the mouse.

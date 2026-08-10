@@ -150,6 +150,9 @@ extension EditorViewController: NSMenuItemValidation {
     case #selector(toggleTypewriterMode(_:)):
       menuItem.setOn(AppPreferences.Editor.typewriterMode)
       return true
+    case #selector(toggleFileSidebar(_:)):
+      menuItem.title = isSidebarVisible ? "Hide Sidebar" : "Show Sidebar"
+      return true
     default:
       return true
     }

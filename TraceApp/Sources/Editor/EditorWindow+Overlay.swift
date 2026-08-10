@@ -43,6 +43,8 @@ extension EditorWindow {
     collectionBehavior.insert(.canJoinAllSpaces)
     collectionBehavior.insert(.fullScreenAuxiliary)
     toolbarMode = .hidden
+    // The 1/3-width overlay can't host the sidebar; the pref stays untouched
+    (contentViewController as? EditorViewController)?.setSidebarVisible(false, animated: false)
     applyOverlayChrome()
     showOverlayFab()
 
@@ -99,6 +101,10 @@ extension EditorWindow {
       self.resetOverlayChrome()
       self.orderOut(nil)
       self.isExitingOverlay = false
+      (self.contentViewController as? EditorViewController)?.setSidebarVisible(
+        AppPreferences.Window.showSidebar,
+        animated: false
+      )
       completion?()
     }
 
@@ -217,12 +223,18 @@ extension EditorWindow {
     fab.translatesAutoresizingMaskIntoConstraints = false
     contentView.addSubview(fab)
 
+    let centerX = fab.centerXAnchor.constraint(
+      equalTo: contentView.centerXAnchor,
+      constant: editorViewController.contentLeftInset / 2
+    )
+
     NSLayoutConstraint.activate([
-      fab.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+      centerX,
       fab.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.fabEdgeOffset),
     ])
 
     overlayFab = fab
+    overlayFabCenterX = centerX
   }
 
   func hideOverlayFab() {
@@ -298,6 +310,7 @@ private extension EditorWindow {
         symbolName: Icons.moon,
         accessibilityLabel: Localized.Toolbar.dimInactiveLines,
         currentSymbolName: { AppPreferences.Editor.focusMode ? Icons.moonFill : Icons.moon },
+        isActive: { AppPreferences.Editor.focusMode },
         handler: { _ in
           AppPreferences.Editor.focusMode.toggle()
         }

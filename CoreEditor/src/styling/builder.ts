@@ -30,7 +30,9 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     // Top padding clears the titlebar; the web view bleeds underneath it.
     // Left padding matches the fixed gutter width so text stays put when
     // line numbers toggle with syntax visibility.
-    paddingTop: '40px',
+    // Matches the native titlebar fade scrim (64px): resting text starts
+    // fully opaque, scrolled text dissolves inside the scrim
+    paddingTop: '64px',
     paddingLeft: '48px',
     paddingRight: '24px',
     paddingBottom: '50vh',

@@ -57,6 +57,13 @@ extension EditorViewController {
         return nil
       }
 
+      // Command-Backslash toggles the sidebar; handled here because the
+      // WKWebView swallows the key equivalent before menu dispatch
+      if event.keyCode == .kVK_ANSI_Backslash, event.userModifierFlags == .command, let self {
+        self.toggleFileSidebar(nil)
+        return nil
+      }
+
       // Press Fn-Control-F to fill the window, see #1167
       if event.keyCode == .kVK_ANSI_F, event.deviceIndependentFlags == [.function, .control] {
         NSApp.sendAction(sel_getUid("_zoomFill:"), to: nil, from: nil)

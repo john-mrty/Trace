@@ -129,6 +129,13 @@ final class EditorDocument: NSDocument {
     #endif
   }
 
+  /// Rebinds this document to a view controller that already owns a window,
+  /// used by the sidebar to replace a window's document in place.
+  func adoptHostViewController(_ viewController: EditorViewController) {
+    hostViewController = viewController
+    viewController.representedObject = self
+  }
+
   func waitUntilSaveCompleted(userInitiated: Bool = false, delay: TimeInterval = 0.6) async {
     await withCheckedContinuation { continuation in
       saveContent(userInitiated: userInitiated) {

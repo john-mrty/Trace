@@ -11,6 +11,7 @@ import UniformTypeIdentifiers
 import MarkEditCore
 import MarkEditKit
 import FontPicker
+import SharedUI
 
 /**
  UserDefaults wrapper with handy getters and setters.
@@ -46,6 +47,11 @@ enum AppPreferences {
      */
     @Storage(key: "general.granted-folder-bookmark", defaultValue: nil)
     static var grantedFolderBookmark: Data?
+
+    /// Root folder of the file navigation sidebar; always a single bookmark,
+    /// unlike the dual-shape `grantedFolderBookmark` above.
+    @Storage(key: "general.sidebar-root-bookmark", defaultValue: nil)
+    static var sidebarRootBookmark: Data?
 
     static var quitAlwaysKeepsWindows: Bool {
       get {
@@ -216,6 +222,20 @@ enum AppPreferences {
     static var tabbingMode: NSWindow.TabbingMode {
       didSet {
         performUpdates { $0.view.window?.tabbingMode = tabbingMode }
+      }
+    }
+
+    @Storage(key: "window.show-sidebar", defaultValue: false)
+    static var showSidebar: Bool {
+      didSet {
+        performUpdates { $0.setSidebarVisible(showSidebar, animated: true) }
+      }
+    }
+
+    @Storage(key: "window.sidebar-sort-order", defaultValue: .alphabetical)
+    static var sidebarSortOrder: FileTreeSortOrder {
+      didSet {
+        performUpdates { $0.applySidebarSortOrder() }
       }
     }
 

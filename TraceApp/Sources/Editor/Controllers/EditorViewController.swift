@@ -23,6 +23,8 @@ final class EditorViewController: NSViewController {
 
   var hasUnfinishedAnimations = false
   var hasBeenEdited = false
+  var isSidebarVisible = false
+  var contentLeftInset: Double = 0
   var mouseExitedWindow = false
   var nativeSearchQueryChanged = false
   var bottomPanelHeight: Double = 0
@@ -91,6 +93,21 @@ final class EditorViewController: NSViewController {
   // Full-bleed translucent backdrop so the desktop blurs through the editor.
   // Configured in `setUp()`, see EditorViewController+UI.swift.
   let backdropView = MaterialView()
+
+  // File navigation sidebar, see EditorViewController+Sidebar.swift
+  let sidebarContainer = MaterialView()
+  let topFadeScrim = TopFadeScrimView()
+  private(set) lazy var sidebarDivider = DividerView()
+  private(set) lazy var sidebarToggleButton = QuietIconButton(
+    symbolName: Icons.sidebarLeading,
+    accessibilityLabel: "Toggle Sidebar (⌘\\)"
+  )
+  private(set) lazy var sidebarSortButton = QuietIconButton(
+    symbolName: Icons.arrowUpArrowDown,
+    accessibilityLabel: "Sort By",
+    pointSize: 11
+  )
+  private(set) lazy var fileTree = FileTreeView(fileExtensions: Self.quickOpenExtensions)
 
   // Height constraint of the effect view, depending on the panel state
   private(set) lazy var modernEffectHeight = modernEffectView.heightAnchor.constraint(equalToConstant: 0)
@@ -274,6 +291,10 @@ extension EditorViewController {
   override func viewWillAppear() {
     super.viewWillAppear()
     configureWindowAppearance()
+    attachSidebarAccessoryIfNeeded()
+
+    // New windows and tabs inherit the global sidebar visibility
+    setSidebarVisible(AppPreferences.Window.showSidebar, animated: false)
   }
 
   override func viewDidLayout() {
@@ -285,6 +306,7 @@ extension EditorViewController {
     layoutPanels()
     layoutWebView()
     layoutStatusView()
+    layoutSidebar()
   }
 
   override func mouseMoved(with event: NSEvent) {
@@ -437,6 +459,10 @@ extension EditorViewController {
 
     hasBeenEdited = false
     setShowSelectionStatus(enabled: !AppPreferences.Editor.hideSyntaxMarks)
+
+    if documentChanged {
+      updateSidebarSelection()
+    }
   }
 
   func setHasModalSheet(value: Bool) {

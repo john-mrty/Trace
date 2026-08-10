@@ -96,7 +96,9 @@ function showLightbox(source: string) {
 
   overlay.onclick = dismiss;
   document.addEventListener('keydown', onKeyDown, true);
-  document.body.appendChild(overlay);
+
+  // Theme rules are scoped to the editor element; on body the overlay is unstyled
+  window.editor.dom.appendChild(overlay);
 }
 
 class InlineImageWidget extends WidgetType {

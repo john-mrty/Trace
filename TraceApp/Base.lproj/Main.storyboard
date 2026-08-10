@@ -914,6 +914,12 @@ Gw
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="vFo-cs-Sp1"/>
+                                        <menuItem title="Show Sidebar" keyEquivalent="\" id="sBr-Tg-Mi1">
+                                            <connections>
+                                                <action selector="toggleFileSidebar:" target="Ady-hI-5gd" id="sBr-Tg-Ac1"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="sBr-Tg-Sp1"/>
                                         <menuItem title="Customize Toolbar…" hidden="YES" id="1UK-8n-QPP">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>

@@ -47,6 +47,7 @@ public extension UInt16 {
   static let kVK_ANSI_F: Self = 0x03
   static let kVK_ANSI_I: Self = 0x22
   static let kVK_Return: Self = 0x24
+  static let kVK_ANSI_Backslash: Self = 0x2A
   static let kVK_Tab: Self = 0x30
   static let kVK_Space: Self = 0x31
   static let kVK_Delete: Self = 0x33

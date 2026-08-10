@@ -175,6 +175,7 @@ enum Localized {
 // Note: double check availability and deployment target before adding new icons
 enum Icons {
   static let arrowDownCircle = "arrow.down.circle"
+  static let arrowUpArrowDown = "arrow.up.arrow.down"
   static let arrowUturnBackwardCircle = "arrow.uturn.backward.circle"
   static let bold = "bold"
   static let characterCursorIbeam = "character.cursor.ibeam"
@@ -208,6 +209,7 @@ enum Icons {
   static let paintpalette = "paintpalette"
   static let puzzlepieceExtension = "puzzlepiece.extension"
   static let shippingbox = "shippingbox"
+  static let sidebarLeading = "sidebar.left"
   static let sparkles = "sparkles"
 }
 

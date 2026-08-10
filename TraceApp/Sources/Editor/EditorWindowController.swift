@@ -28,6 +28,12 @@ final class EditorWindowController: NSWindowController, NSWindowDelegate {
     (window as? EditorWindow)?.showOverlayFab()
   }
 
+  // Fork behavior: no proxy icon; it collides with the title over the hidden titlebar
+  override func synchronizeWindowTitleWithDocumentName() {
+    super.synchronizeWindowTitleWithDocumentName()
+    window?.representedURL = nil
+  }
+
   override func showWindow(_ sender: Any?) {
     if shouldWaitResetting {
       // Snapshot the caller's tabbing preference,

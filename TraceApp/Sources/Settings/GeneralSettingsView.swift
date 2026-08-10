@@ -18,6 +18,7 @@ struct GeneralSettingsView: View {
   @State private var defaultLineEndings = AppPreferences.General.defaultLineEndings
   @State private var tabbingMode = AppPreferences.Window.tabbingMode
   @State private var reduceTransparency = AppPreferences.Window.reduceTransparency
+  @State private var sidebarRootPath = Self.resolvedSidebarRootPath()
 
   var body: some View {
     SettingsForm {
@@ -92,6 +93,38 @@ struct GeneralSettingsView: View {
           }
           .formLabel(Localized.Settings.reduceTransparencyLabel)
       }
+
+      Section {
+        HStack {
+          Text(sidebarRootPath ?? "Current document's folder")
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
+            .truncationMode(.middle)
+
+          Button("Choose…") {
+            Task {
+              await NSApp.appDelegate?.saveSidebarRootBookmark()
+              sidebarRootPath = Self.resolvedSidebarRootPath()
+            }
+          }
+
+          if sidebarRootPath != nil {
+            Button("Reset") {
+              AppPreferences.General.sidebarRootBookmark = nil
+              sidebarRootPath = nil
+
+              for editor in EditorPreloader.shared.viewControllers() {
+                editor.reloadSidebar()
+              }
+            }
+          }
+        }
+        .formLabel("Sidebar folder")
+      }
     }
+  }
+
+  private static func resolvedSidebarRootPath() -> String? {
+    (AppDelegate.resolvedSidebarRootURL()?.path as NSString?)?.abbreviatingWithTildeInPath
   }
 }

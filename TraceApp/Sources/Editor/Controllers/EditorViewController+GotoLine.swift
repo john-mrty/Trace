@@ -102,8 +102,12 @@ extension EditorViewController {
   }
 }
 
-private extension EditorViewController {
+extension EditorViewController {
+  // Shared with the sidebar's file tree
   static let quickOpenExtensions: Set<String> = ["md", "markdown", "mdown", "txt", "text"]
+}
+
+private extension EditorViewController {
 
   func quickOpenItems() -> [CommandPaletteItem] {
     var urls = [URL]()

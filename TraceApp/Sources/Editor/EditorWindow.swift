@@ -22,6 +22,8 @@ final class EditorWindow: NSWindow {
   let overlayWidthFraction: CGFloat = 1.0 / 3.0
   let overlayCornerRadius: CGFloat = 12
   var overlayFab: EditorOverlayToolbar?
+  // Nudged right when the sidebar is open so the FAB centers over the text column
+  var overlayFabCenterX: NSLayoutConstraint?
 
   /// Forces `.preferred` tabbing for an on-demand window (e.g. "New Tab"),
   /// without mutating the persisted `AppPreferences.Window.tabbingMode`.
@@ -66,6 +68,9 @@ final class EditorWindow: NSWindow {
     toolbar = NSToolbar() // Required for multi-tab layout
     // Fork behavior: the FAB replaces the toolbar everywhere, ignore the toolbar-mode pref
     toolbarMode = .hidden
+    // With a titlebar accessory, macOS 26 draws an opaque backing that
+    // reads as a solid white bar; the title floats over the content instead
+    titlebarAppearsTransparent = true
     tabbingMode = Self.forcedTabbing ? .preferred : AppPreferences.Window.tabbingMode
     reduceTransparency = AppDesign.reduceTransparency
 
