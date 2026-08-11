@@ -61,6 +61,9 @@ html, body {
   line-height: 1.85;
   max-width: 78ch;
   margin-inline: auto;
+  /* Flex item: without this, the widest child (a nowrap table) blocks the
+     column from shrinking in narrow windows like the overlay */
+  min-width: 0;
 }
 
 /* Dim structural marks (not content) so the markup recedes behind the text */

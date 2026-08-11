@@ -28,7 +28,8 @@ import AppKitExtensions
     case .systemRounded:
       return "ui-rounded"
     case .systemSerif:
-      return "ui-serif"
+      // Charter ships with macOS; large x-height holds up at small sizes. New York fallback.
+      return "Charter, ui-serif"
     case let .customFont(name):
       return NSFont(name: name)?.cssFontFamily ?? name
     }
@@ -59,7 +60,7 @@ import AppKitExtensions
     case .systemRounded:
       return .roundedSystemFont(ofSize: size, weight: weight)
     case .systemSerif:
-      return .serifSystemFont(ofSize: size, weight: weight)
+      return NSFont(name: "Charter-Roman", size: size) ?? .serifSystemFont(ofSize: size, weight: weight)
     case let .customFont(name):
       return NSFont(name: name, size: size) ?? .systemFont(ofSize: size, weight: weight)
     }

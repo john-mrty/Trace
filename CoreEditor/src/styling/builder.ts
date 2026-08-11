@@ -275,6 +275,11 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-md-tablePreview': {
     borderCollapse: 'collapse',
     margin: '4px 0',
+    // display: block lets a too-wide table scroll inside its own box instead
+    // of propping the flex column open (nowrap cells made it max-content)
+    display: 'block',
+    overflowX: 'auto',
+    maxWidth: '100%',
   },
   '.cm-md-tablePreview th, .cm-md-tablePreview td': {
     border: '1px solid rgba(140, 140, 140, 0.4)',
@@ -308,7 +313,7 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     paddingRight: '22px',
     // Smaller than body text; slight push-down to optically align with the line
     fontSize: '0.8em',
-    paddingTop: '0.22em',
+    paddingTop: '0.15em',
   },
   '.cm-activeLineGutter': {
     backgroundColor: 'inherit',

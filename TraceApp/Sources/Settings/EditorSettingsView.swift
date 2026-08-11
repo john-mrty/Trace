@@ -163,7 +163,7 @@ private extension EditorSettingsView {
   }
 
   var fontStyleOptions: [FontStyle] {
-    var options: [FontStyle] = [.systemDefault, .systemMono, .systemRounded, .systemSerif]
+    var options: [FontStyle] = [.systemDefault, .systemSerif, .systemMono]
 
     // Keep a custom font selectable if one was configured (e.g. via settings.json)
     if case .customFont = fontStyle, !options.contains(fontStyle) {
