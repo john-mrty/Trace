@@ -13,16 +13,11 @@ public extension URL {
   }
 
   var resolvingSymbolicLink: URL {
-    guard isSymbolicLink else {
+    guard isFileURL else {
       return self
     }
 
-    do {
-      let resolvedPath = try FileManager.default.destinationOfSymbolicLink(atPath: path)
-      return URL(filePath: resolvedPath)
-    } catch {
-      return self
-    }
+    return resolvingSymlinksInPath()
   }
 
   var isBinaryFile: Bool {
@@ -76,10 +71,6 @@ public extension URL {
 // MARK: - Private
 
 private extension URL {
-  var isSymbolicLink: Bool {
-    (try? resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) ?? false
-  }
-
   var suggestedFileType: UTType? {
     if let associatedType = (try? resourceValues(forKeys: [.contentTypeKey]))?.contentType {
       return associatedType
