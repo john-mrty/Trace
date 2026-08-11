@@ -40,7 +40,7 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 - **Hover table of contents** — quiet dashes in the top-left mark your place in the document. Hover for the full outline; click to jump.
 - **Overlay mode** (⌥`) — summon any document as a floating right-edge panel above your other apps, for notes alongside whatever you're doing.
 
-![Overlay mode — Trace floating at the right edge over a browser](.github/assets/overlay-mode.png)
+https://github.com/user-attachments/assets/55650c11-af89-4f74-b844-72d7bb6c172f
 
 ## When the writing leaves Trace
 

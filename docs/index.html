@@ -354,7 +354,7 @@ footer a{color:var(--ink-soft)}
   </figure>
 
   <figure>
-    <img src="img/overlay-mode.webp" alt="Trace floating as a narrow panel at the right edge of the screen, above a browser window." width="1600" height="1005" loading="lazy" decoding="async">
+    <video src="overlay-mode.mp4" poster="img/overlay-mode.webp" autoplay muted loop playsinline width="1720" height="1080" aria-label="Trace floating as a narrow panel at the right edge of the screen, above a browser window."></video>
     <figcaption class="col">Overlay mode, for notes alongside whatever else you are doing.</figcaption>
   </figure>
 
@@ -383,9 +383,10 @@ footer a{color:var(--ink-soft)}
     if (!h1) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       h1.classList.add('resolved');
-      // Reduced motion: no autoplaying hero; hand control back to the visitor
-      var v = document.querySelector('video');
-      if (v) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+      // Reduced motion: no autoplaying videos; hand control back to the visitor
+      document.querySelectorAll('video').forEach(function(v){
+        v.removeAttribute('autoplay'); v.pause(); v.controls = true;
+      });
       return;
     }
     setTimeout(function(){ h1.classList.add('resolved'); }, 850);
