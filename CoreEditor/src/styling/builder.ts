@@ -174,6 +174,27 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '1',
     pointerEvents: 'auto',
   },
+  // Set on click so the panel closes despite the pointer still hovering it;
+  // cleared when the mouse leaves the indicator (see toc/indicator.ts)
+  '.cm-md-tocIndicator.cm-md-tocSuppressed .cm-md-tocPanel': {
+    opacity: '0 !important',
+    pointerEvents: 'none !important',
+  },
+  // While suppressed the panel is hidden, so the dashes must stay visible
+  // even though the pointer is still hovering the indicator
+  '.cm-md-tocIndicator.cm-md-tocSuppressed:hover .cm-md-tocDashes': {
+    opacity: '1',
+    pointerEvents: 'auto',
+  },
+  // Keyboard-opened popover (⇧⌘A): same visual state as hover
+  '.cm-md-tocIndicator.cm-md-tocKeyboardOpen .cm-md-tocPanel': {
+    opacity: '1',
+    pointerEvents: 'auto',
+  },
+  '.cm-md-tocIndicator.cm-md-tocKeyboardOpen .cm-md-tocDashes': {
+    opacity: '0',
+    pointerEvents: 'none',
+  },
   '.cm-md-tocRow': {
     padding: '4px 12px',
     borderRadius: '5px',
@@ -191,6 +212,10 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
   '.cm-md-tocRowActive': {
     opacity: '1',
     fontWeight: '600',
+  },
+  '.cm-md-tocRowKeyActive': {
+    background: 'rgba(140, 140, 140, 0.2)',
+    opacity: '1',
   },
   // Claude Code-style quotes: bar, indent, muted gray regardless of theme
   '.cm-md-quoteLine': {

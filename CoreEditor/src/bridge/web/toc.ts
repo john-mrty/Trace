@@ -1,5 +1,6 @@
 import { WebModule } from '../webModule';
 import { HeadingInfo, getTableOfContents, selectPreviousSection, selectNextSection, gotoHeader } from '../../modules/toc';
+import { toggleTocPopover } from '../../modules/toc/indicator';
 
 /**
  * @shouldExport true
@@ -11,6 +12,7 @@ export interface WebModuleTableOfContents extends WebModule {
   selectPreviousSection(): void;
   selectNextSection(): void;
   gotoHeader({ headingInfo }: { headingInfo: HeadingInfo }): void;
+  togglePopover(): void;
 }
 
 export class WebModuleTableOfContentsImpl implements WebModuleTableOfContents {
@@ -28,5 +30,9 @@ export class WebModuleTableOfContentsImpl implements WebModuleTableOfContents {
 
   gotoHeader({ headingInfo }: { headingInfo: HeadingInfo }): void {
     gotoHeader(headingInfo);
+  }
+
+  togglePopover(): void {
+    toggleTocPopover();
   }
 }

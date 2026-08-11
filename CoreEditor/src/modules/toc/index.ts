@@ -99,7 +99,8 @@ export function selectNextSection() {
 export function gotoHeader(headingInfo: HeadingInfo) {
   saveGoBackSelection();
   selectWithRanges([EditorSelection.cursor(headingInfo.from)]);
-  scrollToSelection(window.config.typewriterMode ? 'center' : 'start');
+  // 80px margin clears the 64px titlebar fade scrim the document bleeds under
+  scrollToSelection(window.config.typewriterMode ? 'center' : 'start', 80);
 }
 
 export type { HeadingInfo };

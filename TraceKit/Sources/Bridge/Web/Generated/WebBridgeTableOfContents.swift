@@ -41,6 +41,10 @@ public final class WebBridgeTableOfContents {
 
     webView?.invoke(path: "webModules.toc.gotoHeader", message: message, completion: completion)
   }
+
+  public func togglePopover(completion: ((Result<Void, WKWebView.InvokeError>) -> Void)? = nil) {
+    webView?.invoke(path: "webModules.toc.togglePopover", completion: completion)
+  }
 }
 
 public struct HeadingInfo: Codable {

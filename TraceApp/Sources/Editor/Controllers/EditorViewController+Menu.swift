@@ -468,6 +468,10 @@ private extension EditorViewController {
     }
   }
 
+  @IBAction func togglePageAnchors(_ sender: Any?) {
+    bridge.toc.togglePopover()
+  }
+
   @IBAction func selectPreviousSection(_ sender: Any?) {
     startTextEditing()
     bridge.toc.selectPreviousSection()
