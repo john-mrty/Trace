@@ -317,12 +317,22 @@ function enableGuttersObserver() {
 function updateFocusModeStyle(enabled: boolean) {
   if (styleSheets.focusMode === undefined) {
     // Rendered tables are block widgets, not .cm-line elements; the caret can
-    // never be inside one (atomicRanges skips over), so they always dim
+    // never be inside one (atomicRanges skips over), so they always dim.
+    //
+    // Dim rules key off a body class instead of toggling the stylesheet, so
+    // the always-on transition fades both entering and leaving focus mode.
+    // Gutter elements are excluded from the transition: opacity animation
+    // promotes them to a compositing layer that leaves a seam (#1581).
     styleSheets.focusMode = createStyleSheet(`
-      .cm-line:not(.cm-selectedLineRange), .cm-gutterElement:not(.cm-activeLineGutter), .cm-content > .cm-md-tablePreview {
+      @media (prefers-reduced-motion: no-preference) {
+        .cm-line, .cm-content > .cm-md-tablePreview {
+          transition: opacity 0.3s ease;
+        }
+      }
+      .focus-mode .cm-line:not(.cm-selectedLineRange), .focus-mode .cm-gutterElement:not(.cm-activeLineGutter), .focus-mode .cm-content > .cm-md-tablePreview {
         opacity: 0.25;
       }
-    `, false);
+    `);
 
     // The state is not initially correct without a focus refresh
     if (enabled) {
@@ -330,7 +340,7 @@ function updateFocusModeStyle(enabled: boolean) {
     }
   }
 
-  styleSheets.focusMode.disabled = !enabled;
+  document.body.classList.toggle('focus-mode', enabled);
 }
 
 function setOverscrollBehavior(enabled: boolean) {

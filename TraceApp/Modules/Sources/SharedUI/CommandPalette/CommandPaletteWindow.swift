@@ -425,8 +425,8 @@ private extension CommandPaletteView {
 
     return items
       .compactMap { item -> (item: CommandPaletteItem, score: Int)? in
-        let titleScore = fuzzyScore(query: query, in: item.title).map { $0 + 100 }
-        let subtitleScore = fuzzyScore(query: query, in: item.subtitle)
+        let titleScore = FuzzyMatch.score(query: query, in: item.title).map { $0 + 100 }
+        let subtitleScore = FuzzyMatch.score(query: query, in: item.subtitle)
         guard let score = [titleScore, subtitleScore].compactMap({ $0 }).max() else {
           return nil
         }
@@ -435,40 +435,6 @@ private extension CommandPaletteView {
       }
       .sorted { $0.score > $1.score }
       .map { $0.item }
-  }
-
-  /// Case-insensitive subsequence match, higher is better, nil means no match.
-  /// Contiguous matches beat scattered ones ("h2" hits both "Header 2" and "H2").
-  static func fuzzyScore(query: String, in text: String) -> Int? {
-    let query = Array(query.lowercased())
-    let text = Array(text.lowercased())
-
-    if let range = text.firstRange(of: query) {
-      return 1000 - range.lowerBound
-    }
-
-    var score = 500
-    var textIndex = 0
-
-    for char in query {
-      var found = false
-      while textIndex < text.count {
-        if text[textIndex] == char {
-          found = true
-          textIndex += 1
-          break
-        }
-
-        score -= 1
-        textIndex += 1
-      }
-
-      if !found {
-        return nil
-      }
-    }
-
-    return score
   }
 }
 

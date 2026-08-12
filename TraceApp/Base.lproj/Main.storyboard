@@ -113,11 +113,6 @@
                                                 <action selector="newFileFromClipboard:" target="Voe-Tx-rLC" id="pJC-h1-fZk"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="New Tab" keyEquivalent="t" id="dHZ-CH-KLC">
-                                            <connections>
-                                                <action selector="createNewTab:" target="Ady-hI-5gd" id="ybh-8g-tSk"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                             <connections>
                                                 <action selector="openDocument:" target="Ady-hI-5gd" id="bVn-NM-KNZ"/>
@@ -147,7 +142,7 @@
                                                 <action selector="performClose:" target="Ady-hI-5gd" id="HmO-Ls-i7Q"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Reopen Closed Tab" keyEquivalent="T" id="rct-Cm-ShT">
+                                        <menuItem title="Reopen Closed Document" keyEquivalent="T" id="rct-Cm-ShT">
                                             <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
                                             <connections>
                                                 <action selector="reopenClosedTab:" target="Voe-Tx-rLC" id="rct-Ac-001"/>
@@ -499,19 +494,7 @@ Gw
                                                             <action selector="performEditCommand:" target="Ady-hI-5gd" id="OtY-hU-ezP"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Toggle Block Comment" keyEquivalent="A" identifier="toggleBlockComment" id="OB4-Cz-Y5L">
-                                                        <modifierMask key="keyEquivalentModifierMask" option="YES"/>
-                                                        <connections>
-                                                            <action selector="performEditCommand:" target="Ady-hI-5gd" id="W5e-Ip-4DK"/>
-                                                        </connections>
-                                                    </menuItem>
                                                     <menuItem isSeparatorItem="YES" id="awZ-1Q-CQi"/>
-                                                    <menuItem title="Go Forward" keyEquivalent="" id="XUq-5x-gZk">
-                                                        <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
-                                                        <connections>
-                                                            <action selector="navigateGoBack:" target="Ady-hI-5gd" id="5rf-9P-tnj"/>
-                                                        </connections>
-                                                    </menuItem>
                                                     <menuItem title="Go Back" keyEquivalent="" id="gHK-tW-hmK">
                                                         <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                                         <connections>
@@ -706,16 +689,6 @@ Gw
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="vuH-Ou-wb9"/>
-                                        <menuItem title="Read Only Mode" keyEquivalent="R" id="ex0-rS-Zlm">
-                                            <connections>
-                                                <action selector="toggleReadOnlyMode:" target="Ady-hI-5gd" id="GbK-v1-jri"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Statistics" keyEquivalent="I" id="Bvk-zs-CQB" userLabel="Statistics">
-                                            <connections>
-                                                <action selector="toggleStatistics:" target="Ady-hI-5gd" id="aCq-vt-CmH"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Typewriter in Focus Mode" keyEquivalent="D" id="Cvo-jv-iDg">
                                             <connections>
                                                 <action selector="toggleTypewriterMode:" target="Ady-hI-5gd" id="ucN-oH-iJs"/>
@@ -753,16 +726,6 @@ Gw
                                                     <menuItem title="Heading 4" keyEquivalent="4" id="P4a-Ym-fhL">
                                                         <connections>
                                                             <action selector="toggleH4:" target="Ady-hI-5gd" id="YcV-YI-nI5"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Heading 5" keyEquivalent="5" id="toe-mI-2pC">
-                                                        <connections>
-                                                            <action selector="toggleH5:" target="Ady-hI-5gd" id="sic-6P-Hna"/>
-                                                        </connections>
-                                                    </menuItem>
-                                                    <menuItem title="Heading 6" keyEquivalent="6" id="gfx-t1-1ED">
-                                                        <connections>
-                                                            <action selector="toggleH6:" target="Ady-hI-5gd" id="yle-pB-4Ku"/>
                                                         </connections>
                                                     </menuItem>
                                                 </items>
@@ -803,12 +766,6 @@ Gw
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
                                                 <action selector="toggleBulleted:" target="Ady-hI-5gd" id="bLD-st-Ac1"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Dashed List" id="ANX-uP-CA4">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="toggleBullet:" target="Ady-hI-5gd" id="bzg-QY-FFp"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Ordered List" keyEquivalent="o" id="vhv-qY-5Gc">
@@ -999,11 +956,6 @@ Gw
                                                 <action selector="openWelcomeManual:" target="Voe-Tx-rLC" id="wTm-Ac-001"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Trace Help" keyEquivalent="?" id="FKE-Sm-Kum">
-                                            <connections>
-                                                <action selector="showHelp:" target="Voe-Tx-rLC" id="ba9-aC-ghc"/>
-                                            </connections>
-                                        </menuItem>
                                         <menuItem title="Issue Tracker" secondaryImage="smallcircle.filled.circle" catalog="system" id="uKp-pC-7O6">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
@@ -1032,16 +984,12 @@ Gw
                         <outlet property="editFontMenu" destination="VwK-Nx-wgD" id="gtE-IA-gOo"/>
                         <outlet property="editGotoLineItem" destination="wBj-kZ-XmW" id="eZ2-n8-zKI"/>
                         <outlet property="editPasteItem" destination="gVA-U4-sdL" id="8b3-le-UtC"/>
-                        <outlet property="editReadOnlyItem" destination="ex0-rS-Zlm" id="GjQ-VO-cGs"/>
                         <outlet property="editRedoItem" destination="6dh-zS-Vam" id="fN4-hA-Oqr"/>
-                        <outlet property="editStatisticsItem" destination="Bvk-zs-CQB" id="oU7-Tq-e9K"/>
                         <outlet property="editTableOfContentsMenu" destination="BxI-nv-Xa5" id="lTp-Xn-8tg"/>
                         <outlet property="editTypewriterItem" destination="Cvo-jv-iDg" id="1vS-bx-fNh"/>
                         <outlet property="editUndoItem" destination="dRJ-4n-Yzg" id="Qet-C4-yT2"/>
                         <outlet property="editWritingToolsItem" destination="BWI-Qs-d6i" id="yvo-s9-n7K"/>
-                        <outlet property="fileNewTabItem" destination="dHZ-CH-KLC" id="nk0-fR-sju"/>
                         <outlet property="fileReopenClosedTabItem" destination="rct-Cm-ShT" id="q4P-gZ-qbI"/>
-                        <outlet property="formatBulletItem" destination="ANX-uP-CA4" id="4cQ-3z-hPG"/>
                         <outlet property="formatBulletedItem" destination="bLD-st-Bu1" id="bLD-st-Ou1"/>
                         <outlet property="formatCodeBlockItem" destination="QOM-rI-Bxj" id="4Dy-YC-z6y"/>
                         <outlet property="formatCodeItem" destination="Ibb-aP-jnQ" id="4kt-Sh-zOv"/>

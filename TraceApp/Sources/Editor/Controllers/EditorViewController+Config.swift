@@ -83,7 +83,9 @@ extension EditorViewController {
   }
 
   func setShowSelectionStatus(enabled: Bool) {
-    statusView.isHidden = !enabled
+    // Fork behavior: the Ln/Col pill is retired — it overlapped the help FAB
+    // and added little; go-to-line stays reachable via ⌘L
+    statusView.isHidden = true
   }
 
   func setTypewriterMode(enabled: Bool) {

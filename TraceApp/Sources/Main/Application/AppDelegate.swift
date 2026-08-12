@@ -40,7 +40,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   @IBOutlet weak var editReadOnlyItem: NSMenuItem?
   @IBOutlet weak var editStatisticsItem: NSMenuItem?
   @IBOutlet weak var editTypewriterItem: NSMenuItem?
-  @IBOutlet weak var formatBulletItem: NSMenuItem?
   @IBOutlet weak var formatBulletedItem: NSMenuItem?
   @IBOutlet weak var formatNumberingItem: NSMenuItem?
   @IBOutlet weak var formatTodoItem: NSMenuItem?
@@ -55,6 +54,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   var welcomeWindowController: WelcomeWindowController?
 
   func applicationWillFinishLaunching(_ notification: Notification) {
+    // Fork behavior: tabs are retired; this also strips the system-injected
+    // "Show Tab Bar" / "Show All Tabs" items from the View menu
+    NSWindow.allowsAutomaticWindowTabbing = false
+
     NSApp.appearance = AppPreferences.General.appearance.resolved()
     EditorPreloader.shared.warmUp()
   }
@@ -70,7 +73,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         keyEquivalent: "?"
       )
 
-      item.keyEquivalentModifierMask = [.command, .shift]
+      // "?" already encodes shift; an explicit .shift in the mask prevents matching
+      item.keyEquivalentModifierMask = [.command]
       helpMenu.insertItem(item, at: min(1, helpMenu.items.count))
     }
 

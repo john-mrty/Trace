@@ -10,12 +10,14 @@ ENTITLEMENTS_VARIANT =
 MARKEDITMAC_ENTITLEMENTS = TraceApp/Info$(ENTITLEMENTS_VARIANT).entitlements
 QUICKLOOKMAC_ENTITLEMENTS = QuickLookMac/Info$(ENTITLEMENTS_VARIANT).entitlements
 
-CODE_SIGN_IDENTITY = -
-DEVELOPMENT_TEAM =
+// Stable identity so TCC permission grants survive rebuilds; ad-hoc ("-")
+// produces a new signature every build and macOS re-prompts each deploy
+CODE_SIGN_IDENTITY = Apple Development
+DEVELOPMENT_TEAM = K56HFUDVYD
 PRODUCT_BUNDLE_IDENTIFIER = io.moriarty.trace
 REGISTER_APP_GROUPS = NO
 
-MARKETING_VERSION = 1.0
-CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 1.6
+CURRENT_PROJECT_VERSION = 6
 
 #include? "Local.xcconfig"

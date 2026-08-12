@@ -32,13 +32,15 @@ final class EditorOverlayToolbar: NSView {
   private let bezel = BezelView(cornerRadius: Constants.height / 2)
   private let tooltip = OverlayTooltip()
   private let actions: [Action]
+  private let isCircular: Bool
   private var buttons: [NSButton] = []
   private var scrollMonitor: Any?
   private var settleWorkItem: DispatchWorkItem?
   private var tooltipWorkItem: DispatchWorkItem?
 
-  init(actions: [Action]) {
+  init(actions: [Action], circular: Bool = false) {
     self.actions = actions
+    self.isCircular = circular
     super.init(frame: .zero)
 
     setUpChrome()
@@ -51,6 +53,10 @@ final class EditorOverlayToolbar: NSView {
   }
 
   override var intrinsicContentSize: NSSize {
+    if isCircular {
+      return NSSize(width: Constants.height, height: Constants.height)
+    }
+
     let buttonsWidth = CGFloat(buttons.count) * Constants.buttonSize
     let spacingWidth = CGFloat(max(0, buttons.count - 1)) * Constants.buttonSpacing
     return NSSize(
@@ -90,7 +96,7 @@ final class EditorOverlayToolbar: NSView {
       transform: nil
     )
 
-    var x = Constants.horizontalPadding
+    var x = isCircular ? (bounds.width - Constants.buttonSize) / 2 : Constants.horizontalPadding
     let y = (bounds.height - Constants.buttonSize) / 2
 
     for button in buttons {
@@ -158,8 +164,9 @@ private extension EditorOverlayToolbar {
 
   func setUpChrome() {
     wantsLayer = true
+    // The circular help FAB stays flat; only the main toolbar carries a shadow
     layer?.shadowColor = NSColor.black.cgColor
-    layer?.shadowOpacity = Constants.restingShadowOpacity
+    layer?.shadowOpacity = isCircular ? 0 : Constants.restingShadowOpacity
     layer?.shadowRadius = Constants.restingShadowRadius
     layer?.shadowOffset = CGSize(width: 0, height: -1)
 
@@ -247,7 +254,7 @@ private extension EditorOverlayToolbar {
 
   /// Backing layers suppress implicit animations, so animate the shadow explicitly.
   func setShadow(raised: Bool) {
-    guard let layer else {
+    guard let layer, !isCircular else {
       return
     }
 
@@ -273,6 +280,9 @@ private extension EditorOverlayToolbar {
   func setUpButtons() {
     buttons = actions.enumerated().map { index, action in
       let button = OverlayIconButton()
+      if isCircular {
+        button.layer?.cornerRadius = Constants.buttonSize / 2
+      }
       if let customImage = action.customImage {
         button.image = customImage
       } else if let symbolName = action.currentSymbolName?() ?? action.symbolName {
@@ -340,8 +350,17 @@ private extension EditorOverlayToolbar {
   func presentTooltip(for button: NSButton, text: String, hint: String?) {
     let wasHidden = tooltip.isHidden
     let size = tooltip.set(text: text, hint: hint)
+    var x = (button.frame.midX - size.width / 2).rounded()
+
+    // Keep the pill inside the window; the help FAB hugs the right edge
+    if let contentBounds = window?.contentView?.bounds {
+      let originInWindow = convert(NSPoint.zero, to: nil).x
+      x = min(x, contentBounds.maxX - originInWindow - size.width - 8)
+      x = max(x, contentBounds.minX - originInWindow + 8)
+    }
+
     tooltip.frame = NSRect(
-      x: (button.frame.midX - size.width / 2).rounded(),
+      x: x,
       y: bounds.height + Constants.tooltipSpacing,
       width: size.width,
       height: size.height

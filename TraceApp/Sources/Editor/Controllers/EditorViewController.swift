@@ -131,7 +131,7 @@ final class EditorViewController: NSViewController {
       self?.showGotoLineWindow(nil)
     }
 
-    view.isHidden = AppPreferences.Editor.hideSyntaxMarks
+    view.isHidden = true
     return view
   }()
 

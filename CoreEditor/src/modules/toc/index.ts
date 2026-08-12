@@ -45,11 +45,11 @@ export function getTableOfContents(sourceState?: EditorState) {
 
         if (isSetext) {
           // SetextHeading has a line break
-          return text.split(state.lineBreak)[0].trim();
+          return stripInlineSyntax(text.split(state.lineBreak)[0].trim());
         } else {
           // ATXHeading can have up to 3 leading spaces and arbitrary number of spaces between # and visible characters,
           // example of a valid section header: "   #  Hello"
-          return text.replace(/ {0,3}#+ +/, '');
+          return stripInlineSyntax(text.replace(/ {0,3}#+ +/, ''));
         }
       })();
 
@@ -73,6 +73,20 @@ export function getTableOfContents(sourceState?: EditorState) {
   }
 
   return results;
+}
+
+/**
+ * Headings render with syntax hidden in the editor; popover labels should
+ * match, so strip inline Markdown from titles.
+ */
+function stripInlineSyntax(text: string) {
+  return text
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/(\*\*\*|___)(.+?)\1/g, '$2')
+    .replace(/(\*\*|__)(.+?)\1/g, '$2')
+    .replace(/(\*|_)(.+?)\1/g, '$2')
+    .replace(/~~(.+?)~~/g, '$1')
+    .replace(/`([^`]+)`/g, '$1');
 }
 
 export function getLinkAnchor(title: string) {

@@ -359,17 +359,14 @@ private extension AppDelegate {
 
   static let welcomeManual = """
   # Welcome to Trace
-  ---
   *A quiet place to write.*
 
   This document is the quickstart. It's also just a Markdown file — edit it, save it, or close it and never see it again. Reopen it anytime from **Help → Welcome to Trace**.
-
   ---
   ## The idea
-  Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make an editable heading. Links become clickable text, checkboxes become real checkboxes, code fences become panels. The words are the interface.
-
+  Trace hides Markdown syntax as you write. Type `**bold**` and the asterisks vanish, leaving **bold**. Type `#` and a space to make an editable heading. [Links](https://en.wikipedia.org/wiki/Hyperlink) become clickable text, checkboxes become real checkboxes, code fences become panels. *The words are the interface.*
   ## Where everything lives
-  1. **Show / hide syntax** (⇧⌘H) — show or hide Markdown syntax, line numbers, and a selection counter.
+  1. **Show / hide syntax** (⇧⌘H) — show or hide Markdown syntax and line numbers.
   2. **Focus mode** (⇧⌘F) — everything dims except the lines you're working on, and typewriter scrolling holds the caret at the center of the screen. The text moves, you don't.
   3. **Command palette** (⌘K) — every action, searchable: type "dark" to switch appearance, "focus" to toggle focus mode. Recent files live there too.
   4. **Toggle sidebar** (⌘\\\\) — a tree of the writing files around your document; browse with the arrow keys and press → to open one in place. Use ⇧⌘O to quickly open nearby or recent docs by name.
@@ -377,8 +374,9 @@ private extension AppDelegate {
   6. **Overlay mode** (⌥`) — the active document floats over other apps as a right-edge panel, for notes alongside your work.
   7. **Copy as Rich Text** (⌥⌘C) — keep formatting when pasting into Mail, Docs, or Slack.
   8. **Settings** (⌘,) — change accent colors, line height, appearance.
+  9. **Shortcuts** (⇧⌘?) — every app shortcut in one panel, also behind the ? button in the corner.
 
-  *The FAB at the bottom holds the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.*
+  *The FAB at the bottom and menu controls hold the rest: headings, emphasis, lists, syntax, focus, and statistics. It fades while you type and returns when you reach for the mouse.*
 
   ---
   ## Lists
@@ -390,12 +388,29 @@ private extension AppDelegate {
 
   - [ ] And todos have checkboxes
   - [x] That strike through when done
+  ## Code blocks
+  *Clean code blocks that you can quickly copy*
 
-  ## When the writing leaves Trace
-  **⌥⌘C** copies the selection — or the whole document — as rich text: real headings, links, and emphasis land intact in Mail, Google Docs, Slack, or Notes. A plain paste still gives you the Markdown source. And your file is just plain text on disk — no library, no lock-in.
+  ```
+  func write(_ idea: Idea) -> Draft {
+      idea.words.reduce(into: Draft()) { $0.append($1) }
+  }
+  ```
+
+  ## Images
+  *Either paste from your clipboard, drag from a folder or Format > Insert a copied link.*
+
+  ![title](https://images.unsplash.com/photo-1499796683658-b659bc751db1?q=80&w=3348&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)
+  ## Tables
+  *Markdown tables render in-line, nicely formatted*
+  | Stage | What’s happening | What it feels like | What you're doing |
+  | --- | --- | --- | --- |
+  | Dump | Collect | Chaos | Getting everything out of your head |
+  | Group | Arrange | Patterns | Noticing which fragments are the same |
+  | Delete | Subtract | Relief | Cutting the parts you only kept |
+  | Order | Compose | Clarity | Finding the one sequence |
 
   ---
-
   *That rule above? Just three dashes. Enjoy the quiet.*
   """
 }

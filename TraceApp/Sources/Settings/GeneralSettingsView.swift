@@ -16,21 +16,22 @@ struct GeneralSettingsView: View {
   @State private var newFilenameExtension = AppPreferences.General.newFilenameExtension
   @State private var defaultTextEncoding = AppPreferences.General.defaultTextEncoding
   @State private var defaultLineEndings = AppPreferences.General.defaultLineEndings
-  @State private var tabbingMode = AppPreferences.Window.tabbingMode
   @State private var reduceTransparency = AppPreferences.Window.reduceTransparency
   @State private var sidebarRootPath = Self.resolvedSidebarRootPath()
 
   var body: some View {
     SettingsForm {
       Section {
-        Picker(Localized.Settings.newWindowBehavior, selection: $newWindowBehavior) {
+        CapsuleMenu(selection: $newWindowBehavior) {
           Text(Localized.Document.openDocument).tag(NewWindowBehavior.openDocument)
           Text(Localized.Document.newDocument).tag(NewWindowBehavior.newDocument)
+        } currentLabel: {
+          Text(newWindowBehavior == .openDocument ? Localized.Document.openDocument : Localized.Document.newDocument)
         }
         .onChange(of: newWindowBehavior) {
           AppPreferences.General.newWindowBehavior = newWindowBehavior
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.newWindowBehavior)
 
         Toggle(Localized.Settings.quitAlwaysKeepsWindows, isOn: $quitAlwaysKeepsWindows)
           .onChange(of: quitAlwaysKeepsWindows) {
@@ -41,17 +42,19 @@ struct GeneralSettingsView: View {
       }
 
       Section {
-        Picker(Localized.Settings.newFilenameExtension, selection: $newFilenameExtension) {
+        CapsuleMenu(selection: $newFilenameExtension) {
           ForEach(NewFilenameExtension.allCases, id: \.self) {
             Text($0.rawValue).tag($0)
           }
+        } currentLabel: {
+          Text(newFilenameExtension.rawValue)
         }
         .onChange(of: newFilenameExtension) {
           AppPreferences.General.newFilenameExtension = newFilenameExtension
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.newFilenameExtension)
 
-        Picker(Localized.Settings.defaultTextEncoding, selection: $defaultTextEncoding) {
+        CapsuleMenu(selection: $defaultTextEncoding) {
           ForEach(EditorTextEncoding.allCases, id: \.self) {
             Text($0.description)
 
@@ -59,34 +62,28 @@ struct GeneralSettingsView: View {
               Divider()
             }
           }
+        } currentLabel: {
+          Text(defaultTextEncoding.description)
         }
         .onChange(of: defaultTextEncoding) {
           AppPreferences.General.defaultTextEncoding = defaultTextEncoding
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.defaultTextEncoding)
 
-        Picker(Localized.Settings.defaultLineEndings, selection: $defaultLineEndings) {
+        CapsuleMenu(selection: $defaultLineEndings) {
           Text(Localized.Settings.macOSLineEndings).tag(LineEndings.lf)
           Text(Localized.Settings.windowsLineEndings).tag(LineEndings.crlf)
           Text(Localized.Settings.classicMacLineEndings).tag(LineEndings.cr)
+        } currentLabel: {
+          Text(lineEndingsName(defaultLineEndings))
         }
         .onChange(of: defaultLineEndings) {
           AppPreferences.General.defaultLineEndings = defaultLineEndings
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.defaultLineEndings)
       }
 
       Section {
-        Picker(Localized.Settings.tabbingMode, selection: $tabbingMode) {
-          Text(Localized.Settings.automatic).tag(NSWindow.TabbingMode.automatic)
-          Text(Localized.Settings.preferred).tag(NSWindow.TabbingMode.preferred)
-          Text(Localized.Settings.disallowed).tag(NSWindow.TabbingMode.disallowed)
-        }
-        .onChange(of: tabbingMode) {
-          AppPreferences.Window.tabbingMode = tabbingMode
-        }
-        .formMenuPicker()
-
         Toggle(Localized.Settings.reduceTransparencyDescription, isOn: $reduceTransparency)
           .onChange(of: reduceTransparency) {
             AppPreferences.Window.reduceTransparency = reduceTransparency
@@ -100,8 +97,7 @@ struct GeneralSettingsView: View {
             .foregroundStyle(.secondary)
             .lineLimit(1)
             .truncationMode(.middle)
-            // The form window sizes to its widest row; a long path must not win
-            .frame(maxWidth: 224, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
           Button("Choose…") {
             Task {
@@ -109,6 +105,7 @@ struct GeneralSettingsView: View {
               sidebarRootPath = Self.resolvedSidebarRootPath()
             }
           }
+          .buttonStyle(CapsuleButtonStyle())
 
           if sidebarRootPath != nil {
             Button("Reset") {
@@ -119,10 +116,24 @@ struct GeneralSettingsView: View {
                 editor.reloadSidebar()
               }
             }
+            .buttonStyle(CapsuleButtonStyle())
           }
         }
+        // Same width as formMenuPicker rows, so this row never widens the form
+        .frame(width: 280)
         .formLabel("Sidebar folder")
       }
+    }
+  }
+
+  private func lineEndingsName(_ value: LineEndings) -> String {
+    switch value {
+    case .crlf:
+      return Localized.Settings.windowsLineEndings
+    case .cr:
+      return Localized.Settings.classicMacLineEndings
+    default:
+      return Localized.Settings.macOSLineEndings
     }
   }
 

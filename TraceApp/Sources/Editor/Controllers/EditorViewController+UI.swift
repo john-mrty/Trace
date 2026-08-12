@@ -269,13 +269,22 @@ extension EditorViewController {
   }
 
   func layoutTopFadeScrim() {
-    // No titlebar in fullscreen, nothing to fade behind
+    // No titlebar in fullscreen, nothing to cover
     topFadeScrim.isHidden = view.window?.styleMask.contains(.fullScreen) ?? false
+
+    let titlebarHeight: Double = {
+      guard let window = view.window, let contentView = window.contentView else {
+        return TopFadeScrimView.height
+      }
+
+      return contentView.frame.height - window.contentLayoutRect.maxY
+    }()
+
     topFadeScrim.frame = CGRect(
       x: contentLeftInset,
-      y: view.bounds.height - TopFadeScrimView.height,
+      y: view.bounds.height - titlebarHeight,
       width: view.bounds.width - contentLeftInset,
-      height: TopFadeScrimView.height
+      height: titlebarHeight
     )
   }
 
@@ -705,21 +714,16 @@ private extension EditorViewController {
 // MARK: - TopFadeScrimView
 
 /**
- Progressive blur under the titlebar: scrolled text blurs and dissolves
- before it reaches the traffic lights instead of running behind them.
- A masked within-window blur does the heavy lifting; a soft tint gradient
- blends the blurred region into the page background.
+ Frosted backdrop behind the titlebar: scrolled text stays visible but blurred,
+ with a canvas-colored wash keeping the bar close to the page background.
+ Sized to the real titlebar height at layout time, hard bottom edge.
  */
 final class TopFadeScrimView: NSView {
-  static let height: Double = 64
-
-  // Eased ramp: a linear fade reads as a murky smear over light-on-dark text
-  private static let fadeStops: [(location: NSNumber, alpha: Double)] = [
-    (0, 1), (0.45, 1), (0.58, 0.82), (0.72, 0.5), (0.86, 0.18), (1, 0),
-  ]
+  /// Fallback before the view joins a window; layout uses the actual titlebar height.
+  static let height: Double = 28
 
   private let blurView = NSVisualEffectView()
-  private let tintView = GradientTintView()
+  private let tintView = NSView()
 
   init() {
     super.init(frame: .zero)
@@ -728,8 +732,9 @@ final class TopFadeScrimView: NSView {
     blurView.blendingMode = .withinWindow
     blurView.material = .popover
     blurView.state = .active
-    blurView.maskImage = Self.makeFadeMask()
     addSubview(blurView)
+
+    tintView.wantsLayer = true
     addSubview(tintView)
   }
 
@@ -749,56 +754,13 @@ final class TopFadeScrimView: NSView {
   }
 
   func setColor(_ color: NSColor) {
-    // With Reduce Transparency there's no blur; the tint carries the fade alone
+    // With Reduce Transparency there's no blur; the tint goes opaque instead
     let solid = AppDesign.reduceTransparency
     blurView.isHidden = solid
-    tintView.setColor(color, alphaScale: solid ? 1 : 0.75)
-  }
 
-  /// Alpha mask matching `fadeStops`: opaque at the top edge, clear at the bottom.
-  private static func makeFadeMask() -> NSImage {
-    // Image space is bottom-up; mirror the top-down stop locations
-    let stops = fadeStops.reversed()
-    let colors = stops.map { NSColor.black.withAlphaComponent($0.alpha) }
-    let locations = stops.map { CGFloat(1 - $0.location.doubleValue) }
-
-    let size = CGSize(width: 1, height: height)
-    return NSImage(size: size, flipped: false) { rect in
-      let gradient = NSGradient(colors: colors, atLocations: locations, colorSpace: .sRGB)
-      gradient?.draw(in: rect, angle: 90)
-      return true
-    }
-  }
-}
-
-private final class GradientTintView: NSView {
-  init() {
-    super.init(frame: .zero)
-    wantsLayer = true
-  }
-
-  @available(*, unavailable)
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-
-  override func makeBackingLayer() -> CALayer {
-    let gradient = CAGradientLayer()
-    // Layer origin is bottom-left; solid at the top edge, clear at the bottom
-    gradient.startPoint = CGPoint(x: 0.5, y: 1)
-    gradient.endPoint = CGPoint(x: 0.5, y: 0)
-    return gradient
-  }
-
-  func setColor(_ color: NSColor, alphaScale: Double) {
-    guard let gradient = layer as? CAGradientLayer else {
-      return
-    }
-
-    let stops: [(NSNumber, Double)] = [
-      (0, 1), (0.45, 1), (0.58, 0.82), (0.72, 0.5), (0.86, 0.18), (1, 0),
-    ]
-    gradient.locations = stops.map(\.0)
-    gradient.colors = stops.map { color.withAlphaComponent($0.1 * alphaScale).cgColor }
+    // The blurred canvas already matches the page color; `color` is the theme's
+    // windowBackground, which is far darker than dark-theme canvases, so any
+    // meaningful tint drags the bar away from the page. Keep it near zero.
+    tintView.layerBackgroundColor = color.withAlphaComponent(solid ? 1 : 0.1)
   }
 }

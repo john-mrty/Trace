@@ -23,6 +23,14 @@ extension EditorViewController {
   }
 
   @IBAction func toggleFileSidebar(_ sender: Any?) {
+    // In overlay mode: exit back to the normal expanded window with the
+    // sidebar open, rather than silently ignoring the toggle
+    if let window = view.window as? EditorWindow, window.overlayMode {
+      AppPreferences.Window.showSidebar = true
+      window.exitOverlayMode(animated: true, orderingOut: false)
+      return
+    }
+
     AppPreferences.Window.showSidebar.toggle()
   }
 

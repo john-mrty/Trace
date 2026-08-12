@@ -23,26 +23,28 @@ struct EditorSettingsView: View {
   @State private var fontSize = AppPreferences.Editor.fontSize
   @State private var accentColor = AppPreferences.Editor.accentColor
   @State private var showLineNumbers = AppPreferences.Editor.showLineNumbers
-  @State private var showActiveLineIndicator = AppPreferences.Editor.showActiveLineIndicator
-  @State private var invisiblesBehavior = AppPreferences.Editor.invisiblesBehavior
+  @State private var showsWritingToolsButton = AppPreferences.Editor.showsWritingToolsButton
   @State private var typewriterMode = AppPreferences.Editor.typewriterMode
-  @State private var focusMode = AppPreferences.Editor.focusMode
   @State private var lineHeight = AppPreferences.Editor.lineHeight
 
   var body: some View {
     SettingsForm {
       Section {
-        Picker(Localized.Settings.font, selection: $fontStyle) {
+        CapsuleMenu(selection: $fontStyle) {
           ForEach(fontStyleOptions, id: \.self) {
             Text(fontStyleName($0)).tag($0)
           }
+        } currentLabel: {
+          Text(fontStyleName(fontStyle))
         }
         .onChange(of: fontStyle) {
           AppPreferences.Editor.fontStyle = fontStyle
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.font)
 
-        Stepper(value: $fontSize, in: FontPicker.minimumFontSize...FontPicker.maximumFontSize, step: 1) {
+        HStack(spacing: 6) {
+          Stepper("", value: $fontSize, in: FontPicker.minimumFontSize...FontPicker.maximumFontSize, step: 1)
+            .labelsHidden()
           Text(String(format: "%.1f", fontSize))
             .monospacedDigit()
         }
@@ -56,19 +58,21 @@ struct EditorSettingsView: View {
       }
 
       Section {
-        Picker(Localized.Settings.appearance, selection: $appearance) {
+        CapsuleMenu(selection: $appearance) {
           Text(Localized.Settings.system).tag(Appearance.system)
           Divider()
           Text(Localized.Settings.light).tag(Appearance.light)
           Text(Localized.Settings.dark).tag(Appearance.dark)
+        } currentLabel: {
+          Text(appearanceName(appearance))
         }
         .onChange(of: appearance) {
           NSApp.appearance = appearance.resolved()
           AppPreferences.General.appearance = appearance
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.appearance)
 
-        Picker(Localized.Settings.accentColor, selection: $accentColor) {
+        CapsuleMenu(selection: $accentColor) {
           ForEach(AppAccentColor.allCases, id: \.self) { color in
             Label {
               Text(color.description)
@@ -77,18 +81,23 @@ struct EditorSettingsView: View {
             }
             .tag(color)
           }
+        } currentLabel: {
+          HStack(spacing: 6) {
+            Image(nsImage: swatchImage(for: accentColor))
+            Text(accentColor.description)
+          }
         }
         .labelStyle(.titleAndIcon)
         .onChange(of: accentColor) {
           AppPreferences.Editor.accentColor = accentColor
         }
-        .formMenuPicker()
+        .formLabel(Localized.Settings.accentColor)
         // Re-render the swatches when the app switches between light and dark
         .id(colorScheme)
       }
 
       Section {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 8) {
           Toggle(isOn: $showLineNumbers) {
             Text(Localized.Settings.lineNumbers)
           }
@@ -96,44 +105,24 @@ struct EditorSettingsView: View {
             AppPreferences.Editor.showLineNumbers = showLineNumbers
           }
 
-          Toggle(isOn: $showActiveLineIndicator) {
-            Text(Localized.Settings.activeLineIndicator)
+          Toggle(isOn: $showsWritingToolsButton) {
+            Text(Localized.Settings.writingToolsButton)
           }
-          .onChange(of: showActiveLineIndicator) {
-            AppPreferences.Editor.showActiveLineIndicator = showActiveLineIndicator
+          .onChange(of: showsWritingToolsButton) {
+            AppPreferences.Editor.showsWritingToolsButton = showsWritingToolsButton
           }
         }
         .formLabel(alignment: .top, Localized.Settings.displayOptions)
-
-        Picker(Localized.Settings.renderInvisibles, selection: $invisiblesBehavior) {
-          Text(Localized.Settings.never).tag(EditorInvisiblesBehavior.never)
-          Text(Localized.Settings.selection).tag(EditorInvisiblesBehavior.selection)
-          Text(Localized.Settings.trailing).tag(EditorInvisiblesBehavior.trailing)
-          Text(Localized.Settings.always).tag(EditorInvisiblesBehavior.always)
-        }
-        .onChange(of: invisiblesBehavior) {
-          AppPreferences.Editor.invisiblesBehavior = invisiblesBehavior
-        }
-        .formMenuPicker()
       }
 
       Section {
-        VStack(alignment: .leading) {
-          Toggle(isOn: $focusMode) {
-            Text(Localized.Settings.focusModeTitle)
-          }
-          .onChange(of: focusMode) {
-            AppPreferences.Editor.focusMode = focusMode
-          }
-
-          Toggle(isOn: $typewriterMode) {
-            Text(Localized.Settings.typewriterModeTitle)
-          }
-          .onChange(of: typewriterMode) {
-            AppPreferences.Editor.typewriterMode = typewriterMode
-          }
+        Toggle(isOn: $typewriterMode) {
+          Text(Localized.Settings.typewriterModeTitle)
         }
-        .formLabel(alignment: .top, Localized.Settings.editBehavior)
+        .onChange(of: typewriterMode) {
+          AppPreferences.Editor.typewriterMode = typewriterMode
+        }
+        .formLabel(Localized.Settings.editBehavior)
 
         Picker(Localized.Settings.lineHeight, selection: $lineHeight) {
           Text(Localized.Settings.tightHeight).tag(LineHeight.tight)
@@ -144,7 +133,7 @@ struct EditorSettingsView: View {
           AppPreferences.Editor.lineHeight = lineHeight
         }
         .formHorizontalRadio()
-        .formBreathingInset()
+        .padding(.top, 8)
       }
     }
   }
@@ -171,6 +160,17 @@ private extension EditorSettingsView {
     }
 
     return options
+  }
+
+  func appearanceName(_ value: Appearance) -> String {
+    switch value {
+    case .system:
+      return Localized.Settings.system
+    case .light:
+      return Localized.Settings.light
+    case .dark:
+      return Localized.Settings.dark
+    }
   }
 
   func fontStyleName(_ style: FontStyle) -> String {

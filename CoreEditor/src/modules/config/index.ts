@@ -81,10 +81,35 @@ export function setReadOnlyMode(enabled: boolean) {
 }
 
 export function setTypewriterMode(enabled: boolean) {
-  window.config.typewriterMode = enabled;
-  styling.setTypewriterMode(enabled);
+  // Also skips the dissolve when preference broadcasts re-send the same state
+  if (window.config.typewriterMode === enabled) {
+    return;
+  }
 
-  scrollToSelection(enabled ? 'center' : 'nearest');
+  window.config.typewriterMode = enabled;
+  const apply = () => {
+    styling.setTypewriterMode(enabled);
+    scrollToSelection(enabled ? 'center' : 'nearest');
+  };
+
+  const content = window.editor.contentDOM;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return apply();
+  }
+
+  // The 50vh padding swap is a hard layout jump; dissolve through it,
+  // same pattern as setHideSyntaxMarks
+  content.style.transition = 'opacity 0.12s ease-in-out';
+  content.style.opacity = '0.2';
+
+  setTimeout(() => {
+    apply();
+    content.style.opacity = '1';
+    setTimeout(() => {
+      content.style.transition = '';
+      content.style.opacity = '';
+    }, 150);
+  }, 120);
 }
 
 export function setAccentColor(caretColor: string, selectionColor: string) {

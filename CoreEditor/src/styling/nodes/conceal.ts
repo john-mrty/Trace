@@ -150,6 +150,23 @@ class InlineImageWidget extends WidgetType {
   }
 }
 
+const pencilIcon = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>';
+
+class CommentGlyphWidget extends WidgetType {
+  toDOM() {
+    const span = document.createElement('span');
+    span.className = 'cm-md-commentGlyph';
+    span.innerHTML = pencilIcon;
+    return span;
+  }
+
+  override eq() {
+    return true;
+  }
+}
+
+const commentGlyphDeco = Decoration.replace({ widget: new CommentGlyphWidget() });
+
 const copyIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
 const checkIcon = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
 
@@ -321,6 +338,19 @@ function collectConcealed(view: EditorView) {
           case 'CodeInfo':
             conceal(node.from, node.to);
             break;
+          case 'Comment':
+          case 'CommentBlock': {
+            // "<!-- note -->" reads as "✎ note" in a soft annotation pill
+            const text = state.sliceDoc(node.from, node.to);
+            const open = /^<!--\s*/.exec(text)?.[0].length ?? 0;
+            const close = /\s*-->$/.exec(text)?.[0].length ?? 0;
+            if (open > 0 && close > 0 && node.to - node.from > open + close) {
+              ranges.push(commentGlyphDeco.range(node.from, node.from + open));
+              conceal(node.to - close, node.to);
+              extras.push(Decoration.mark({ class: 'cm-md-commentNote' }).range(node.from + open, node.to - close));
+            }
+            break;
+          }
           case 'Image': {
             // Last URL child: "name@2x.png" in the alt text parses as an email
             // autolink, adding a URL node before the real destination

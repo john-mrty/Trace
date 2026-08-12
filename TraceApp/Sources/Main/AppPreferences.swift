@@ -92,7 +92,7 @@ enum AppPreferences {
       }
     }
 
-    @Storage(key: "editor.invisibles-behavior", defaultValue: .selection)
+    @Storage(key: "editor.invisibles-behavior", defaultValue: .never)
     static var invisiblesBehavior: EditorInvisiblesBehavior {
       didSet {
         performUpdates { $0.setInvisiblesBehavior(behavior: invisiblesBehavior) }
@@ -119,6 +119,17 @@ enum AppPreferences {
       didSet {
         // Gated on syntax visibility: line numbers belong to source mode
         performUpdates { $0.setShowLineNumbers(enabled: showLineNumbers && !hideSyntaxMarks) }
+      }
+    }
+
+    @Storage(key: "editor.shows-writing-tools", defaultValue: true)
+    static var showsWritingToolsButton: Bool {
+      didSet {
+        Task { @MainActor in
+          for window in NSApplication.shared.windows {
+            (window as? EditorWindow)?.reloadOverlayFab()
+          }
+        }
       }
     }
 

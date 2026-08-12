@@ -22,6 +22,7 @@ final class EditorWindow: NSWindow {
   let overlayWidthFraction: CGFloat = 1.0 / 3.0
   let overlayCornerRadius: CGFloat = 12
   var overlayFab: EditorOverlayToolbar?
+  var helpFab: EditorOverlayToolbar?
   // Nudged right when the sidebar is open so the FAB centers over the text column
   var overlayFabCenterX: NSLayoutConstraint?
 
@@ -167,6 +168,17 @@ final class EditorWindow: NSWindow {
     }
 
     super.sendEvent(event)
+  }
+
+  // macOS binds ⇧⌘/ to "Show Help menu" during menu scanning, which outranks
+  // menu items; intercepting here (before the menu bar sees it) wins
+  override func performKeyEquivalent(with event: NSEvent) -> Bool {
+    if event.modifierFlags.contains(.command), event.charactersIgnoringModifiers == "?" {
+      (contentViewController as? EditorViewController)?.showKeyboardShortcuts(nil)
+      return true
+    }
+
+    return super.performKeyEquivalent(with: event)
   }
 
   override func close() {

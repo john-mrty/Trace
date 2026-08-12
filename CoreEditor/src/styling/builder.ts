@@ -195,6 +195,32 @@ const sharedStyles: { [selector: string]: StyleSpec } = {
     opacity: '0',
     pointerEvents: 'none',
   },
+  // Concealed "<!-- -->" comments read as soft annotation pills
+  '.cm-md-commentNote': {
+    fontStyle: 'italic',
+    background: 'rgba(140, 140, 140, 0.1)',
+    borderRadius: '4px',
+    padding: '1px 5px',
+    boxDecorationBreak: 'clone',
+    WebkitBoxDecorationBreak: 'clone',
+  },
+  '.cm-md-commentGlyph': {
+    opacity: '0.45',
+    paddingRight: '5px',
+  },
+  '.cm-md-commentGlyph svg': {
+    verticalAlign: '-1px',
+  },
+  // Mirrors the FAB tooltip pattern: label plus muted shortcut hint
+  '.cm-md-tocHeader': {
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '16px',
+    padding: '4px 12px 6px',
+    fontSize: '0.7em',
+    opacity: '0.5',
+    whiteSpace: 'nowrap',
+  },
   '.cm-md-tocRow': {
     padding: '4px 12px',
     borderRadius: '5px',

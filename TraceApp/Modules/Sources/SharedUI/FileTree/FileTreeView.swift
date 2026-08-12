@@ -48,6 +48,15 @@ public final class FileTreeView: NSView {
 
   private let scrollView = NSScrollView()
   private let outlineView = FileTreeOutlineView()
+  private let searchField = NSSearchField()
+
+  private var searchQuery = ""
+  private var searchMatches = [FileTreeNode]()
+  private var preSearchExpandedPaths: Set<String>?
+
+  private var isSearching: Bool {
+    !searchQuery.isEmpty
+  }
 
   public init(fileExtensions: Set<String>) {
     self.fileExtensions = fileExtensions
@@ -87,7 +96,15 @@ public final class FileTreeView: NSView {
     scrollView.hasVerticalScroller = true
     scrollView.scrollerStyle = .overlay
     scrollView.automaticallyAdjustsContentInsets = false
+    scrollView.contentInsets = NSEdgeInsets(top: 2, left: 0, bottom: 8, right: 0)
     addSubview(scrollView)
+
+    searchField.controlSize = .small
+    searchField.font = .systemFont(ofSize: 12)
+    searchField.placeholderString = "Search"
+    searchField.focusRingType = .none
+    searchField.delegate = self
+    addSubview(searchField)
   }
 
   @available(*, unavailable)
@@ -97,20 +114,43 @@ public final class FileTreeView: NSView {
 
   override public func layout() {
     super.layout()
-    scrollView.frame = bounds
+
+    // The scroll view stops below the search field, so rows clip there
+    // instead of scrolling up behind the field and window controls
+    let headerHeight = topInset + Constants.searchFieldHeight + Constants.searchFieldSpacing
+    scrollView.frame = CGRect(
+      x: 0,
+      y: 0,
+      width: bounds.width,
+      height: max(0, bounds.height - headerHeight)
+    )
+
+    searchField.frame = CGRect(
+      x: Constants.searchFieldPadding,
+      y: bounds.height - topInset - Constants.searchFieldHeight,
+      width: max(0, bounds.width - Constants.searchFieldPadding * 2),
+      height: Constants.searchFieldHeight
+    )
   }
 
-  /// Top inset so the first row clears the titlebar area; set by the host.
+  /// Top inset so the search field clears the titlebar area; set by the host.
   public var topInset: Double = 0 {
     didSet {
-      scrollView.contentInsets = NSEdgeInsets(top: topInset, left: 0, bottom: 8, right: 0)
+      needsLayout = true
     }
   }
 
   public func reload() {
-    let expandedPaths = currentlyExpandedPaths()
+    let expandedPaths = isSearching ? (preSearchExpandedPaths ?? []) : currentlyExpandedPaths()
     rootNode = rootURL.map {
       FileTreeNode(url: $0, isDirectory: true, fileExtensions: fileExtensions, sortOrder: sortOrder)
+    }
+
+    if isSearching {
+      preSearchExpandedPaths = expandedPaths
+      searchMatches = collectMatches(for: searchQuery)
+      outlineView.reloadData()
+      return
     }
 
     outlineView.reloadData()
@@ -171,15 +211,27 @@ public final class FileTreeView: NSView {
 
 extension FileTreeView: NSOutlineViewDataSource {
   public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-    nodeOrRoot(item)?.children.count ?? 0
+    if isSearching {
+      return item == nil ? searchMatches.count : 0
+    }
+
+    return nodeOrRoot(item)?.children.count ?? 0
   }
 
   public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-    nodeOrRoot(item)?.children[index] as Any
+    if isSearching {
+      return searchMatches[index]
+    }
+
+    return nodeOrRoot(item)?.children[index] as Any
   }
 
   public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
-    (item as? FileTreeNode)?.isDirectory ?? false
+    if isSearching {
+      return false
+    }
+
+    return (item as? FileTreeNode)?.isDirectory ?? false
   }
 }
 
@@ -215,9 +267,106 @@ extension FileTreeView: NSOutlineViewDelegate {
   }
 }
 
+// MARK: - NSSearchFieldDelegate
+
+extension FileTreeView: NSSearchFieldDelegate {
+  public func controlTextDidChange(_ obj: Notification) {
+    updateSearchQuery(searchField.stringValue)
+  }
+
+  public func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+    switch commandSelector {
+    case #selector(NSResponder.insertNewline(_:)):
+      if let first = searchMatches.first, isSearching {
+        onSelectFile?(first.url)
+      }
+      return true
+    case #selector(NSResponder.moveDown(_:)):
+      focus()
+      return true
+    case #selector(NSResponder.cancelOperation(_:)):
+      searchField.stringValue = ""
+      updateSearchQuery("")
+      focus()
+      return true
+    default:
+      return false
+    }
+  }
+}
+
 // MARK: - Private
 
 private extension FileTreeView {
+  enum Constants {
+    static let searchFieldHeight: Double = 26
+    static let searchFieldSpacing: Double = 6
+    static let searchFieldPadding: Double = 16
+  }
+
+  func updateSearchQuery(_ query: String) {
+    let trimmed = query.trimmingCharacters(in: .whitespaces)
+    guard !trimmed.isEmpty else {
+      guard isSearching else {
+        return
+      }
+
+      searchQuery = ""
+      searchMatches = []
+      outlineView.reloadData()
+
+      // Put the tree back the way it was before the search started
+      if let paths = preSearchExpandedPaths {
+        expandPaths(paths)
+      }
+
+      preSearchExpandedPaths = nil
+      selectCurrent(currentFileURL)
+      return
+    }
+
+    if !isSearching {
+      preSearchExpandedPaths = currentlyExpandedPaths()
+    }
+
+    searchQuery = trimmed
+    searchMatches = collectMatches(for: trimmed)
+    outlineView.reloadData()
+  }
+
+  /// Fuzzy filename match over the whole tree, best matches first.
+  /// Walking `children` loads directories lazily from disk; the visit cap
+  /// keeps a pathological folder from blocking the UI.
+  func collectMatches(for query: String) -> [FileTreeNode] {
+    guard let rootNode else {
+      return []
+    }
+
+    var scored = [(node: FileTreeNode, score: Int)]()
+    var stack = [rootNode]
+    var visited = 0
+
+    outer: while let node = stack.popLast() {
+      for child in node.children {
+        visited += 1
+        if visited > 20_000 {
+          break outer
+        }
+
+        if child.isDirectory {
+          stack.append(child)
+        } else if let score = FuzzyMatch.score(
+          query: query,
+          in: child.url.deletingPathExtension().lastPathComponent
+        ) {
+          scored.append((child, score))
+        }
+      }
+    }
+
+    return scored.sorted { $0.score > $1.score }.map(\.node)
+  }
+
   func refreshVisibleRows() {
     outlineView.reloadData(
       forRowIndexes: IndexSet(integersIn: 0..<outlineView.numberOfRows),
@@ -484,8 +633,8 @@ private final class QuietRowView: NSTableRowView {
       return
     }
 
-    NSColor.quaternaryLabelColor.setFill()
-    NSBezierPath(roundedRect: bounds.insetBy(dx: 4, dy: 1.5), xRadius: 5, yRadius: 5).fill()
+    NSColor.labelColor.withAlphaComponent(0.06).setFill()
+    NSBezierPath(roundedRect: bounds.insetBy(dx: 12, dy: 1.5), xRadius: 5, yRadius: 5).fill()
   }
 }
 

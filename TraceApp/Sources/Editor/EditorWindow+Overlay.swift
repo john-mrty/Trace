@@ -65,7 +65,10 @@ extension EditorWindow {
   /// Dismisses the overlay, restoring the window's pre-overlay frame/level/behavior.
   /// `completion` runs once the window has finished ordering out, so callers (e.g. hiding
   /// the app) don't cut the slide-out animation short.
-  func exitOverlayMode(animated: Bool, completion: (() -> Void)? = nil) {
+  ///
+  /// `orderingOut: false` keeps the window on screen: instead of sliding offscreen and
+  /// hiding, it expands back to the pre-overlay frame (sidebar toggle uses this).
+  func exitOverlayMode(animated: Bool, orderingOut: Bool = true, completion: (() -> Void)? = nil) {
     guard overlayMode, !isExitingOverlay else {
       completion?()
       return
@@ -99,7 +102,10 @@ extension EditorWindow {
       }
 
       self.resetOverlayChrome()
-      self.orderOut(nil)
+      if orderingOut {
+        self.orderOut(nil)
+      }
+
       self.isExitingOverlay = false
       (self.contentViewController as? EditorViewController)?.setSidebarVisible(
         AppPreferences.Window.showSidebar,
@@ -109,10 +115,13 @@ extension EditorWindow {
     }
 
     if animated && !AppDesign.reduceMotion, let visible = (screen ?? NSScreen.main)?.visibleFrame {
-      let off = EditorOverlayGeometry.offscreenFrame(in: visible, widthFraction: overlayWidthFraction)
+      // Staying visible → expand to the restored frame; dismissing → slide offscreen
+      let target = orderingOut
+        ? EditorOverlayGeometry.offscreenFrame(in: visible, widthFraction: overlayWidthFraction)
+        : (savedFrame ?? frame)
       NSAnimationContext.runAnimationGroup({ context in
         context.duration = 0.16
-        animator().setFrame(off, display: true)
+        animator().setFrame(target, display: true)
       }, completionHandler: restore)
     } else {
       restore()
@@ -235,11 +244,49 @@ extension EditorWindow {
 
     overlayFab = fab
     overlayFabCenterX = centerX
+
+    if helpFab == nil {
+      let help = EditorOverlayToolbar(
+        actions: [
+          EditorOverlayToolbar.Action(
+            symbolName: Icons.questionMark,
+            accessibilityLabel: "Keyboard Shortcuts",
+            shortcutHint: "⇧⌘?"
+          ) { [weak editorViewController] _ in
+            editorViewController?.showKeyboardShortcuts(nil)
+          },
+        ],
+        circular: true
+      )
+
+      help.translatesAutoresizingMaskIntoConstraints = false
+      contentView.addSubview(help)
+
+      NSLayoutConstraint.activate([
+        help.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.fabEdgeOffset),
+        help.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -Constants.fabEdgeOffset),
+      ])
+
+      helpFab = help
+    }
+  }
+
+  /// Rebuilds the main FAB in place (e.g. after a settings change alters its actions).
+  func reloadOverlayFab() {
+    guard overlayFab != nil else {
+      return
+    }
+
+    overlayFab?.removeFromSuperview()
+    overlayFab = nil
+    showOverlayFab()
   }
 
   func hideOverlayFab() {
     overlayFab?.removeFromSuperview()
     overlayFab = nil
+    helpFab?.removeFromSuperview()
+    helpFab = nil
   }
 }
 
@@ -255,7 +302,7 @@ private extension EditorWindow {
   /// hide syntax marks, dim inactive lines. (TOC lives in the editor's
   /// hover indicator, not here.)
   func overlayFabActions(for viewController: EditorViewController) -> [EditorOverlayToolbar.Action] {
-    [
+    var actions: [EditorOverlayToolbar.Action] = [
       EditorOverlayToolbar.Action(
         accessibilityLabel: Localized.Toolbar.formatHeaders,
         // SF Symbols has no bare "H"; render one to match the FontAwesome heading icon
@@ -291,7 +338,6 @@ private extension EditorWindow {
         let menu = NSMenu()
         menu.items = [
           NSApp.appDelegate?.formatBulletedItem,
-          NSApp.appDelegate?.formatBulletItem,
           NSApp.appDelegate?.formatNumberingItem,
           NSApp.appDelegate?.formatTodoItem,
         ].compactMap { $0?.copiedItem }
@@ -324,5 +370,20 @@ private extension EditorWindow {
         viewController?.toggleStatisticsPopover(sourceView: button)
       },
     ]
+
+    // Only when Apple Intelligence provides the system Writing Tools menu
+    if AppPreferences.Editor.showsWritingToolsButton,
+       #available(macOS 15.1, *),
+       NSMenuItem.systemWritingToolsItem?.submenu != nil {
+      actions.append(EditorOverlayToolbar.Action(
+        accessibilityLabel: Localized.WritingTools.featureName,
+        customImage: AppWritingTools.affordanceIcon
+      ) { button in
+        NSMenuItem.systemWritingToolsItem?.submenu?.copiedMenu?
+          .popUp(positioning: nil, at: .zero, in: button)
+      })
+    }
+
+    return actions
   }
 }

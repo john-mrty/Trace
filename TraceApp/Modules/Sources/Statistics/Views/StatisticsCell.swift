@@ -7,7 +7,7 @@
 import SwiftUI
 
 struct StatisticsCell: View {
-  static let cellHeight: Double = 26
+  static let cellHeight: Double = 24
   static let rowHeight: Double = cellHeight
 
   let titleText: String
@@ -22,7 +22,7 @@ struct StatisticsCell: View {
         .foregroundStyle(.secondary)
         .lineLimit(1)
     }
-    .font(.system(size: 13))
+    .font(.system(size: 12))
     .padding(.horizontal, 10)
     .accessibilityElement()
     .accessibilityLabel([titleText, valueText].joined(separator: " "))

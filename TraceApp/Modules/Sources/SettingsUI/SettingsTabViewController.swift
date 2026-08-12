@@ -13,8 +13,10 @@ import SwiftUI
 public final class SettingsTabViewController: NSViewController {
   let tabViewItem: NSTabViewItem
   let contentView: NSView
+  let icon: String
 
   public init(_ rootView: some View, title: String, icon: String) {
+    self.icon = icon
     tabViewItem = NSTabViewItem()
     tabViewItem.label = title
     tabViewItem.image = NSImage(systemSymbolName: icon, accessibilityDescription: title)

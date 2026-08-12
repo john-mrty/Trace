@@ -241,14 +241,6 @@ extension EditorViewController {
     bridge.format.toggleHeading(level: 4)
   }
 
-  @IBAction func toggleH5(_ sender: Any?) {
-    bridge.format.toggleHeading(level: 5)
-  }
-
-  @IBAction func toggleH6(_ sender: Any?) {
-    bridge.format.toggleHeading(level: 6)
-  }
-
   // MARK: - Text Styles
 
   @IBAction func toggleBold(_ sender: Any?) {

@@ -13,6 +13,7 @@ class TocIndicator {
   private readonly container: HTMLElement;
   private readonly dashes: HTMLElement;
   private readonly panel: HTMLElement;
+  private readonly header: HTMLElement;
   private readonly view: EditorView;
   private rows: { element: HTMLElement; info: HeadingInfo }[] = [];
   private pending = false;
@@ -30,6 +31,14 @@ class TocIndicator {
 
     this.panel = document.createElement('div');
     this.panel.className = 'cm-md-tocPanel';
+
+    this.header = document.createElement('div');
+    this.header.className = 'cm-md-tocHeader';
+    const headerTitle = document.createElement('span');
+    headerTitle.textContent = 'Table of Contents';
+    const headerKeys = document.createElement('span');
+    headerKeys.textContent = '⇧⌘A';
+    this.header.append(headerTitle, headerKeys);
 
     this.container.appendChild(this.dashes);
     this.container.appendChild(this.panel);
@@ -83,6 +92,12 @@ class TocIndicator {
     this.container.classList.remove('cm-md-tocKeyboardOpen');
     document.removeEventListener('keydown', this, true);
     document.removeEventListener('mousedown', this, true);
+
+    // If the pointer is resting over the popover, :hover would keep it
+    // visible after close; suppress until the pointer leaves
+    if (this.container.matches(':hover')) {
+      this.container.classList.add('cm-md-tocSuppressed');
+    }
   }
 
   private setActiveIndex(index: number) {
@@ -152,7 +167,7 @@ class TocIndicator {
     const toc = getTableOfContents(state);
     this.container.style.display = toc.length > 0 ? '' : 'none';
     this.dashes.replaceChildren();
-    this.panel.replaceChildren();
+    this.panel.replaceChildren(this.header);
     this.rows = [];
 
     for (const info of toc) {

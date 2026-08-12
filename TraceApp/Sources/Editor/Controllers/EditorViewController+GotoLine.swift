@@ -8,6 +8,7 @@
 import AppKit
 import SwiftUI
 import FontPicker
+import SettingsUI
 import SharedUI
 import MarkEditKit
 
@@ -285,7 +286,8 @@ private extension EditorViewController {
       text += "⌥"
     }
 
-    if mask.contains(.shift) {
+    // An uppercase key equivalent (e.g. "O" for ⇧⌘O) encodes shift implicitly
+    if mask.contains(.shift) || (key.count == 1 && key != key.lowercased()) {
       text += "⇧"
     }
 
@@ -332,28 +334,88 @@ private extension EditorViewController {
 
 // MARK: - Keyboard Shortcuts
 
+// Floating panel like the command palette; sheets impose their own corner
+// mask, backing material, and parent dimming, which fought the styling
+private weak var activeShortcutsPanel: KeyboardShortcutsPanel?
+
 extension EditorViewController {
   @objc func showKeyboardShortcuts(_ sender: Any?) {
-    guard presentedViewControllers?.contains(where: { $0 is NSHostingController<KeyboardShortcutsView> }) != true else {
+    if let panel = activeShortcutsPanel {
+      panel.makeKeyAndOrderFront(nil)
       return
     }
 
-    final class Box { weak var controller: NSViewController? }
-    let box = Box()
-
-    let rootView = KeyboardShortcutsView(groups: Self.shortcutGroups()) { [weak self] in
-      if let controller = box.controller {
-        self?.dismiss(controller)
-      }
+    guard let parent = view.window else {
+      return
     }
 
-    let controller = NSHostingController(rootView: rootView)
-    box.controller = controller
-    presentAsSheet(controller)
+    let panel = KeyboardShortcutsPanel()
+    let rootView = KeyboardShortcutsView(groups: Self.shortcutGroups()) { [weak panel] in
+      panel?.dismiss()
+    }
+
+    panel.contentViewController = NSHostingController(rootView: rootView)
+    let margin = KeyboardShortcutsView.shadowMargin
+    panel.setFrame(
+      CGRect(
+        x: parent.frame.midX - KeyboardShortcutsView.size.width / 2 - margin,
+        y: parent.frame.midY - KeyboardShortcutsView.size.height / 2 - margin,
+        width: KeyboardShortcutsView.size.width + margin * 2,
+        height: KeyboardShortcutsView.size.height + margin * 2
+      ),
+      display: false
+    )
+
+    parent.addChildWindow(panel, ordered: .above)
+    panel.makeKeyAndOrderFront(nil)
+    activeShortcutsPanel = panel
+  }
+}
+
+final class KeyboardShortcutsPanel: NSPanel {
+  init() {
+    super.init(contentRect: .zero, styleMask: [.borderless], backing: .buffered, defer: false)
+    backgroundColor = .clear
+    isOpaque = false
+    // The system shadow outlines borderless windows with a hairline rim;
+    // the SwiftUI content draws a palette-matched shadow itself
+    hasShadow = false
+    isMovableByWindowBackground = true
+  }
+
+  override var canBecomeKey: Bool {
+    true
+  }
+
+  // Clicking back into the document dismisses, same as the command palette
+  override func resignKey() {
+    super.resignKey()
+    dismiss()
+  }
+
+  override func cancelOperation(_ sender: Any?) {
+    dismiss()
+  }
+
+  func dismiss() {
+    parent?.removeChildWindow(self)
+    orderOut(nil)
   }
 }
 
 private extension EditorViewController {
+  /// The everyday shortcuts; the full menu dump buries these in niche entries
+  static let curatedShortcutTitles: Set<String> = [
+    "New", "Open…", "Open Document…", "Save…", "Save As…", "Close", "Reopen Closed Document",
+    "Undo", "Redo", "Copy as Rich Text", "Find…", "Find and Replace…",
+    "Heading 1", "Heading 2", "Heading 3", "Heading 4",
+    "Bold", "Italic", "Strikethrough", "Insert Link", "Insert Image",
+    "Bulleted List", "Ordered List", "Todo", "Quote", "Code", "Code Block", "Horizontal Rule",
+    "Toggle Line Comment",
+    "Command Palette…", "Show Markdown Syntax", "Focus Mode", "Show Sidebar",
+    "Keyboard Shortcuts",
+  ]
+
   static func shortcutGroups() -> [ShortcutGroup] {
     var groups = [ShortcutGroup]()
 
@@ -372,7 +434,8 @@ private extension EditorViewController {
           }
 
           let shortcut = shortcutDescription(of: item)
-          if !shortcut.isEmpty, !item.title.isEmpty, !item.isHidden {
+          if !shortcut.isEmpty, !item.title.isEmpty, !item.isHidden,
+             curatedShortcutTitles.contains(item.title) {
             rows.append(ShortcutGroup.Row(title: item.title, shortcut: shortcut))
           }
         }
@@ -399,6 +462,10 @@ struct ShortcutGroup {
 }
 
 struct KeyboardShortcutsView: View {
+  static let size = CGSize(width: 400, height: 480)
+  // Slack around the content so the drop shadow isn't clipped at the window edge
+  static let shadowMargin: Double = 48
+
   let groups: [ShortcutGroup]
   let dismiss: () -> Void
 
@@ -410,11 +477,11 @@ struct KeyboardShortcutsView: View {
 
         Spacer()
         Button("Done", action: dismiss)
+          .buttonStyle(CapsuleButtonStyle())
           .keyboardShortcut(.cancelAction)
       }
       .padding(16)
 
-      Divider()
       ScrollView {
         VStack(alignment: .leading, spacing: 22) {
           ForEach(groups, id: \.title) { group in
@@ -429,7 +496,7 @@ struct KeyboardShortcutsView: View {
                   Text(row.title)
                   Spacer()
                   Text(row.shortcut)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.tertiary)
                 }
                 .padding(.vertical, 2)
               }
@@ -440,6 +507,30 @@ struct KeyboardShortcutsView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
       }
     }
-    .frame(width: 400, height: 480)
+    .frame(width: Self.size.width, height: Self.size.height)
+    // Identical recipe to CommandPaletteWindow: popover blur + 0.65 canvas wash.
+    // The window's own shadow is disabled (it draws a hairline rim around
+    // borderless windows); this shadow matches the palette's NSShadow instead.
+    .background {
+      ZStack {
+        SheetBlurView()
+        Color(nsColor: .textBackgroundColor).opacity(0.65)
+      }
+    }
+    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+    .shadow(color: .black.opacity(0.22), radius: 24, x: 0, y: 10)
+    .padding(Self.shadowMargin)
   }
+}
+
+private struct SheetBlurView: NSViewRepresentable {
+  func makeNSView(context: Context) -> NSVisualEffectView {
+    let view = NSVisualEffectView()
+    view.material = .popover
+    view.blendingMode = .behindWindow
+    view.state = .active
+    return view
+  }
+
+  func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }

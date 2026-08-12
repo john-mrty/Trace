@@ -38,6 +38,7 @@ public struct SettingsForm: View {
       }
     }
     .fixedSize()
-    .padding(padding)
+    .padding(.horizontal, padding)
+    .padding(.vertical, padding + 12)
   }
 }
