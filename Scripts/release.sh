@@ -67,9 +67,28 @@ ditto -c -k --keepParent "$APP" "$ZIP"
 echo "==> Verifying (Gatekeeper assessment)..."
 spctl -a -vv "$APP"
 
+echo "==> Building DMG..."
+DMG="$OUT_DIR/Trace-$VERSION.dmg"
+STAGE="$(mktemp -d)"
+cp -R "$APP" "$STAGE/"
+ln -s /Applications "$STAGE/Applications"
+hdiutil create -volname "Trace" -srcfolder "$STAGE" -ov -format UDZO "$DMG"
+rm -rf "$STAGE"
+codesign --sign "Developer ID Application" --timestamp "$DMG"
+
+echo "==> Notarizing DMG..."
+xcrun notarytool submit "$DMG" --keychain-profile "$PROFILE" --wait | tee "$OUT_DIR/notary-dmg.log"
+grep -q "status: Accepted" "$OUT_DIR/notary-dmg.log" || {
+  SUBMISSION_ID="$(sed -nE 's/^ *id: ([a-f0-9-]{36})$/\1/p' "$OUT_DIR/notary-dmg.log" | head -1)"
+  [[ -n "$SUBMISSION_ID" ]] && xcrun notarytool log "$SUBMISSION_ID" --keychain-profile "$PROFILE"
+  echo "error: DMG notarization was not accepted" >&2
+  exit 1
+}
+xcrun stapler staple "$DMG"
+
 echo "==> Publishing GitHub release v$VERSION..."
 gh auth switch --user john-mrty
-gh release create "v$VERSION" "$ZIP" --repo john-mrty/Trace \
+gh release create "v$VERSION" "$DMG" "$ZIP" --repo john-mrty/Trace \
   --title "Trace $VERSION" --generate-notes || STATUS=$?
 gh auth switch --user johnmoriarty-int
 exit "${STATUS:-0}"
