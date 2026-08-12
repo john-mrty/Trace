@@ -89,12 +89,14 @@ final class AppDocumentController: NSDocumentController {
     display displayDocument: Bool,
     completionHandler: @escaping (NSDocument?, Bool, (any Error)?) -> Void
   ) {
-    if url.isBinaryFile {
+    let resolvedURL = url.resolvingSymbolicLink
+
+    if resolvedURL.isBinaryFile {
       // Dead loop prevention
-      if Bundle.main.isDefaultApp(toOpen: url) {
-        NSWorkspace.shared.activateFileViewerSelecting([url])
+      if Bundle.main.isDefaultApp(toOpen: resolvedURL) {
+        NSWorkspace.shared.activateFileViewerSelecting([resolvedURL])
       } else {
-        NSWorkspace.shared.open(url)
+        NSWorkspace.shared.open(resolvedURL)
       }
 
       // Ignore the default opening logic
@@ -106,7 +108,7 @@ final class AppDocumentController: NSDocumentController {
       await EditorPreloader.shared.prepareViewController()
 
       super.openDocument(
-        withContentsOf: url,
+        withContentsOf: resolvedURL,
         display: displayDocument,
         completionHandler: completionHandler
       )
