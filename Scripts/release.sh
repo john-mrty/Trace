@@ -87,8 +87,10 @@ grep -q "status: Accepted" "$OUT_DIR/notary-dmg.log" || {
 xcrun stapler staple "$DMG"
 
 echo "==> Publishing GitHub release v$VERSION..."
+# Unversioned copy keeps releases/latest/download/Trace.dmg evergreen
+cp "$DMG" "$OUT_DIR/Trace.dmg"
 gh auth switch --user john-mrty
-gh release create "v$VERSION" "$DMG" "$ZIP" --repo john-mrty/Trace \
+gh release create "v$VERSION" "$DMG" "$OUT_DIR/Trace.dmg" "$ZIP" --repo john-mrty/Trace \
   --title "Trace $VERSION" --generate-notes || STATUS=$?
 gh auth switch --user johnmoriarty-int
 exit "${STATUS:-0}"

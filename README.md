@@ -16,7 +16,7 @@ Most Markdown editors make you choose: stare at raw syntax while you write, or s
 
 ## Download
 
-[**Download Trace**](https://github.com/john-mrty/Trace/releases/latest) — signed and notarized. Unzip, drag to Applications, open.
+[**Download Trace**](https://github.com/john-mrty/Trace/releases/latest/download/Trace.dmg) — signed and notarized. Open the DMG, drag to Applications.
 
 ## Writing without the noise
 
