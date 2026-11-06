@@ -229,7 +229,7 @@ enum AppPreferences {
     @Storage(key: "window.toolbar-mode", defaultValue: .normal)
     static var toolbarMode: ToolbarMode
 
-    @Storage(key: "window.tabbing-mode", defaultValue: .automatic)
+    @Storage(key: "window.tabbing-mode", defaultValue: .preferred)
     static var tabbingMode: NSWindow.TabbingMode {
       didSet {
         performUpdates { $0.view.window?.tabbingMode = tabbingMode }

@@ -170,6 +170,11 @@ final class EditorDocument: NSDocument {
     }
   }
 
+  /// Synchronize the web editor before using AppKit's completion-based save API.
+  func prepareForExplicitSave() async {
+    await updateContent(userInitiated: true)
+  }
+
   func autosaveDelayed(seconds: Double = 0.25) {
     autosaveDelayedTask?.cancel()
     autosaveDelayedTask = Task { [weak self] in

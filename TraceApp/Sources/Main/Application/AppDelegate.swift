@@ -54,9 +54,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   var welcomeWindowController: WelcomeWindowController?
 
   func applicationWillFinishLaunching(_ notification: Notification) {
-    // Fork behavior: tabs are retired; this also strips the system-injected
-    // "Show Tab Bar" / "Show All Tabs" items from the View menu
-    NSWindow.allowsAutomaticWindowTabbing = false
+    NSWindow.allowsAutomaticWindowTabbing = true
 
     NSApp.appearance = AppPreferences.General.appearance.resolved()
     EditorPreloader.shared.warmUp()
